@@ -1,0 +1,67 @@
+<div class="jumbotron bg-light p-5 rounded">
+    <h1 class="display-4">Bienvenido al Club Deportivo</h1>
+    <p class="lead">Somos una institución dedicada al deporte y la formación de atletas de todas las edades.</p>
+    <hr class="my-4">
+    <p>Únete a nuestra comunidad y disfruta de nuestras instalaciones y actividades.</p>
+    <a class="btn btn-primary btn-lg" routerLink="/socios/registro" role="button">Hacerse Socio</a>
+  </div>
+  
+  <div class="row mt-5">
+    <div class="col-12">
+      <h2 class="mb-4">Noticias Destacadas</h2>
+    </div>
+  </div>
+  
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    @for(news of newsArray; track news) {
+        <div class="col">
+            <div class="card h-100">
+              <img [src]="news.imageUrl" class="card-img-top" alt="{{news.title}}">
+              <div class="card-body">
+                <h5 class="card-title">{{news.title}}</h5>
+                <p class="card-text">{{news.summary}}</p>
+                <p class="text-muted">{{news.date}}</p>
+              </div>
+              <div class="card-footer">
+                <a [routerLink]="['/news', news.id]" class="btn btn-sm btn-outline-primary">Leer más</a>
+              </div>
+            </div>
+          </div>
+    }
+  </div>
+  
+  <div class="row mt-5">
+    <div class="col-md-6">
+      <h3>Próximos Eventos</h3>
+      <ul class="list-group">
+        <li class="list-group-item">
+          <h5>Torneo de Verano</h5>
+          <p class="mb-1">15 de Enero, 2023</p>
+          <p class="mb-0">Participa en nuestro torneo anual con grandes premios.</p>
+        </li>
+        <li class="list-group-item">
+          <h5>Clínica Deportiva</h5>
+          <p class="mb-1">22 de Enero, 2023</p>
+          <p class="mb-0">Aprende con los mejores profesionales del deporte.</p>
+        </li>
+        <li class="list-group-item">
+          <h5>Asamblea de Socios</h5>
+          <p class="mb-1">5 de Febrero, 2023</p>
+          <p class="mb-0">Reunión anual para todos los socios del club.</p>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-6">
+      <h3>Nuestros Equipos</h3>
+      <div class="list-group">
+        <a href="#" class="list-group-item list-group-item-action">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Equipo 1</h5>
+            <small>Categoría A</small>
+          </div>
+          <p class="mb-1">Descripción breve del equipo y sus logros recientes.</p>
+          <small>Ver detalles</small>
+        </a>
+      </div>
+    </div>
+  </div>
