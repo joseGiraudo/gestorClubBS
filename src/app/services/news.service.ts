@@ -39,13 +39,15 @@ export class NewsService {
     },
   ]
 
-  constructor() {}
+  apiUrl: string = 'http://localhost:8080/news'
+
+  constructor(private http: HttpClient) {}
 
   getNoticias(): Observable<News[]> {
     // Para desarrollo, devolvemos datos de ejemplo
     // En producción, descomentar la línea que hace la petición HTTP
     return of(this.noticiasEjemplo)
-    // return this.http.get<Noticia[]>(this.apiUrl);
+    // return this.http.get<News[]>(this.apiUrl);
   }
 
   getNoticia(id: number): Observable<News> {
@@ -53,12 +55,12 @@ export class NewsService {
     const noticia = this.noticiasEjemplo.find((n) => n.id === id)
     return of(noticia as News)
     // En producción
-    // return this.http.get<Noticia>(`${this.apiUrl}/${id}`);
+    // return this.http.get<News>(`${this.apiUrl}/${id}`);
   }
 
   crearNoticia(noticia: Omit<News, "id">): Observable<News> {
     // En producción
-    // return this.http.post<Noticia>(this.apiUrl, noticia);
+    // return this.http.post<News>(this.apiUrl, noticia);
 
     // Para desarrollo (simulación)
     const nuevaNoticia: News = {
@@ -71,7 +73,7 @@ export class NewsService {
 
   actualizarNoticia(id: number, noticia: Partial<News>): Observable<News> {
     // En producción
-    // return this.http.put<Noticia>(`${this.apiUrl}/${id}`, noticia);
+    // return this.http.put<News>(`${this.apiUrl}/${id}`, noticia);
 
     // Para desarrollo (simulación)
     const index = this.noticiasEjemplo.findIndex((n) => n.id === id)

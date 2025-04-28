@@ -12,23 +12,7 @@
     </div>
   </div>
   
-  <div class="row row-cols-1 row-cols-md-3 g-4">
-    @for(news of newsArray; track news) {
-        <div class="col">
-            <div class="card h-100">
-              <img [src]="news.imageUrl" class="card-img-top" alt="{{news.title}}">
-              <div class="card-body">
-                <h5 class="card-title">{{news.title}}</h5>
-                <p class="card-text">{{news.summary}}</p>
-                <p class="text-muted">{{news.date}}</p>
-              </div>
-              <div class="card-footer">
-                <a [routerLink]="['/news', news.id]" class="btn btn-sm btn-outline-primary">Leer más</a>
-              </div>
-            </div>
-          </div>
-    }
-  </div>
+  <app-news-list></app-news-list>
   
   <div class="row mt-5">
     <div class="col-md-6">
