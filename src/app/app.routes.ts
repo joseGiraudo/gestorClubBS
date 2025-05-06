@@ -6,6 +6,7 @@ import { adminGuard, authGuard } from './guards/auth.guard';
 import { NewsListComponent } from './components/news/news-list/news-list.component';
 import { MemberListComponent } from './components/members/member-list/member-list.component';
 import { LoginComponent } from './components/core/login/login.component';
+import { PaymentComponent } from './components/payments/payment/payment.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -13,6 +14,7 @@ export const routes: Routes = [
     { path: 'members', component: MemberListComponent },
     { path: 'news/:id', component: NewsCardComponent },
     { path: 'news', component: NewsListComponent },
+    { path: 'payments', component: PaymentComponent },
 
 
     { path: 'login', component: LoginComponent },

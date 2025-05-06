@@ -1,0 +1,16 @@
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h3 class="m-3 mb-5">Pagar Cuota de Socio</h3>
+            <form class="d-flex" [formGroup]="form" (ngSubmit)="searchFee()">
+                <div class="input-group">
+                    <input class="form-control form-control-lg" formControlName="feeCode" type="search" placeholder="Ingresa el código de cuota" aria-label="Search">
+                    <button class="btn btn-primary px-4" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
