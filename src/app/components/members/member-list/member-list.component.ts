@@ -16,7 +16,7 @@ export class MemberListComponent implements OnInit {
   private membersService = inject(MembersService);
 
   ngOnInit() {
-    this.membersService.getNoticias().subscribe((response) => {
+    this.membersService.getMembers().subscribe((response) => {
       this.members = response
     })
     

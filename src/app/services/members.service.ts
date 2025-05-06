@@ -52,7 +52,7 @@ export class MembersService {
 
   constructor(private http: HttpClient) {}
 
-  getNoticias(): Observable<Member[]> {
+  getMembers(): Observable<Member[]> {
     // Para desarrollo, devolvemos datos de ejemplo
     // En producción, descomentar la línea que hace la petición HTTP
     return of(this.members)
