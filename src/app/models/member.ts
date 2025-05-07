@@ -7,6 +7,7 @@ export interface Member {
     phone: string
     address: string
     birthdate: Date
+    type: string
+    isActive: boolean
     createdAt: Date
-    status: string
   }

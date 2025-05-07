@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Member } from '../models/member';
-import { Observable, of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
+import { MemberMapperPipe } from '../pipes/member-mapper.pipe';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,8 @@ export class MembersService {
       address: 'Calle Falsa 123',
       birthdate: new Date('1990-05-15'),
       createdAt: new Date('2025-02-21'),
-      status: 'active'
+      isActive: true,
+      type: 'ATHLETE'
     },
     {
       id: 2,
@@ -31,7 +33,8 @@ export class MembersService {
       address: 'Avenida Siempre Viva 742',
       birthdate: new Date('1985-09-30'),
       createdAt: new Date('2025-04-19'),
-      status: 'inactive'
+      isActive: true,
+      type: 'ATHLETE'
     },
     {
       id: 3,
@@ -43,7 +46,8 @@ export class MembersService {
       address: 'Boulevard Principal 456',
       birthdate: new Date('1995-12-20'),
       createdAt: new Date('2024-03-28'),
-      status: 'active'
+      isActive: true,
+      type: 'ACTIVE'
     }
   ];
 
@@ -55,7 +59,24 @@ export class MembersService {
   getMembers(): Observable<Member[]> {
     // Para desarrollo, devolvemos datos de ejemplo
     // En producción, descomentar la línea que hace la petición HTTP
-    return of(this.members)
-    // return this.http.get<Member[]>(this.apiUrl);
+    // return of(this.members)
+
+    return this.http.get<Member[]>(this.apiUrl);
+
+    // pipe
+    return this.http.get<Member[]>(this.apiUrl)
+    .pipe(
+      map((response) => {
+        const transformPipe = new MemberMapperPipe();
+        return response.map((member: any) =>
+          transformPipe.transform(member)
+        );
+      })
+    );
+  }
+
+  getMemberById(id: number): Observable<Member> {
+    
+    return this.http.get<Member>(this.apiUrl + "/" + id);
   }
 }

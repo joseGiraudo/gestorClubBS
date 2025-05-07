@@ -12,6 +12,8 @@ export class PaymentComponent implements OnInit {
 
   form!: FormGroup;
 
+  fee: any | null = null;
+
   private paymentService = inject(PaymentService)
 
   constructor(
@@ -28,6 +30,7 @@ export class PaymentComponent implements OnInit {
     const code = this.form.get('feeCode')?.value;
     this.paymentService.getFee(code).subscribe({
       next: (data) => {
+        this.fee = data;
         console.log(data);
       },
       error: (err) => {

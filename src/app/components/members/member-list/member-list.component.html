@@ -5,7 +5,8 @@
         <th scope="col">Nombre</th>
         <th scope="col">Apellido</th>
         <th scope="col">DNI</th>
-        <th scope="col">Fecha de creacion</th>
+        <th scope="col">Fecha de Nac.</th>
+        <th scope="col"></th>
       </tr>
     </thead>
     <tbody>
@@ -15,7 +16,11 @@
                 <td>{{member.name}}</td>
                 <td>{{member.lastName}}</td>
                 <td>{{member.dni}}</td>
-                <td>{{member.createdAt | date }}</td>
+                <td>{{member.birthdate | date }}</td>
+                <td>
+                  <button class="btn btn-outline-info" (click)="editMember(member.id)"><i class="bi bi-pencil"></i></button>
+                  <button class="btn btn-outline-danger" (click)="deleteMember(member.id)"><i class="bi bi-x-lg"></i></button>
+                </td>
             </tr>
         }
       

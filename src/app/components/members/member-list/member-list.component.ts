@@ -17,9 +17,18 @@ export class MemberListComponent implements OnInit {
 
   ngOnInit() {
     this.membersService.getMembers().subscribe((response) => {
+      console.log(response);
       this.members = response
     })
     
+  }
+
+  editMember(id: any) {
+    console.log("Editar Memeber con id: " + id)
+  }
+
+  deleteMember(id: any) {
+    console.log("Editar Memeber con id: " + id)
   }
 
 }
