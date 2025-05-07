@@ -28,7 +28,10 @@ export class MemberListComponent implements OnInit {
   }
 
   deleteMember(id: any) {
-    console.log("Editar Memeber con id: " + id)
+    console.log("Eliminar Memeber con id: " + id)
   }
 
+  activateMember(id: any) {
+    console.log("Activar Memeber con id: " + id)
+  }
 }

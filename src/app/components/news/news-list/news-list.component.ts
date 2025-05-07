@@ -18,8 +18,8 @@ export class NewsListComponent implements OnInit {
   
 
   ngOnInit(): void {
-    this.newsService.getNoticias().subscribe((noticias) => {
-      this.newsArray = noticias
+    this.newsService.getNews().subscribe((news) => {
+      this.newsArray = news
     })
   }
 }

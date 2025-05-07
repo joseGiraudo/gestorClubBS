@@ -79,4 +79,37 @@ export class MembersService {
     
     return this.http.get<Member>(this.apiUrl + "/" + id);
   }
+
+  createMember(memberData: Member): Observable<Member | null> {
+    /*     
+    const headers = new HttpHeaders({
+      'x-user-id': this.sessionService.getItem('user').id.toString(),
+    });
+    */
+
+    const transformPipe = new MemberMapperPipe();
+    const member = transformPipe.inverttrasnform(memberData);
+    return this.http.post<Member>(this.apiUrl, member);
+  }
+
+  updateMember(memberId: number, memberData: Member): Observable<Member | null> {
+    /*     
+    const headers = new HttpHeaders({
+      'x-user-id': this.sessionService.getItem('user').id.toString(),
+    });
+    */
+
+    const transformPipe = new MemberMapperPipe();
+    const member = transformPipe.inverttrasnform(memberData);
+    return this.http.post<Member>(`${this.apiUrl}/${memberId}`, member);
+  }
+
+  deleteMember(id: number) {
+    /*
+    const headers = new HttpHeaders({
+      'x-user-id': this.sessionService.getItem('user').id.toString(),
+    });
+    */
+    return this.http.delete<any>(this.apiUrl + `/${id}`);
+  }
 }

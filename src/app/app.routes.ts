@@ -7,16 +7,24 @@ import { NewsListComponent } from './components/news/news-list/news-list.compone
 import { MemberListComponent } from './components/members/member-list/member-list.component';
 import { LoginComponent } from './components/core/login/login.component';
 import { PaymentComponent } from './components/payments/payment/payment.component';
+import { NewsFormComponent } from './components/news/news-form/news-form.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
+
+    // MEMBERS
     { path: 'member-form', component: MemberFormComponent },
     { path: 'members', component: MemberListComponent },
+
+    // NEWS
+    { path: 'news/create', component: NewsFormComponent },
     { path: 'news/:id', component: NewsCardComponent },
     { path: 'news', component: NewsListComponent },
+
+    // PAYMENTS
     { path: 'payments', component: PaymentComponent },
 
-
+    // AUTH
     { path: 'login', component: LoginComponent },
 
     { path: 'admin', canActivate: [authGuard, adminGuard], component: MemberFormComponent}

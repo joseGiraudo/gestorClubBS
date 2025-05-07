@@ -32,7 +32,7 @@ export class NewsCardComponent implements OnInit {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
 
     if(this.id) {
-      this.newsService.getNoticia(parseInt(this.id)).subscribe({
+      this.newsService.getNewsById(parseInt(this.id)).subscribe({
         next:(response: News) => {
           this.news = response;
         },

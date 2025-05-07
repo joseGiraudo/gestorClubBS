@@ -1,0 +1,33 @@
+
+<div class="container mt-4">
+    <h2>Cargar una noticia</h2>
+    <form [formGroup]="newsForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label for="title" class="form-label">Título</label>
+          <input type="text" class="form-control" id="title" formControlName="title" required>
+        </div>
+      
+        <div class="mb-3">
+          <label for="summary" class="form-label">Resumen</label>
+          <input type="text" class="form-control" id="summary" formControlName="summary" required>
+        </div>
+      
+        <div class="mb-3">
+          <label for="content" class="form-label">Contenido</label>
+          <textarea class="form-control" id="content" formControlName="content" rows="5" required></textarea>
+        </div>
+      
+        <div class="mb-3">
+          <label for="date" class="form-label">Fecha</label>
+          <input type="date" class="form-control" id="date" formControlName="date" required>
+        </div>
+      
+        <div class="mb-3">
+          <label for="image" class="form-label">Imagen</label>
+          <input type="file" class="form-control" id="image" (change)="onFileChange($event)" accept="image/*" required>
+        </div>
+      
+        <button type="submit" class="btn btn-primary" [disabled]="newsForm.invalid">Cargar noticia</button>
+      </form>
+      
+  </div>

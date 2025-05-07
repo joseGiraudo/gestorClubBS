@@ -43,57 +43,44 @@ export class NewsService {
 
   constructor(private http: HttpClient) {}
 
-  getNoticias(): Observable<News[]> {
-    // Para desarrollo, devolvemos datos de ejemplo
-    // En producción, descomentar la línea que hace la petición HTTP
-    return of(this.noticiasEjemplo)
-    // return this.http.get<News[]>(this.apiUrl);
-  }
 
-  getNoticia(id: number): Observable<News> {
-    // Para desarrollo
-    const noticia = this.noticiasEjemplo.find((n) => n.id === id)
-    return of(noticia as News)
-    // En producción
-    // return this.http.get<News>(`${this.apiUrl}/${id}`);
-  }
-
-  crearNoticia(noticia: Omit<News, "id">): Observable<News> {
-    // En producción
-    // return this.http.post<News>(this.apiUrl, noticia);
-
-    // Para desarrollo (simulación)
-    const nuevaNoticia: News = {
-      ...noticia,
-      id: this.noticiasEjemplo.length + 1,
+  getNews(): Observable<News[]> {
+      // Para desarrollo, devolvemos datos de ejemplo
+      // En producción, descomentar la línea que hace la petición HTTP
+      // return of(this.members)
+  
+      return this.http.get<News[]>(this.apiUrl);
     }
-    this.noticiasEjemplo.push(nuevaNoticia)
-    return of(nuevaNoticia)
+  
+    getNewsById(id: number): Observable<News> {
+      
+      return this.http.get<News>(this.apiUrl + "/" + id);
+    }
+
+  createNews(newsData: News): Observable<News | null> {
+    /*     
+    const headers = new HttpHeaders({
+      'x-user-id': this.sessionService.getItem('user').id.toString(),
+    });
+    */
+    return this.http.post<News>(this.apiUrl, newsData);
   }
 
-  actualizarNoticia(id: number, noticia: Partial<News>): Observable<News> {
-    // En producción
-    // return this.http.put<News>(`${this.apiUrl}/${id}`, noticia);
-
-    // Para desarrollo (simulación)
-    const index = this.noticiasEjemplo.findIndex((n) => n.id === id)
-    if (index !== -1) {
-      this.noticiasEjemplo[index] = { ...this.noticiasEjemplo[index], ...noticia }
-      return of(this.noticiasEjemplo[index])
-    }
-    throw new Error("Noticia no encontrada")
+  updateNews(id: any, newsData: News): Observable<News | null> {
+    /*     
+    const headers = new HttpHeaders({
+      'x-user-id': this.sessionService.getItem('user').id.toString(),
+    });
+    */
+    return this.http.put<News>(this.apiUrl + `/${id}`, newsData);
   }
 
-  eliminarNoticia(id: number): Observable<void> {
-    // En producción
-    // return this.http.delete<void>(`${this.apiUrl}/${id}`);
-
-    // Para desarrollo (simulación)
-    const index = this.noticiasEjemplo.findIndex((n) => n.id === id)
-    if (index !== -1) {
-      this.noticiasEjemplo.splice(index, 1)
-      return of(void 0)
-    }
-    throw new Error("Noticia no encontrada")
+  deleteNews(id: any) {
+    /*     
+    const headers = new HttpHeaders({
+      'x-user-id': this.sessionService.getItem('user').id.toString(),
+    });
+    */
+    return this.http.delete<News>(this.apiUrl + `/${id}`);
   }
 }

@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
   
 
   ngOnInit(): void {
-    this.newsService.getNoticias().subscribe((noticias) => {
+    this.newsService.getNews().subscribe((noticias) => {
       this.newsArray = noticias
     })
   }
