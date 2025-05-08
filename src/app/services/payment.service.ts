@@ -38,5 +38,11 @@ export class PaymentService {
     return this.http.get<Payment[]>(this.paymentsUrl);
   }
 
+  getPaymentById(id: number): Observable<Payment> {
+    
+    console.log("buscando orden de pago con id " + id);
+
+    return this.http.get<Payment>(this.paymentsUrl + `/${id}`);
+  }
 
 }

@@ -3,9 +3,9 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <h3 class="m-3 mb-5">Pagar Cuota de Socio</h3>
-            <form class="d-flex" [formGroup]="form" (ngSubmit)="searchFee()">
+            <form class="d-flex" [formGroup]="form" (ngSubmit)="searchPayment()">
                 <div class="input-group">
-                    <input class="form-control form-control-lg" formControlName="feeCode" type="search" placeholder="Ingresa el código de cuota" aria-label="Search">
+                    <input class="form-control form-control-lg" formControlName="paymentCode" type="search" placeholder="Ingresa el código de cuota" aria-label="Search">
                     <button class="btn btn-primary px-4" type="submit">
                         <i class="bi bi-search"></i>
                     </button>
@@ -16,9 +16,11 @@
 
     <div class="row justify-content-center my-5">
         <div class="col-md-6">
-            @if(fee) {
-                <h5>Vas a pagar la cuota N° {{fee.id}} --- $ {{fee.amount}}</h5>
-                <button class="btn btn-outline-success">Pagar</button>
+            @if(payment) {
+                <h5>Vas a pagar la cuota N° {{payment.id}}</h5>
+                <h5>Socio Nombre: {{payment.memberId.name}} {{payment.memberId.lastName}}</h5>
+                <h5>Total --- $ {{payment.feeId.amount}}</h5>
+                <button class="btn btn-outline-success">Ir a Pagar</button>
             }
         </div>
     </div>

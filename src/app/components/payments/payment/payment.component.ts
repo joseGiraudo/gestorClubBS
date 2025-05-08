@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PaymentService } from '../../../services/payment.service';
+import { Payment } from '../../../models/payment';
 
 @Component({
   selector: 'app-payment',
@@ -12,7 +13,7 @@ export class PaymentComponent implements OnInit {
 
   form!: FormGroup;
 
-  fee: any | null = null;
+  payment: Payment | null = null;
 
   private paymentService = inject(PaymentService)
 
@@ -22,25 +23,21 @@ export class PaymentComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      feeCode: ['', [Validators.required]],
+      paymentCode: ['', [Validators.required]],
     });
   }
 
-  searchFee() {
-    const code = this.form.get('feeCode')?.value;
-    this.paymentService.getFee(code).subscribe({
+  searchPayment() {
+    const code = this.form.get('paymentCode')?.value;
+    this.paymentService.getPaymentById(code).subscribe({
       next: (data) => {
-        this.fee = data;
+        this.payment = data;
         console.log(data);
       },
       error: (err) => {
         console.log(err);
       }
     });
-  }
-
-  pagarCuota() {
-    
   }
 
 
