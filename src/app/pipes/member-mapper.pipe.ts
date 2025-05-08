@@ -20,12 +20,12 @@ export class MemberMapperPipe implements PipeTransform {
         }
     }
 
-    inverttrasnform(value: any, ...args: any[]): any {
+    invertTrasnform(value: any, ...args: any[]): any {
         
         return {
             id: value.id,
             name: value.name,
-            last_name: value.last_name,
+            last_name: value.lastName,
             dni: value.dni,
             email: value.email,
             phone: value.phone,

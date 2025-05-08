@@ -88,7 +88,9 @@ export class MembersService {
     */
 
     const transformPipe = new MemberMapperPipe();
-    const member = transformPipe.inverttrasnform(memberData);
+    const member = transformPipe.invertTrasnform(memberData);
+
+    console.log("MIEMBRO: ", member);
     return this.http.post<Member>(this.apiUrl, member);
   }
 
@@ -100,7 +102,7 @@ export class MembersService {
     */
 
     const transformPipe = new MemberMapperPipe();
-    const member = transformPipe.inverttrasnform(memberData);
+    const member = transformPipe.invertTrasnform(memberData);
     return this.http.post<Member>(`${this.apiUrl}/${memberId}`, member);
   }
 
