@@ -8,6 +8,7 @@ import { MemberListComponent } from './components/members/member-list/member-lis
 import { LoginComponent } from './components/core/login/login.component';
 import { PaymentComponent } from './components/payments/payment/payment.component';
 import { NewsFormComponent } from './components/news/news-form/news-form.component';
+import { PaymentListComponent } from './components/payments/payment-list/payment-list.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -22,7 +23,8 @@ export const routes: Routes = [
     { path: 'news', component: NewsListComponent },
 
     // PAYMENTS
-    { path: 'payments', component: PaymentComponent },
+    { path: 'payments/pay', component: PaymentComponent },
+    { path: 'payments', component: PaymentListComponent },
 
     // AUTH
     { path: 'login', component: LoginComponent },
