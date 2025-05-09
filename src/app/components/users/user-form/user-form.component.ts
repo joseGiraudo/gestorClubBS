@@ -12,7 +12,7 @@ export class UserFormComponent {
 
   userForm: FormGroup
 
-  private memberService = inject(UserService);
+  private userService = inject(UserService);
 
   constructor(private fb: FormBuilder) {
     this.userForm = this.fb.group({
@@ -35,14 +35,14 @@ export class UserFormComponent {
       }
       console.log('Nuevo usuario:', newUser)
       
-      /* 
-      this.memberService.createMember(newMember).subscribe({
-        next: (response) => console.log("Socio creado correctamente: ", response),
+      
+      this.userService.createUser(newUser).subscribe({
+        next: (response) => console.log("Usuario creado correctamente: ", response),
         error: (error) => {
-          console.log("Error al cargar el socio: ", error)
+          console.log("Error al cargar el usuario: ", error)
         }
       })
-      */
+     
     }
   }
 
