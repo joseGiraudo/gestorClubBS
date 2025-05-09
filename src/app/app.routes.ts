@@ -9,6 +9,8 @@ import { LoginComponent } from './components/core/login/login.component';
 import { PaymentComponent } from './components/payments/payment/payment.component';
 import { NewsFormComponent } from './components/news/news-form/news-form.component';
 import { PaymentListComponent } from './components/payments/payment-list/payment-list.component';
+import { UserFormComponent } from './components/users/user-form/user-form.component';
+import { UserListComponent } from './components/users/user-list/user-list.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -25,6 +27,10 @@ export const routes: Routes = [
     // PAYMENTS
     { path: 'payments/pay', component: PaymentComponent },
     { path: 'payments', component: PaymentListComponent },
+
+    // USERS
+    { path: 'users/create', component: UserFormComponent },
+    { path: 'users', component: UserListComponent },
 
     // AUTH
     { path: 'login', component: LoginComponent },
