@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { User } from '../models/user';
 import { UserMapperPipe } from '../pipes/user-mapper.pipe';
 
@@ -15,7 +15,15 @@ export class UserService {
 
   getUsers():Observable<User[]> {
 
-    return this.http.get<User[]>(this.apiUrl);
+    return this.http.get<User[]>(this.apiUrl)
+    .pipe(
+          map((response) => {
+            const transformPipe = new UserMapperPipe();
+            return response.map((member: any) =>
+              transformPipe.transform(member)
+            );
+          })
+        );;
   }
 
   createUser(userDate: User):Observable<User>  {
