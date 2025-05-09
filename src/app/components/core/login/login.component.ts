@@ -28,8 +28,10 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      this.loginService.login(this.loginForm.value).subscribe((res) => {
-        console.log(res);
+      this.loginService.login(this.loginForm.value).subscribe((response) => {
+        console.log(response);
+        const token = response.token;
+        localStorage.setItem('authToken', token);
       })
       
     } else {

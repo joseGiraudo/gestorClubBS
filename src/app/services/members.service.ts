@@ -61,7 +61,7 @@ export class MembersService {
     // En producción, descomentar la línea que hace la petición HTTP
     // return of(this.members)
 
-    return this.http.get<Member[]>(this.apiUrl);
+    // return this.http.get<Member[]>(this.apiUrl);
 
     // pipe
     return this.http.get<Member[]>(this.apiUrl)
@@ -69,7 +69,7 @@ export class MembersService {
       map((response) => {
         const transformPipe = new MemberMapperPipe();
         return response.map((member: any) =>
-          transformPipe.transform(member)
+          transformPipe.invertTrasnform(member)
         );
       })
     );
