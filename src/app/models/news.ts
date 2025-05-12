@@ -7,3 +7,10 @@ export interface News {
     date: Date
     authorId: number
 }
+
+export interface CreateNews {    
+    title: string
+    content: string
+    summary: string
+    date: Date
+}

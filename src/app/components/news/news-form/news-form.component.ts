@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NewsService } from '../../../services/news.service';
+import { CreateNews, News } from '../../../models/news';
 
 @Component({
   selector: 'app-news-form',
@@ -11,6 +13,8 @@ export class NewsFormComponent {
 
   newsForm: FormGroup;
   selectedFile: File | null = null;
+
+  private newsService = inject(NewsService);
 
   constructor(private fb: FormBuilder) {
     this.newsForm = this.fb.group({
@@ -31,14 +35,19 @@ export class NewsFormComponent {
   onSubmit() {
     if (this.newsForm.invalid || !this.selectedFile) return;
 
-    const formData = new FormData();
-    formData.append('title', this.newsForm.value.title);
-    formData.append('summary', this.newsForm.value.summary);
-    formData.append('content', this.newsForm.value.content);
-    formData.append('date', this.newsForm.value.date);
-    formData.append('image', this.selectedFile); // importante que coincida con el nombre esperado por el backend
 
-    console.log(formData);
-    
+    const news: CreateNews = {
+  title: this.newsForm.get('title')?.value,
+  summary: this.newsForm.get('summary')?.value,
+  content: this.newsForm.get('content')?.value,
+  date: this.newsForm.get('date')?.value,
+};
+
+if (this.selectedFile) {
+  this.newsService.createNews(news, this.selectedFile).subscribe({
+    next: (res) => console.log('Éxito:', res),
+    error: (err) => console.error('Error:', err)
+  });
+}
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { News } from '../models/news';
+import { CreateNews, News } from '../models/news';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 
@@ -57,14 +57,19 @@ export class NewsService {
       return this.http.get<News>(this.apiUrl + "/" + id);
     }
 
-  createNews(newsData: News): Observable<News | null> {
-    /*     
-    const headers = new HttpHeaders({
-      'x-user-id': this.sessionService.getItem('user').id.toString(),
-    });
-    */
-    return this.http.post<News>(this.apiUrl, newsData);
-  }
+  createNews(newsData: CreateNews, imageFile: File): Observable<string> {
+  const formData = new FormData();
+
+  formData.append('title', newsData.title);
+  formData.append('summary', newsData.summary);
+  formData.append('content', newsData.content);
+  formData.append('date', newsData.date.toString());
+  formData.append('image', imageFile); // nombre debe coincidir con @RequestParam("image")
+
+  return this.http.post(this.apiUrl + '/create', formData, {
+    responseType: 'text' // porque estás devolviendo un ResponseEntity<String>
+  });
+}
 
   updateNews(id: any, newsData: News): Observable<News | null> {
     /*     
