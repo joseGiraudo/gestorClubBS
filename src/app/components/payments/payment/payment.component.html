@@ -18,8 +18,8 @@
         <div class="col-md-6">
             @if(payment) {
                 <h5>Vas a pagar la cuota N° {{payment.id}}</h5>
-                <h5>Socio Nombre: {{payment.memberId.name}} {{payment.memberId.lastName}}</h5>
-                <h5>Total --- $ {{payment.feeId.amount}}</h5>
+                <h5>Socio Nombre: {{payment.member.name}} {{payment.member.lastName}}</h5>
+                <h5>Total --- $ {{payment.fee.amount}}</h5>
                 <button class="btn btn-outline-success">Ir a Pagar</button>
             }
         </div>

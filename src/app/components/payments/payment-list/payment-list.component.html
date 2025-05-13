@@ -14,8 +14,8 @@
         @for(payment of paymentsArray; track payment) {
             <tr>
                 <th scope="row">{{payment.id}}</th>
-                <td>{{payment.memberId.name}}</td>
-                <td>{{payment.feeId.id}}</td>
+                <td>{{payment.member.name}}</td>
+                <td>{{payment.fee.id}}</td>
                 <td>{{payment.paymentDate | date}}</td>
                 <td>{{payment.status}}</td>
                 <td>{{payment.method }}</td>
