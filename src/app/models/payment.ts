@@ -9,8 +9,8 @@ export interface Fee {
 
 export interface Payment {
     id: number,
-    memberId: Member,
-    feeId: Fee,
+    member: Member,
+    fee: Fee,
     paymentDate: Date,
     status: string,
     method: string,
