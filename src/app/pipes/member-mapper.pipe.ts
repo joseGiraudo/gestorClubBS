@@ -3,8 +3,8 @@ import { Member } from "../models/member";
 
 
 export class MemberMapperPipe implements PipeTransform {
-    transform(value: any, ...args: any[]): Member {
-        
+
+    transform(value: any, ...args: any[]): Member {        
         return {
             id: value.id,
             name: value.name,
@@ -16,7 +16,9 @@ export class MemberMapperPipe implements PipeTransform {
             birthdate: value.birthdate,
             createdAt: value.created_at,
             isActive: value.is_active,
+            status: value.status,
             type: value.type,
+            // teams: value.teams,
         }
     }
 
@@ -33,7 +35,9 @@ export class MemberMapperPipe implements PipeTransform {
             birthdate: value.birthdate,
             created_at: value.createdAt,
             is_active: value.isActive,
+            status: value.status,
             type: value.type,
+            // teams: value.teams,
         }
     }
 }

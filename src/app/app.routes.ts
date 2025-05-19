@@ -11,6 +11,7 @@ import { NewsFormComponent } from './components/news/news-form/news-form.compone
 import { PaymentListComponent } from './components/payments/payment-list/payment-list.component';
 import { UserFormComponent } from './components/users/user-form/user-form.component';
 import { UserListComponent } from './components/users/user-list/user-list.component';
+import { TeamListComponent } from './components/teams/team-list/team-list.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -27,6 +28,10 @@ export const routes: Routes = [
     // PAYMENTS
     { path: 'payments/pay', component: PaymentComponent },
     { path: 'payments', component: PaymentListComponent },
+    
+    // TEAMS
+    { path: 'teams/:sport', component: TeamListComponent },
+
 
     // USERS
     { path: 'users/create', component: UserFormComponent },

@@ -21,7 +21,9 @@ export class MembersService {
       birthdate: new Date('1990-05-15'),
       createdAt: new Date('2025-02-21'),
       isActive: true,
-      type: 'ATHLETE'
+      status: 'APPROVED',
+      type: 'ATHLETE',
+      // teams: []
     },
     {
       id: 2,
@@ -34,7 +36,9 @@ export class MembersService {
       birthdate: new Date('1985-09-30'),
       createdAt: new Date('2025-04-19'),
       isActive: true,
-      type: 'ATHLETE'
+      status: 'APPROVED',
+      type: 'ATHLETE',
+      // teams: []
     },
     {
       id: 3,
@@ -47,7 +51,9 @@ export class MembersService {
       birthdate: new Date('1995-12-20'),
       createdAt: new Date('2024-03-28'),
       isActive: true,
-      type: 'ACTIVE'
+      status: 'APPROVED',
+      type: 'ACTIVE',
+      // teams: []
     }
   ];
 
@@ -65,14 +71,14 @@ export class MembersService {
 
     // pipe
     return this.http.get<Member[]>(this.apiUrl)
-    .pipe(
+    /* .pipe(
       map((response) => {
         const transformPipe = new MemberMapperPipe();
         return response.map((member: any) =>
           transformPipe.invertTrasnform(member)
         );
       })
-    );
+    ); */
   }
 
   getMemberById(id: number): Observable<Member> {
@@ -113,5 +119,19 @@ export class MembersService {
     });
     */
     return this.http.delete<any>(this.apiUrl + `/${id}`);
+  }
+
+  getPendingMembers(): Observable<Member[]> {
+
+    // pipe
+    return this.http.get<Member[]>(this.apiUrl + "/status/PENDING")
+    .pipe(
+      map((response) => {
+        const transformPipe = new MemberMapperPipe();
+        return response.map((member: any) =>
+          transformPipe.invertTrasnform(member)
+        );
+      })
+    );
   }
 }

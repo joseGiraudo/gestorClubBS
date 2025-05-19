@@ -6,6 +6,7 @@
         <th scope="col">Apellido</th>
         <th scope="col">DNI</th>
         <th scope="col">Fecha de Nac.</th>
+        <th scope="col">Estado</th>
         <th scope="col"></th>
       </tr>
     </thead>
@@ -17,9 +18,10 @@
                 <td>{{member.lastName}}</td>
                 <td>{{member.dni}}</td>
                 <td>{{member.birthdate | date }}</td>
+                <td>{{member.status }}</td>
                 <td>
                   <button class="btn btn-outline-info" (click)="editMember(member.id)"><i class="bi bi-pencil"></i></button>
-                  @if (member.isActive) {
+                  @if (!member.isActive) {
                     <button class="btn btn-outline-danger" (click)="deleteMember(member.id)"><i class="bi bi-x-lg"></i></button>
                   } @else {
                     <button class="btn btn-outline-success" (click)="activateMember(member.id)"><i class="bi bi-check-lg"></i></button>
