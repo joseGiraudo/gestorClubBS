@@ -25,7 +25,6 @@ export class MemberFormComponent {
       address: [''],
       birthdate: [null],
       type: ['', Validators.required],
-      isActive: [true],
     })
   }
 

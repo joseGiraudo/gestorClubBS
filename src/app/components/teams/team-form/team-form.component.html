@@ -1,1 +1,28 @@
-<p>team-form works!</p>
+
+<div class="container mt-4">
+    <h2>Cargar un Equipo Nuevo</h2>
+    <form [formGroup]="teamForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="name" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="name" formControlName="name" required>
+        </div>
+        
+        <div class="mb-3">
+            <label for="description" class="form-label">Descripcion</label>
+            <input type="text" class="form-control" id="description" formControlName="description" required>
+        </div>
+        
+        <div class="mb-3">
+      <label for="sport" class="form-label">Deporte</label>
+      <select class="form-select" id="sport" formControlName="sport" required>
+        <option value="" disabled selected>Seleccione un deporte</option>
+        @for(sport of sportsArray; track sport) {
+            <option value={{sport}}>{{translateTeamSport(sport)}}</option>
+        }
+      </select>
+    </div>
+        
+        <button type="submit" class="btn btn-primary" [disabled]="teamForm.invalid">Cargar equipo</button>
+    </form>
+      
+</div>

@@ -109,7 +109,7 @@ export class MembersService {
 
     const transformPipe = new MemberMapperPipe();
     const member = transformPipe.invertTrasnform(memberData);
-    return this.http.post<Member>(`${this.apiUrl}/${memberId}`, member);
+    return this.http.put<Member>(`${this.apiUrl}/${memberId}`, member);
   }
 
   deleteMember(id: number) {
@@ -133,5 +133,14 @@ export class MembersService {
         );
       })
     );
+  }
+
+  approveMember(memberId: number): Observable<string> {
+    /*     
+    const headers = new HttpHeaders({
+      'x-user-id': this.sessionService.getItem('user').id.toString(),
+    });
+    */
+    return this.http.put<string>(`${this.apiUrl}/${memberId}`, null);
   }
 }

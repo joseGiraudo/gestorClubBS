@@ -37,17 +37,17 @@ export class NewsFormComponent {
 
 
     const news: CreateNews = {
-  title: this.newsForm.get('title')?.value,
-  summary: this.newsForm.get('summary')?.value,
-  content: this.newsForm.get('content')?.value,
-  date: this.newsForm.get('date')?.value,
-};
+      title: this.newsForm.get('title')?.value,
+      summary: this.newsForm.get('summary')?.value,
+      content: this.newsForm.get('content')?.value,
+      date: this.newsForm.get('date')?.value,
+    };
 
-if (this.selectedFile) {
-  this.newsService.createNews(news, this.selectedFile).subscribe({
-    next: (res) => console.log('Éxito:', res),
-    error: (err) => console.error('Error:', err)
-  });
-}
+    if (this.selectedFile) {
+      this.newsService.createNews(news, this.selectedFile).subscribe({
+        next: (res) => console.log('Éxito:', res),
+        error: (err) => console.error('Error:', err)
+      });
+    }
   }
 }
