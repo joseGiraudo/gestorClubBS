@@ -13,3 +13,16 @@ export interface Member {
   createdAt: Date
   // teams: Team[]
 }
+
+export function translateMemberStatus(status: string): string {
+  switch (status) {
+    case 'APPROVED':
+      return 'Aprobado';
+    case 'PENDING':
+      return 'Pendiente';
+    case 'REJECTED':
+      return 'Rechazado'
+    default:
+      return '';
+  }
+}

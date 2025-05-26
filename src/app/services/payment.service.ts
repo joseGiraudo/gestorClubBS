@@ -45,4 +45,11 @@ export class PaymentService {
     return this.http.get<Payment>(this.paymentsUrl + `/${id}`);
   }
 
+  getPaymentsByMember(memberId: any): Observable<Payment[]> {
+    
+    console.log("buscando ordenes de pago pendientes del socio: " + memberId);
+
+    return this.http.get<Payment[]>(this.paymentsUrl + `/pending/${memberId}`);
+  }
+
 }

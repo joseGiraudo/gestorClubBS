@@ -9,6 +9,8 @@ export class AuthService {
 
   private user: any = null;
 
+  private logged: boolean = false;
+
   login(credentials: any) {
     // Lógica de autenticación con el backend
     // Tras el éxito, almacena la información del usuario
@@ -19,13 +21,19 @@ export class AuthService {
     };
   }
 
+  getToken() {
+    return localStorage.getItem('authToken');
+  }
+
   logout() {
     this.user = null;
     // Otras tareas de limpieza
+    this.logged = false;
   }
 
   isLoggedIn(): boolean {
-    return !!this.user;
+    // return !!this.user;
+    return this.logged;
   }
 
   isAdmin(): boolean {

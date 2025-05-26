@@ -18,7 +18,11 @@
                 <td>{{member.lastName}}</td>
                 <td>{{member.dni}}</td>
                 <td>{{member.birthdate | date }}</td>
-                <td>{{member.status }}</td>
+                @if(member.status == 'PENDING') {
+                  <td><button (click)="approveMember(member.id)">Aprobar</button></td>
+                } @else {
+                  <td>{{translateMemberStatus(member.status) }}</td>
+                }
                 <td>
                   <button class="btn btn-outline-info" (click)="editMember(member.id)"><i class="bi bi-pencil"></i></button>
                   @if (!member.isActive) {

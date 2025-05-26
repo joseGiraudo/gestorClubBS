@@ -6,7 +6,7 @@
         <th scope="col">cuota</th>
         <th scope="col">fecha</th>
         <th scope="col">estado</th>
-        <th scope="col">metodo</th>
+        <th scope="col">método</th>
         <th scope="col"></th>
       </tr>
     </thead>
@@ -17,8 +17,8 @@
                 <td>{{payment.member.name}}</td>
                 <td>{{payment.fee.id}}</td>
                 <td>{{payment.paymentDate | date}}</td>
-                <td>{{payment.status}}</td>
-                <td>{{payment.method }}</td>
+                <td>{{ translatePaymentStatus(payment.status) }}</td>
+                <td>{{ translatePaymentMethod(payment.method) }}</td>
             </tr>
         }
       

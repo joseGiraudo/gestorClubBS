@@ -141,6 +141,6 @@ export class MembersService {
       'x-user-id': this.sessionService.getItem('user').id.toString(),
     });
     */
-    return this.http.put<string>(`${this.apiUrl}/${memberId}`, null);
+    return this.http.put<string>(`${this.apiUrl}/approve/${memberId}`, null);
   }
 }

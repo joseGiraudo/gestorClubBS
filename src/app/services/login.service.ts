@@ -10,7 +10,7 @@ export class LoginService {
 
   apiUrl: string = 'http://localhost:8080/auth'
 
-  constructor(private http: HttpClient  ) { }
+  constructor(private http: HttpClient) { }
 
   login(loginRequest: LoginRequest): Observable<{ token: string }> {
     const headers = new HttpHeaders({

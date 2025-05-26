@@ -16,11 +16,32 @@
 
     <div class="row justify-content-center my-5">
         <div class="col-md-6">
+            <!-- 
             @if(payment) {
-                <h5>Vas a pagar la cuota N° {{payment.id}}</h5>
-                <h5>Socio Nombre: {{payment.member.name}} {{payment.member.lastName}}</h5>
-                <h5>Total --- $ {{payment.fee.amount}}</h5>
-                <button class="btn btn-outline-success">Ir a Pagar</button>
+                @if(payment.status == 'PENDING') {
+                    <h5>Vas a pagar la cuota N° {{payment.id}}</h5>
+                    <h5>Socio Nombre: {{payment.member.name}} {{payment.member.lastName}}</h5>
+                    <h5>Total --- $ {{payment.fee.amount}}</h5>
+                    <button class="btn btn-outline-success">Ir a Pagar</button>
+                } @else if(payment.status == 'APPROVED') {
+                    <h5>La cuota N° {{payment.id}} ya se encuentra pagada</h5>
+                } @else {
+                    <h5>La cuota N° {{payment.id}} fue cancelada. Comunicate con la administración para mas información</h5>
+                }
+            }
+            -->
+
+            @if(searched) {
+                @if(payments.length > 0) {
+                    <h5>Hola {{member?.name}}</h5>
+                    @for(paym of payments; track paym) {
+                        <li>Cuota N°: {{ paym.id }} ------  ${{paym.fee.amount}}</li>
+                    }
+                } @else {
+                    <h5>No se encuentran cuotas pendientes a pagar</h5>
+                }
+            } @else {
+                <h6>Busca tus cuotas pendientes con tu número de socio</h6>
             }
         </div>
     </div>

@@ -1,7 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Member } from '../../../models/member';
+import { Member, translateMemberStatus } from '../../../models/member';
 import { MembersService } from '../../../services/members.service';
 import { DatePipe } from '@angular/common';
+import { response } from 'express';
 
 @Component({
   selector: 'app-member-list',
@@ -13,6 +14,8 @@ export class MemberListComponent implements OnInit {
 
   members: Member[] = [];
 
+  translateMemberStatus = translateMemberStatus;
+
   private membersService = inject(MembersService);
 
   ngOnInit() {
@@ -21,6 +24,12 @@ export class MemberListComponent implements OnInit {
       this.members = response
     })
     
+  }
+
+  approveMember(id: any) {
+    this.membersService.approveMember(id).subscribe((response) => {
+      console.log(response);
+    })
   }
 
   editMember(id: any) {
