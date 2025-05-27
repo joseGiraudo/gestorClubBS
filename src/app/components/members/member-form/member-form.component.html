@@ -9,48 +9,107 @@
         <label class="form-label">Nombre</label>
         <input type="text" class="form-control" formControlName="name" required>
         <div>
-        @if (memberForm.get('name')?.invalid && memberForm.get('name')?.touched) {
-          @if (memberForm.get('name')?.errors?.['required']) {
-            <small class="text-danger ms-2">Requerido</small>
+          @if (memberForm.get('name')?.invalid && memberForm.get('name')?.touched) {
+            @if (memberForm.get('name')?.errors?.['required']) {
+              <small class="text-danger ms-2">Requerido</small>
+            }
+            @if (memberForm.get('name')?.errors?.['minlength']) {
+              <small class="text-danger ms-2">Al menos 2 caracteres</small>
+            }
+            @if (memberForm.get('name')?.errors?.['maxlength']) {
+              <small class="text-danger ms-2">Máximo 50 caracteres</small>
+            }
           }
-          @if (memberForm.get('name')?.errors?.['minlength']) {
-            <small class="text-danger ms-2">Al menos 2 caracteres</small>
-          }
-          @if (memberForm.get('name')?.errors?.['maxlength']) {
-            <small class="text-danger ms-2">Máximo 50 caracteres</small>
-          }
-        }
-      </div>
+        </div>
       </div>
 
       <div class="col-md-6">
         <label class="form-label">Apellido</label>
         <input type="text" class="form-control" formControlName="lastName" required>
+        <div>
+          @if (memberForm.get('lastName')?.invalid && memberForm.get('lastName')?.touched) {
+            @if (memberForm.get('lastName')?.errors?.['required']) {
+              <small class="text-danger ms-2">Requerido</small>
+            }
+            @if (memberForm.get('lastName')?.errors?.['minlength']) {
+              <small class="text-danger ms-2">Al menos 2 caracteres</small>
+            }
+            @if (memberForm.get('lastName')?.errors?.['maxlength']) {
+              <small class="text-danger ms-2">Máximo 50 caracteres</small>
+            }
+          }
+        </div>
       </div>
 
       <div class="col-md-6">
         <label class="form-label">DNI</label>
         <input type="text" class="form-control" formControlName="dni" required>
+        <div>
+          @if (memberForm.get('dni')?.invalid && memberForm.get('dni')?.touched) {
+            @if (memberForm.get('dni')?.errors?.['required']) {
+              <small class="text-danger ms-2">Requerido</small>
+            }
+          }
+        </div>
       </div>
 
       <div class="col-md-6">
         <label class="form-label">Email</label>
         <input type="email" class="form-control" formControlName="email">
+        <div>
+          @if (memberForm.get('email')?.invalid && memberForm.get('email')?.touched) {
+            @if (memberForm.get('email')?.errors?.['required']) {
+              <small class="text-danger ms-2">Requerido</small>
+            }
+            @if (memberForm.get('email')?.errors?.['email']) {
+              <small class="text-danger ms-2">Email inválido</small>
+            }
+            @if (memberForm.get('email')?.getError('emailExists')) {
+              <small class="text-danger ms-2">Email ya registrado</small>
+            }
+            @if (memberForm.get('email')?.getError('serverError')) {
+              <small class="text-danger ms-2">El servidor no responde. Intenta en otro momento</small>
+            }
+          }
+        </div>
       </div>
 
       <div class="col-md-6">
         <label class="form-label">Teléfono</label>
         <input type="text" class="form-control" formControlName="phone">
+        <div>
+          @if (memberForm.get('phone')?.invalid && memberForm.get('phone')?.touched) {
+            @if (memberForm.get('phone')?.errors?.['required']) {
+              <small class="text-danger ms-2">Requerido</small>
+            }
+          }
+        </div>
       </div>
 
       <div class="col-md-6">
         <label class="form-label">Dirección</label>
         <input type="text" class="form-control" formControlName="address">
+        <div>
+          @if (memberForm.get('address')?.invalid && memberForm.get('address')?.touched) {
+            @if (memberForm.get('address')?.errors?.['required']) {
+              <small class="text-danger ms-2">Requerido</small>
+            }
+          }
+        </div>
       </div>
 
       <div class="col-md-6">
         <label class="form-label">Fecha de nacimiento</label>
         <input type="date" class="form-control" formControlName="birthdate">
+        <div>
+          @if (memberForm.get('birthdate')?.invalid && memberForm.get('birthdate')?.touched) {
+            @if (memberForm.get('birthdate')?.errors?.['required']) {
+              <small class="text-danger ms-2">Requerido</small>
+            } @else if (memberForm.get('birthdate')?.errors) {
+              <small class="text-danger ms-2">fecha inválida</small>
+            }
+          }
+        </div>
       </div>
 
       <div class="col-md-6">

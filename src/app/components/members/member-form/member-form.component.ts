@@ -1,6 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MembersService } from '../../../services/members.service';
+import { birthdateValidation } from '../../../validators/birthdate-validator';
+import { emailValidator } from '../../../validators/email-validator';
 
 declare var bootstrap: any; // Para usar Bootstrap modal
 
@@ -26,13 +28,14 @@ export class MemberFormComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required]],
       address: ['',[ Validators.required]],
-      birthdate: [null, [Validators.required]],
+      birthdate: [null, [Validators.required, birthdateValidation]],
       type: ['', Validators.required],
     })
   }
 
   ngOnInit(): void {
     this.modal = new bootstrap.Modal(document.getElementById('confirmModal'));
+    this.memberForm.controls['email'].setAsyncValidators(emailValidator(this.memberService));
   }
 
   onSubmit(): void {
@@ -42,7 +45,7 @@ export class MemberFormComponent implements OnInit {
     } else {
       // Marcar todos los campos como touched para mostrar errores
       this.memberForm.markAllAsTouched();
-      console.log('Formulario inválido');
+      console.log('Formulario inválido', this.memberForm.errors);
     }
   }
 

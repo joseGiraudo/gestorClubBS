@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Member } from '../models/member';
 import { map, Observable, of } from 'rxjs';
@@ -143,4 +143,16 @@ export class MembersService {
     */
     return this.http.put<string>(`${this.apiUrl}/approve/${memberId}`, null);
   }
+
+  validateEmail(email: string): Observable<boolean> {
+    const params = new HttpParams().set('email', email.toString());
+
+    return this.http.get<boolean>(this.apiUrl + `/validEmail`, { params });
+  }
+
+
+
+
+
+
 }
