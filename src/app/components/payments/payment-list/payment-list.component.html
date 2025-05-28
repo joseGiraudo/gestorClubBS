@@ -15,7 +15,7 @@
             <tr>
                 <th scope="row">{{payment.id}}</th>
                 <td>{{payment.member.name}}</td>
-                <td>{{payment.fee.id}}</td>
+                <td>{{payment.fee.month}} / {{payment.fee.year}}</td>
                 <td>{{payment.paymentDate | date}}</td>
                 <td>{{ translatePaymentStatus(payment.status) }}</td>
                 <td>{{ translatePaymentMethod(payment.method) }}</td>

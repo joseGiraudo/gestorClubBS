@@ -14,7 +14,9 @@ export const emailValidator = (memberService: MembersService): AsyncValidatorFn 
             switchMap(() => 
                 memberService.validateEmail(control.value).pipe(
                     map((isAvailable: boolean) => {
-                        return !isAvailable ? { emailExists: true } : null
+                        console.log(isAvailable);
+                        
+                        return isAvailable ? { emailExists: true } : null
                     }),
                     catchError((error) => {
                         console.error('Error en la validación del email', error);

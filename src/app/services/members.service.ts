@@ -141,7 +141,9 @@ export class MembersService {
       'x-user-id': this.sessionService.getItem('user').id.toString(),
     });
     */
-    return this.http.put<string>(`${this.apiUrl}/approve/${memberId}`, null);
+    return this.http.put(`${this.apiUrl}/approve/${memberId}`, null, {
+      responseType: 'text'
+    });
   }
 
   validateEmail(email: string): Observable<boolean> {
