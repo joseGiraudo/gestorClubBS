@@ -49,6 +49,12 @@
             @if (memberForm.get('dni')?.errors?.['required']) {
               <small class="text-danger ms-2">Requerido</small>
             }
+            @if (memberForm.get('dni')?.getError('dniExists')) {
+              <small class="text-danger ms-2">DNI ya registrado</small>
+            }
+            @if (memberForm.get('dni')?.getError('serverError')) {
+              <small class="text-danger ms-2">El servidor no responde. Intenta en otro momento</small>
+            }
           }
         </div>
       </div>

@@ -152,7 +152,11 @@ export class MembersService {
     return this.http.get<boolean>(this.apiUrl + `/validEmail`, { params });
   }
 
+  validateDni(dni: string): Observable<boolean> {
+    const params = new HttpParams().set('dni', dni.toString());
 
+    return this.http.get<boolean>(this.apiUrl + `/validDni`, { params });
+  }
 
 
 

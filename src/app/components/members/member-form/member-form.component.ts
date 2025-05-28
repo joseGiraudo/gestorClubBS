@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MembersService } from '../../../services/members.service';
 import { birthdateValidation } from '../../../validators/birthdate-validator';
 import { emailValidator } from '../../../validators/email-validator';
+import { dniValidator } from '../../../validators/dni-validator';
 
 declare var bootstrap: any; // Para usar Bootstrap modal
 
@@ -36,6 +37,7 @@ export class MemberFormComponent implements OnInit {
   ngOnInit(): void {
     this.modal = new bootstrap.Modal(document.getElementById('confirmModal'));
     this.memberForm.controls['email'].setAsyncValidators(emailValidator(this.memberService));
+    this.memberForm.controls['dni'].setAsyncValidators(dniValidator(this.memberService));
   }
 
   onSubmit(): void {
