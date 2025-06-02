@@ -146,6 +146,17 @@ export class MembersService {
     });
   }
 
+  rejectMember(memberId: number): Observable<string> {
+    /*     
+    const headers = new HttpHeaders({
+      'x-user-id': this.sessionService.getItem('user').id.toString(),
+    });
+    */
+    return this.http.put(`${this.apiUrl}/reject/${memberId}`, null, {
+      responseType: 'text'
+    });
+  }
+
   validateEmail(email: string): Observable<boolean> {
     const params = new HttpParams().set('email', email.toString());
 
