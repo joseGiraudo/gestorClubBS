@@ -1,8 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Member } from '../models/member';
+import { Member, MemberStatus, MemberType } from '../models/member';
 import { map, Observable, of } from 'rxjs';
 import { MemberMapperPipe } from '../pipes/member-mapper.pipe';
+import { PageResponse } from '../models/api-response';
 
 @Injectable({
   providedIn: 'root'
@@ -62,23 +63,33 @@ export class MembersService {
 
   constructor(private http: HttpClient) {}
 
-  getMembers(): Observable<Member[]> {
-    // Para desarrollo, devolvemos datos de ejemplo
-    // En producción, descomentar la línea que hace la petición HTTP
-    // return of(this.members)
-
-    // return this.http.get<Member[]>(this.apiUrl);
-
-    // pipe
+  getAllMembers(): Observable<Member[]> {
     return this.http.get<Member[]>(this.apiUrl)
-    /* .pipe(
-      map((response) => {
-        const transformPipe = new MemberMapperPipe();
-        return response.map((member: any) =>
-          transformPipe.invertTrasnform(member)
-        );
-      })
-    ); */
+  }
+
+  getMembers(page: number = 0, size: number = 10, sortBy: string = 'id', 
+           sortDir: string = 'asc', search?: string, status?: string, 
+           isActive?: boolean): Observable<PageResponse<Member>> {
+    
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('sortBy', sortBy)
+      .set('sortDir', sortDir);
+    
+    if (search && search.trim()) {
+      params = params.set('search', search.trim());
+    }
+    
+    if (status && status.trim()) {
+      params = params.set('status', status);
+    }
+    
+    if (isActive !== undefined && isActive !== null) {
+      params = params.set('isActive', isActive.toString());
+    }
+    
+    return this.http.get<PageResponse<Member>>(this.apiUrl + "/filters", { params });
   }
 
   getMemberById(id: number): Observable<Member> {
@@ -170,6 +181,14 @@ export class MembersService {
   }
 
 
+  // Métodos para obtener opciones de filtros
+  getStatusOptions(): string[] {
+    return Object.values(MemberStatus);
+  }
+
+  getTypeOptions(): string[] {
+    return Object.values(MemberType);
+  }
 
 
 }

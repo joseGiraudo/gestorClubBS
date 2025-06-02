@@ -8,10 +8,22 @@ export interface Member {
   address: string
   birthdate: Date
   type: string
-  isActive: boolean
   status: string
-  createdAt: Date
+  isActive: boolean
+  createdAt?: Date
   // teams: Team[]
+}
+
+export enum MemberType {
+  ATHLETE = 'Deportista',
+  ACTIVE = 'Activo',
+  NON_RESIDENT = 'No residente'
+}
+
+export enum MemberStatus {
+  APPROVED = 'Aprobado',
+  REJECTED = 'Rechazado',
+  PENDING = 'Pendiente'
 }
 
 export function translateMemberStatus(status: string): string {
