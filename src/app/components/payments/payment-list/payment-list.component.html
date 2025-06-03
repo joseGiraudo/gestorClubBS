@@ -25,7 +25,7 @@
           <option value="">Todos los estados</option>
           @for(status of statusOptions; track status) {
             <option [value]="status">
-              {{ status }}
+              {{ translatePaymentStatus(status) }}
             </option>
           }
         </select>

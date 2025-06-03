@@ -75,7 +75,7 @@ export function translatePaymentMethod(status: string): string {
         return 'Efectivo';
     case 'DEBIT_CARD':
         return 'Débito';
-    case 'CREIT_CARD':
+    case 'CREDIT_CARD':
         return 'Crédito';
     default:
       return '';
