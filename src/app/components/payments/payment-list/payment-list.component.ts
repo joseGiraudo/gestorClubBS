@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Payment, translatePaymentMethod, translatePaymentStatus } from '../../../models/payment';
+import { Payment, PaymentDto, PaymentMethod, PaymentStatus, translatePaymentMethod, translatePaymentStatus } from '../../../models/payment';
 import { PaymentService } from '../../../services/payment.service';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -13,7 +13,7 @@ import { Member } from '../../../models/member';
 })
 export class PaymentListComponent implements OnInit {
 
-  paymentsArray: Payment[] = [];
+  paymentsArray: PaymentDto[] = [];
 
   // Parámetros de paginación
   currentPage = 0
@@ -22,22 +22,24 @@ export class PaymentListComponent implements OnInit {
   totalPages = 0
 
   // Filtros y ordenamiento
-  searchTerm = ""
-  selectedStatus = ""
-  selectedMethod = ""
-  sortBy = "id"
-  sortDir = "asc"
+  memberSearchTerm = '';
+  selectedStatus = '';
+  selectedMethod = '';
+  selectedMonth: number | null = null;
+  selectedYear: number | null = null;
+  dateFrom = '';
+  dateTo = '';
+  sortBy = 'id';
+  sortDir = 'desc';
 
   // Estados
   loading = false
 
    // Opciones para filtros
-    statusOptions = [
-      { value: "APPROVED", label: "Aprobado" },
-      { value: "PENDING", label: "Pendiente" },
-      { value: "REJECTED", label: "Rechazado" },
-      { value: "CANCELLED", label: "Cancelado" },
-    ]
+  statusOptions = Object.values(PaymentStatus);
+  methodOptions = Object.values(PaymentMethod);
+  monthOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  yearOptions = [2025, 2026, 2027, 2028, 2029, 2030]
 
   // traductor de enum
   translatePaymentMethod = translatePaymentMethod;
@@ -50,10 +52,34 @@ export class PaymentListComponent implements OnInit {
   }
 
   loadPayments() {
-    this.paymentService.getPayments().subscribe((response) => {
-      console.log("response: ", response);
-      this.paymentsArray = response
-    })
+
+    this.loading = true;
+
+
+    this.paymentService.getPayments(
+      this.currentPage, 
+      this.pageSize, 
+      this.sortBy, 
+      this.sortDir, 
+      this.memberSearchTerm || undefined,
+      this.selectedStatus || undefined,
+      this.selectedMethod || undefined,
+      this.selectedMonth !== null ? this.selectedMonth : undefined,
+      this.selectedYear !== null ? this.selectedYear : undefined,
+      this.dateFrom || undefined,
+      this.dateTo || undefined
+    ).subscribe({
+      next: (response) => {
+        this.paymentsArray = response.content;
+        this.totalElements = response.totalElements;
+        this.totalPages = response.totalPages;
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Error loading payments:', error);
+        this.loading = false;
+      }
+    });
   }
 
 
@@ -74,27 +100,22 @@ export class PaymentListComponent implements OnInit {
   }
 
   // Filtrado
-    onSearchChange() {
+    onFiltersChange() {
       this.currentPage = 0 // Resetear a la primera página
-      this.loadPayments()
-    }
-  
-    onStatusFilterChange() {
-      this.currentPage = 0
-      this.loadPayments()
-    }
-  
-    onActiveFilterChange() {
-      this.currentPage = 0
       this.loadPayments()
     }
   
     // Limpiar filtros
     clearFilters() {
-      this.searchTerm = ""
-      this.selectedStatus = ""
-      this.currentPage = 0
-      this.loadPayments()
+    this.memberSearchTerm = '';
+    this.selectedStatus = '';
+    this.selectedMethod = '';
+    this.selectedMonth = null;
+    this.selectedYear = null;
+    this.dateFrom = '';
+    this.dateTo = '';
+    this.currentPage = 0;
+    this.loadPayments();
     }
   
     // Ordenamiento
@@ -138,8 +159,16 @@ export class PaymentListComponent implements OnInit {
     }
   
     formatDate(date: Date): string {
+      if (!date) return '-';
       return new Date(date).toLocaleDateString("es-AR")
     }
+
+    formatCurrency(amount: number): string {
+    return new Intl.NumberFormat('es-AR', {
+      style: 'currency',
+      currency: 'ARS'
+    }).format(amount);
+  }
 
     getStatusClass(status: string): string {
         switch (status) {
