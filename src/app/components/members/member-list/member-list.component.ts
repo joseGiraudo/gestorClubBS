@@ -28,7 +28,8 @@ export class MemberListComponent implements OnInit {
   sortDir = "asc"
 
   // Estados
-  loading = false
+  loading = false;
+  filtersExpanded: boolean = false;
 
   // Opciones para filtros
   statusOptions = Object.values(MemberStatus)
@@ -163,6 +164,19 @@ export class MemberListComponent implements OnInit {
 
   min(a: number, b: number): number {
     return Math.min(a, b)
+  }
+
+  // Método para alternar la visibilidad de los filtros
+  toggleFilters(): void {
+    this.filtersExpanded = !this.filtersExpanded;
+  }
+
+  // Método para verificar si hay filtros activos
+  hasActiveFilters(): boolean {
+    return !!(
+      this.searchTerm ||
+      this.selectedStatus
+    );
   }
 
   // Formateo de datos para la vista

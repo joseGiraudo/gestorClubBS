@@ -1,57 +1,97 @@
-<div class="members-container">
-  <!-- Filtros y controles -->
-  <div class="controls-section">
-    <div class="row g-3">
-      <!-- Búsqueda general -->
-      <div class="col-md-4">
-        <label class="form-label">Buscar por nombre, apellido o DNI:</label>
-        <div class="input-group">
-          <input 
-            type="text" 
-            [(ngModel)]="searchTerm" 
-            (keyup.enter)="onSearchChange()"
-            placeholder="Ingrese término de búsqueda..."
-            class="form-control">
-          <button (click)="onSearchChange()" class="btn btn-primary">
-            <i class="bi bi-search"></i> Buscar
-          </button>
+<div class="members-container ms-1">
+  <h2 class="bg-light mt-1 ps-2">Listado de Socios</h2>
+
+  <!-- Header de controles con botón para expandir/colapsar -->
+  <div class="controls-header d-flex mx-auto align-items-center ms-2 mt-2 mb-2">
+    <h5 class="mb-0">
+      <i class="bi bi-funnel me-2"></i>
+      Filtros y Controles
+    </h5>
+    <button 
+      class="btn btn-outline-primary btn-sm ms-5"
+      type="button"
+      (click)="toggleFilters()"
+      [attr.aria-expanded]="filtersExpanded"
+      aria-controls="filtersCollapse">
+      <i class="bi" [ngClass]="filtersExpanded ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+      {{ filtersExpanded ? 'Ocultar' : 'Mostrar' }} Filtros
+    </button>
+  </div>
+
+  <!-- Filtros y controles (colapsables) -->
+  <div class="collapse" [ngClass]="{ 'show': filtersExpanded }" id="filtersCollapse">
+    <!-- Filtros y controles -->
+    <div class="controls-section border rounded p-3 bg-light">
+      <div class="row g-3">
+        <!-- Búsqueda general -->
+        <div class="col-md-4">
+          <label class="form-label">Buscar por nombre, apellido o DNI:</label>
+          <div class="input-group">
+            <input 
+              type="text" 
+              [(ngModel)]="searchTerm" 
+              (keyup.enter)="onSearchChange()"
+              placeholder="Ingrese término de búsqueda..."
+              class="form-control">
+            <button (click)="onSearchChange()" class="btn btn-primary">
+              <i class="bi bi-search"></i> Buscar
+            </button>
+          </div>
+        </div>
+        
+        <!-- Filtro por status -->
+        <div class="col-md-3">
+          <label class="form-label">Estado:</label>
+          <select [(ngModel)]="selectedStatus" (change)="onStatusFilterChange()" class="form-select">
+            <option value="">Todos los estados</option>
+            @for(status of statusOptions; track status) {
+              <option [value]="status">
+                {{ translateMemberStatus(status) }}
+              </option>
+            }
+          </select>
+        </div>
+        
+        <!-- Elementos por página -->
+        <div class="col-md-2">
+          <label class="form-label">Por página:</label>
+          <select [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange($event)" class="form-select">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+          </select>
         </div>
       </div>
       
-      <!-- Filtro por status -->
-      <div class="col-md-3">
-        <label class="form-label">Estado:</label>
-        <select [(ngModel)]="selectedStatus" (change)="onStatusFilterChange()" class="form-select">
-          <option value="">Todos los estados</option>
-          @for(status of statusOptions; track status) {
-            <option [value]="status">
-              {{ translateMemberStatus(status) }}
-            </option>
-          }
-        </select>
-      </div>
-      
-      <!-- Elementos por página -->
-      <div class="col-md-2">
-        <label class="form-label">Por página:</label>
-        <select [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange($event)" class="form-select">
-          <option value="5">5</option>
-          <option value="10">10</option>
-          <option value="25">25</option>
-          <option value="50">50</option>
-        </select>
-      </div>
-    </div>
-    
-    <!-- Botón para limpiar filtros -->
-    <div class="row mt-2">
-      <div class="col-12">
-        <button (click)="clearFilters()" class="btn btn-outline-secondary btn-sm">
-          <i class="bi bi-arrow-clockwise"></i> Limpiar filtros
-        </button>
+      <!-- Botón para limpiar filtros -->
+      <div class="row mt-2">
+        <div class="col-12">
+          <button (click)="clearFilters()" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-arrow-clockwise"></i> Limpiar filtros
+          </button>
+        </div>
       </div>
     </div>
   </div>
+
+    <!-- Resumen rápido cuando los filtros están colapsados -->
+  @if(!filtersExpanded && hasActiveFilters()) {
+    <div class="quick-filters-summary mt-2 mb-3">
+      <div class="alert alert-light border py-2">
+        <small class="text-muted">
+          <i class="bi bi-funnel-fill me-1"></i>
+          Filtros activos: 
+          @if(searchTerm) {
+            <span class="badge bg-primary me-1">Búsqueda: {{searchTerm}}</span>
+          }
+          @if(selectedStatus) {
+            <span class="badge bg-secondary me-1">Estado: {{translateMemberStatus(selectedStatus)}}</span>
+          }
+        </small>
+      </div>
+    </div>
+  }
 
   <!-- Tabla de miembros -->
   <div class="table-container mt-4">

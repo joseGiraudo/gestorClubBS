@@ -33,7 +33,8 @@ export class PaymentListComponent implements OnInit {
   sortDir = 'desc';
 
   // Estados
-  loading = false
+  loading = false;
+  filtersExpanded: boolean = false;
 
    // Opciones para filtros
   statusOptions = Object.values(PaymentStatus);
@@ -152,6 +153,24 @@ export class PaymentListComponent implements OnInit {
     min(a: number, b: number): number {
       return Math.min(a, b)
     }
+
+  // Método para alternar la visibilidad de los filtros
+  toggleFilters(): void {
+    this.filtersExpanded = !this.filtersExpanded;
+  }
+
+  // Método para verificar si hay filtros activos
+  hasActiveFilters(): boolean {
+    return !!(
+      this.memberSearchTerm ||
+      this.selectedStatus ||
+      this.selectedMethod ||
+      this.selectedMonth ||
+      this.selectedYear ||
+      this.dateFrom ||
+      this.dateTo
+    );
+  }
   
     // Formateo de datos para la vista
     getFullName(member: Member): string {

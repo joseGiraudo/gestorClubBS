@@ -1,114 +1,172 @@
-<div class="members-container">
-  <!-- Filtros y controles -->
-  <div class="controls-section">
-    <div class="row g-3">
-      <!-- Búsqueda general -->
-      <div class="col-md-4">
-        <label class="form-label">Buscar por nombre, apellido o DNI:</label>
-        <div class="input-group">
-          <input 
-            type="text" 
-            [(ngModel)]="memberSearchTerm" 
-            (keyup.enter)="onFiltersChange()"
-            placeholder="Ingrese término de búsqueda..."
-            class="form-control">
-          <button (click)="onFiltersChange()" class="btn btn-primary">
-            <i class="bi bi-search"></i> Buscar
-          </button>
+<div class="members-container ms-1">
+  <h2 class="bg-light mt-1 ps-2">Listado de Cuotas</h2>
+  
+  <!-- Header de controles con botón para expandir/colapsar -->
+  <div class="controls-header d-flex mx-auto align-items-center ms-2 mt-2 mb-2">
+    <h5 class="mb-0">
+      <i class="bi bi-funnel me-2"></i>
+      Filtros y Controles
+    </h5>
+    <button 
+      class="btn btn-outline-primary btn-sm ms-5"
+      type="button"
+      (click)="toggleFilters()"
+      [attr.aria-expanded]="filtersExpanded"
+      aria-controls="filtersCollapse">
+      <i class="bi" [ngClass]="filtersExpanded ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+      {{ filtersExpanded ? 'Ocultar' : 'Mostrar' }} Filtros
+    </button>
+  </div>
+
+  <!-- Filtros y controles (colapsables) -->
+  <div class="collapse" [ngClass]="{ 'show': filtersExpanded }" id="filtersCollapse">
+    <div class="controls-section border rounded p-3 bg-light">
+      <div class="row g-3">
+        <!-- Búsqueda general -->
+        <div class="col-md-4">
+          <label class="form-label">Buscar por nombre, apellido o DNI:</label>
+          <div class="input-group">
+            <input 
+              type="text" 
+              [(ngModel)]="memberSearchTerm" 
+              (keyup.enter)="onFiltersChange()"
+              placeholder="Ingrese término de búsqueda..."
+              class="form-control">
+            <button (click)="onFiltersChange()" class="btn btn-primary">
+              <i class="bi bi-search"></i> Buscar
+            </button>
+          </div>
+        </div>
+        
+        <!-- Filtro por status -->
+        <div class="col-md-3">
+          <label class="form-label">Estado:</label>
+          <select [(ngModel)]="selectedStatus" (change)="onFiltersChange()" class="form-select">
+            <option value="">Todos los estados</option>
+            @for(status of statusOptions; track status) {
+              <option [value]="status">
+                {{ translatePaymentStatus(status) }}
+              </option>
+            }
+          </select>
+        </div>
+
+        <!-- Filtro por método -->
+        <div class="col-md-2">
+          <label class="form-label">Método:</label>
+          <select [(ngModel)]="selectedMethod" (change)="onFiltersChange()" class="form-select">
+            <option value="">Todos</option>
+            @for(method of methodOptions; track method) {
+              <option [value]="method">
+                {{ translatePaymentMethod(method) }}
+              </option>
+            }
+          </select>
+        </div>
+
+        <!-- Elementos por página -->
+        <div class="col-md-2">
+          <label class="form-label">Por página:</label>
+          <select [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange($event)" class="form-select">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+          </select>
         </div>
       </div>
       
-      <!-- Filtro por status -->
-      <div class="col-md-3">
-        <label class="form-label">Estado:</label>
-        <select [(ngModel)]="selectedStatus" (change)="onFiltersChange()" class="form-select">
-          <option value="">Todos los estados</option>
-          @for(status of statusOptions; track status) {
-            <option [value]="status">
-              {{ translatePaymentStatus(status) }}
-            </option>
-          }
-        </select>
-      </div>
+      <div class="row g-3 mt-1">
+        <!-- Filtro por mes -->
+        <div class="col-md-2">
+          <label class="form-label">Mes:</label>
+          <select [(ngModel)]="selectedMonth" (change)="onFiltersChange()" class="form-select">
+            <option [ngValue]="null">Todos</option>
+            @for(month of monthOptions; track month) {
+              <option [ngValue]="month">
+                {{ month }}
+              </option>
+            }
+          </select>
+        </div>
+        
+        <!-- Filtro por año -->
+        <div class="col-md-2">
+          <label class="form-label">Año:</label>
+          <select [(ngModel)]="selectedYear" (change)="onFiltersChange()" class="form-select">
+            <option [ngValue]="null">Todos</option>
+            @for(year of yearOptions; track year) {
+              <option [ngValue]="year">
+                {{ year }}
+              </option>
+            }
+          </select>
+        </div>
 
-      <!-- Filtro por método -->
-      <div class="col-md-2">
-        <label class="form-label">Método:</label>
-        <select [(ngModel)]="selectedMethod" (change)="onFiltersChange()" class="form-select">
-          <option value="">Todos</option>
-          @for(method of methodOptions; track method) {
-            <option [value]="method">
-              {{ translatePaymentMethod(method) }}
-            </option>
-          }
-        </select>
-      </div>
-    </div>
-    
-    <div class="row g-3">
+        <!-- Filtro Desde - Hasta -->
+        <div class="col-md-2">
+          <label class="form-label">Fecha desde:</label>
+          <input type="date" [(ngModel)]="dateFrom" (change)="onFiltersChange()" class="form-control">
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">Fecha hasta:</label>
+          <input type="date" [(ngModel)]="dateTo" (change)="onFiltersChange()" class="form-control">
+        </div>
 
-      <!-- Filtro por mes -->
-      <div class="col-md-2">
-        <label class="form-label">Mes:</label>
-        <select [(ngModel)]="selectedMonth" (change)="onFiltersChange()" class="form-select">
-          <option [ngValue]="null">Todos</option>
-          @for(month of monthOptions; track month) {
-            <option [ngValue]="month">
-              {{ month }}
-            </option>
-          }
-        </select>
-      </div>
-      
-      <!-- Filtro por año -->
-      <div class="col-md-2">
-        <label class="form-label">Año:</label>
-        <select [(ngModel)]="selectedYear" (change)="onFiltersChange()" class="form-select">
-          <option [ngValue]="null">Todos</option>
-          @for(year of yearOptions; track year) {
-            <option [ngValue]="year">
-              {{ year }}
-            </option>
-          }
-        </select>
-      </div>
-
-      <div class="col-md-3">
-        <label class="form-label">Fecha desde:</label>
-        <input type="date" [(ngModel)]="dateFrom" (change)="onFiltersChange()" class="form-control">
-      </div>
-      
-      <div class="col-md-3">
-        <label class="form-label">Fecha hasta:</label>
-        <input type="date" [(ngModel)]="dateTo" (change)="onFiltersChange()" class="form-control">
-      </div>
-    </div>
-
-
-    <div class="row g-3">
-      <!-- Elementos por página -->
-      <div class="col-md-2">
-        <label class="form-label">Por página:</label>
-        <select [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange($event)" class="form-select">
-          <option value="5">5</option>
-          <option value="10">10</option>
-          <option value="25">25</option>
-          <option value="50">50</option>
-        </select>
-      </div>
-      
-      <!-- Botón para limpiar filtros -->
-      <div class="col md-2 mt-5">
-        <div class="col-12">
-          <button (click)="clearFilters()" class="btn btn-outline-secondary btn-sm">
+        <!-- Botón para limpiar filtros -->
+        <div class="col-md-2 d-flex align-items-end">
+          <button (click)="clearFilters()" class="btn btn-outline-secondary btn-sm w-100">
             <i class="bi bi-arrow-clockwise"></i> Limpiar filtros
           </button>
         </div>
       </div>
 
+      <!-- Indicador de filtros activos -->
+      @if(hasActiveFilters()) {
+        <div class="row mt-2">
+          <div class="col-12">
+            <div class="alert alert-info alert-sm py-2 mb-0">
+              <i class="bi bi-info-circle me-2"></i>
+              <small>Filtros activos aplicados</small>
+            </div>
+          </div>
+        </div>
+      }
     </div>
-  
   </div>
+
+  <!-- Resumen rápido cuando los filtros están colapsados -->
+  @if(!filtersExpanded && hasActiveFilters()) {
+    <div class="quick-filters-summary mt-2 mb-3">
+      <div class="alert alert-light border py-2">
+        <small class="text-muted">
+          <i class="bi bi-funnel-fill me-1"></i>
+          Filtros activos: 
+          @if(memberSearchTerm) {
+            <span class="badge bg-primary me-1">Búsqueda: {{memberSearchTerm}}</span>
+          }
+          @if(selectedStatus) {
+            <span class="badge bg-secondary me-1">Estado: {{translatePaymentStatus(selectedStatus)}}</span>
+          }
+          @if(selectedMethod) {
+            <span class="badge bg-secondary me-1">Método: {{translatePaymentMethod(selectedMethod)}}</span>
+          }
+          @if(selectedMonth) {
+            <span class="badge bg-secondary me-1">Mes: {{selectedMonth}}</span>
+          }
+          @if(selectedYear) {
+            <span class="badge bg-secondary me-1">Año: {{selectedYear}}</span>
+          }
+          @if(dateFrom) {
+            <span class="badge bg-secondary me-1">Desde: {{dateFrom}}</span>
+          }
+          @if(dateTo) {
+            <span class="badge bg-secondary me-1">Hasta: {{dateTo}}</span>
+          }
+        </small>
+      </div>
+    </div>
+  }
 
   <!-- Tabla de pagos -->
   <div class="table-container mt-4">
@@ -124,25 +182,25 @@
                 </span>
               }
             </th>
-            <th (click)="onSort('name')" class="sortable">
+            <th (click)="onSort('member')" class="sortable">
               Nombre
-              @if (sortBy === 'name') {
+              @if (sortBy === 'member') {
+                <span>
+                  <i class="bi" [ngClass]="{ 'bi-arrow-up': sortDir === 'asc', 'bi-arrow-down': sortDir === 'desc' }"></i>
+                </span>
+              }
+            </th>
+            <th (click)="onSort('fee')" class="sortable">
+              Cuota
+              @if (sortBy === 'fee') {
                 <span>
                   <i class="bi" [ngClass]="{ 'bi-arrow-up': sortDir === 'asc', 'bi-arrow-down': sortDir === 'desc' }"></i>
                 </span>
               }
             </th>
             <th (click)="onSort('status')" class="sortable">
-              Cuota
-              @if (sortBy === 'status') {
-                <span>
-                  <i class="bi" [ngClass]="{ 'bi-arrow-up': sortDir === 'asc', 'bi-arrow-down': sortDir === 'desc' }"></i>
-                </span>
-              }
-            </th>
-            <th (click)="onSort('date')" class="sortable">
               Estado
-              @if (sortBy === 'date') {
+              @if (sortBy === 'status') {
                 <span>
                   <i class="bi" [ngClass]="{ 'bi-arrow-up': sortDir === 'asc', 'bi-arrow-down': sortDir === 'desc' }"></i>
                 </span>
@@ -150,7 +208,7 @@
             </th>
             <th (click)="onSort('method')" class="sortable">
               Método
-              @if (sortBy === 'date') {
+              @if (sortBy === 'method') {
                 <span>
                   <i class="bi" [ngClass]="{ 'bi-arrow-up': sortDir === 'asc', 'bi-arrow-down': sortDir === 'desc' }"></i>
                 </span>
