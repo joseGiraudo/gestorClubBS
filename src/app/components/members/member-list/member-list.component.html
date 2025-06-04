@@ -31,18 +31,6 @@
         </select>
       </div>
       
-      <!-- Filtro por activo/inactivo -->
-      <div class="col-md-3">
-        <label class="form-label">Actividad:</label>
-        <select [(ngModel)]="selectedIsActive" (change)="onActiveFilterChange()" class="form-select">
-          @for(option of activeOptions; track option) {
-            <option [ngValue]="option.value">
-              {{ option.label }}
-            </option>
-          }
-        </select>
-      </div>
-      
       <!-- Elementos por página -->
       <div class="col-md-2">
         <label class="form-label">Por página:</label>
@@ -122,14 +110,6 @@
                 </span>
               }
             </th>
-            <th (click)="onSort('isActive')" class="sortable">
-              Activo
-              @if (sortBy === 'isActive') {
-                <span>
-                  <i class="bi" [ngClass]="{ 'bi-arrow-up': sortDir === 'asc', 'bi-arrow-down': sortDir === 'desc' }"></i>
-                </span>
-              }
-            </th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -149,7 +129,7 @@
           <!-- Datos de miembros -->
           @if(!loading) {
             @for(member of members; track member.id) {
-              <tr [ngClass]="{ 'table-warning': !member.isActive }">
+              <tr [ngClass]="">
                 <td>{{ member.id }}</td>
                 <td>{{ member.name }}</td>
                 <td>{{ member.lastName }}</td>
@@ -162,11 +142,6 @@
                   </span>
                 </td>
                 <td>
-                  <span class="badge" [ngClass]="member.isActive ? 'bg-success' : 'bg-danger'">
-                    {{ member.isActive ? 'Sí' : 'No' }}
-                  </span>
-                </td>
-                <td>
                   <div class="btn-group btn-group-sm" role="group">
                     <button class="btn btn-outline-primary" title="Ver detalles" (click)="viewMember(member.id)">
                       <i class="bi bi-eye"></i>
@@ -174,7 +149,7 @@
                     <button class="btn btn-outline-success" title="Editar" (click)="editMember(member.id)">
                       <i class="bi bi-pencil"></i>
                     </button>
-                    @if(!member.isActive) {
+                    @if(member.status != MemberStatus.ACTIVE) {
                       <button class="btn btn-outline-success" title="Activar" (click)="activateMember(member.id)">
                         <i class="bi bi-check-lg"></i>
                       </button>
@@ -264,4 +239,18 @@
       </nav>
     </div>
   }
+</div>
+
+
+<!-- Toast Container -->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+  <div id="responseToast" class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body d-flex align-items-center">
+        <span id="toastIcon" class="me-2"></span>
+        <span id="toastBody">Mensaje del toast</span>
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
 </div>

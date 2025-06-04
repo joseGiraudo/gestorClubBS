@@ -21,7 +21,6 @@ export class MembersService {
       address: 'Calle Falsa 123',
       birthdate: new Date('1990-05-15'),
       createdAt: new Date('2025-02-21'),
-      isActive: true,
       status: 'APPROVED',
       type: 'ATHLETE',
       // teams: []
@@ -36,7 +35,6 @@ export class MembersService {
       address: 'Avenida Siempre Viva 742',
       birthdate: new Date('1985-09-30'),
       createdAt: new Date('2025-04-19'),
-      isActive: true,
       status: 'APPROVED',
       type: 'ATHLETE',
       // teams: []
@@ -51,7 +49,6 @@ export class MembersService {
       address: 'Boulevard Principal 456',
       birthdate: new Date('1995-12-20'),
       createdAt: new Date('2024-03-28'),
-      isActive: true,
       status: 'APPROVED',
       type: 'ACTIVE',
       // teams: []
@@ -68,8 +65,8 @@ export class MembersService {
   }
 
   getMembers(page: number = 0, size: number = 10, sortBy: string = 'id', 
-           sortDir: string = 'asc', search?: string, status?: string, 
-           isActive?: boolean): Observable<PageResponse<Member>> {
+           sortDir: string = 'asc', search?: string, status?: string
+          ): Observable<PageResponse<Member>> {
     
     let params = new HttpParams()
       .set('page', page.toString())
@@ -83,10 +80,6 @@ export class MembersService {
     
     if (status && status.trim()) {
       params = params.set('status', status);
-    }
-    
-    if (isActive !== undefined && isActive !== null) {
-      params = params.set('isActive', isActive.toString());
     }
     
     return this.http.get<PageResponse<Member>>(this.apiUrl + "/filters", { params });
