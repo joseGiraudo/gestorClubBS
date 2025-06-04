@@ -25,7 +25,7 @@
           <option value="">Todos los estados</option>
           @for(status of statusOptions; track status) {
             <option [value]="status">
-              {{ status }}
+              {{ translateMemberStatus(status) }}
             </option>
           }
         </select>
@@ -149,7 +149,7 @@
                     <button class="btn btn-outline-success" title="Editar" (click)="editMember(member.id)">
                       <i class="bi bi-pencil"></i>
                     </button>
-                    @if(member.status != MemberStatus.ACTIVE) {
+                    @if(member.status != 'ACTIVE') {
                       <button class="btn btn-outline-success" title="Activar" (click)="activateMember(member.id)">
                         <i class="bi bi-check-lg"></i>
                       </button>
@@ -159,8 +159,8 @@
                       </button>
                     }
                     @if(member.status === 'PENDING') {
-                      <button class="btn btn-outline-info" title="Aprobar" (click)="approveMember(member.id)">
-                        <i class="bi bi-check2"></i>
+                      <button class="btn btn-outline-info" title="Rechazar" (click)="approveMember(member.id)">
+                        <i class="bi bi-x-lg"></i>
                       </button>
                     }
                   </div>

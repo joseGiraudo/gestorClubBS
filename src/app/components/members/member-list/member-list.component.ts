@@ -69,7 +69,7 @@ export class MemberListComponent implements OnInit {
   }
 
   loadMembers() {
-    this.loading = true
+    this.loading = true    
 
     this.membersService
       .getMembers(

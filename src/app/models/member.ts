@@ -20,10 +20,10 @@ export enum MemberType {
 }
 
 export enum MemberStatus {
-  ACTIVE = 'Activo',
-  INACTIVE = 'Inactivo',
-  REJECTED = 'Rechazado',
-  PENDING = 'Pendiente'
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
+  REJECTED = 'REJECTED',
+  PENDING = 'PENDING'
 }
 
 export function translateMemberStatus(status: string): string {
