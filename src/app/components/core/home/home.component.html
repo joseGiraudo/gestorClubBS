@@ -27,11 +27,13 @@
           <div class="card-body">
             <h5 class="card-title" style="color: #1e3a8a;">{{news.title}}</h5>
             <p class="card-text">{{news.summary}}</p>
-            <div class="row justify-content-between">
-              <small class="text-muted col-4 mt-1">{{news.date}} 15/06/2025</small>
-              <a [routerLink]="['/news', news.id]" class="col-3 btn btn-sm btn-outline-secondary">Leer más</a>
-            </div>
           </div>
+          <div class="card-footer">
+              <div class="row justify-content-between">
+                <small class="text-muted col-8 mt-1">{{news.date}} 15/06/2025</small>
+                <a [routerLink]="['/news', news.id]" class="col-3 btn btn-sm btn-outline-secondary">Leer más</a>
+              </div>
+            </div>
         </div>
       </div>
      }
