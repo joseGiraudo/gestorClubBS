@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { TeamService } from '../../../services/team.service';
-import { Team } from '../../../models/team';
+import { Team, translateTeamSport } from '../../../models/team';
 import { response } from 'express';
 import { ActivatedRoute } from '@angular/router';
 
@@ -18,6 +18,8 @@ export class TeamListComponent implements OnInit {
 
   sport: string | null = null;
 
+  translateTeamSport = translateTeamSport;
+
   constructor(private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
@@ -29,6 +31,11 @@ export class TeamListComponent implements OnInit {
         this.teamsArray = response
       })
     }   
+  }
+
+  formatDate(date: Date): string {
+    if (!date) return '-';
+    return new Date(date).toLocaleDateString("es-AR")
   }
 
 }

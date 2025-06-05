@@ -1,5 +1,40 @@
+<div class="container mt-4">
+    @if(sport) {
 
-
-@for(team of teamsArray; track team) {
-    <h3>{{team.name}}</h3>
-}
+        <h2>Equipos Deportivos: {{translateTeamSport(sport)}}</h2>
+        <div class="row mt-3">
+          <div class="col-12">
+              @if(teamsArray.length > 0) {
+                @for(team of teamsArray; track team) {
+                  <div class="card mb-3">
+                      <div class="card-header d-flex justify-content-between align-items-center">
+                          <h5 class="card-title mb-0">{{team.name}}</h5>
+                          <span class="badge bg-secondary">{{translateTeamSport(team.sport)}}</span>
+                      </div>
+                      <div class="card-body">
+                          <p class="card-text">{{team.description}}</p>
+                          <h6>Miembros:</h6>
+                          <div class="row g-3">
+                              @for(member of team.members; track member) {
+                                  <div class="col-md-3">
+                                      {{member.name}} ({{formatDate(member.birthdate)}})
+                                  </div>
+                              }
+                          </div>
+                      </div>
+                  </div>
+                }
+              } @else {
+                <div class="text-center py-5">
+                    <div class="mb-4">
+                        <i class="bi bi-trophy" style="font-size: 4rem; color: #6c757d;"></i>
+                    </div>
+                    <h4 class="text-muted mb-3">No hay equipos disponibles</h4>
+                    <p class="text-muted">Por el momento no se encuentran equipos activos para este deporte.</p>
+                    <p class="text-muted">¡Vuelve pronto para ver las novedades!</p>
+                </div>
+              }
+          </div>
+        </div>
+    }
+    </div>

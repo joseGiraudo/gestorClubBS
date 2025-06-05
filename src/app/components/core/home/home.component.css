@@ -1,0 +1,101 @@
+/* Colores del Club */
+:root {
+  --club-blue: #1e3a8a;
+  --club-gold: #f59e0b;
+  --warm-orange: #ea580c;
+  --warm-coral: #f97316;
+  --warm-light: #fef3c7;
+  --warm-dark: #451a03;
+  --warm-muted: #78716c;
+}
+
+.text-club-blue { color: var(--club-blue) !important; }
+.text-club-gold { color: var(--club-gold) !important; }
+.text-warm-orange { color: var(--warm-orange) !important; }
+.text-warm-coral { color: var(--warm-coral) !important; }
+.text-warm-dark { color: var(--warm-dark) !important; }
+.text-warm-muted { color: var(--warm-muted) !important; }
+.text-white-75 { color: rgba(255, 255, 255, 0.85) !important; }
+
+.bg-club-blue { background-color: var(--club-blue) !important; }
+.bg-club-gold { background-color: var(--club-gold) !important; }
+.bg-warm-orange { background-color: var(--warm-orange) !important; }
+.bg-warm-light { background-color: var(--warm-light) !important; }
+
+/* Gradientes */
+.bg-gradient-club {
+  background: linear-gradient(135deg, var(--club-blue) 0%, #1e40af 100%);
+}
+
+.bg-gradient-club-cta {
+  background: linear-gradient(135deg, var(--warm-orange) 0%, var(--warm-coral) 100%);
+}
+
+/* Botones personalizados */
+.btn-club-gold {
+  background-color: var(--club-gold);
+  border-color: var(--club-gold);
+  color: #000;
+  font-weight: 600;
+}
+
+.btn-club-gold:hover {
+  background-color: #d97706;
+  border-color: #d97706;
+  color: #000;
+  transform: translateY(-1px);
+}
+
+.btn-outline-club-blue {
+  color: var(--club-blue);
+  border-color: var(--club-blue);
+}
+
+.btn-outline-club-blue:hover {
+  background-color: var(--club-blue);
+  border-color: var(--club-blue);
+  color: white;
+}
+
+.btn-outline-warm-orange {
+  color: var(--warm-orange);
+  border-color: var(--warm-orange);
+}
+
+.btn-outline-warm-orange:hover {
+  background-color: var(--warm-orange);
+  border-color: var(--warm-orange);
+  color: white;
+}
+
+/* Cards con tonos cálidos */
+.card-warm {
+  background-color: #fffbf5;
+  border: 1px solid #fed7aa;
+}
+
+.hero-section {
+  margin-bottom: 2rem;
+}
+
+.card {
+  transition: all 0.3s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(234, 88, 12, 0.15);
+}
+
+.list-group-item-action:hover {
+  background-color: var(--warm-light);
+}
+
+/* Badges personalizados */
+.badge.bg-club-gold {
+  background-color: var(--club-gold) !important;
+}
+
+.badge.bg-warm-light {
+  background-color: var(--warm-light) !important;
+}
