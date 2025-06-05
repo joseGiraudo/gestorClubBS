@@ -5,21 +5,52 @@
         <div class="mb-3">
           <label for="title" class="form-label">Título</label>
           <input type="text" class="form-control" id="title" formControlName="title" required>
+          @if (newsForm.get('title')?.invalid && newsForm.get('title')?.touched) {
+            @if (newsForm.get('title')?.errors?.['required']) {
+              <small class="text-danger ms-2">Requerido</small>
+            }
+            @if (newsForm.get('title')?.errors?.['minlength']) {
+              <small class="text-danger ms-2">Al menos 5 caracteres</small>
+            }
+          }
         </div>
       
         <div class="mb-3">
           <label for="summary" class="form-label">Resumen</label>
           <input type="text" class="form-control" id="summary" formControlName="summary" required>
+          @if (newsForm.get('summary')?.invalid && newsForm.get('summary')?.touched) {
+            @if (newsForm.get('summary')?.errors?.['required']) {
+              <small class="text-danger ms-2">Requerido</small>
+            }
+            @if (newsForm.get('summary')?.errors?.['minlength']) {
+              <small class="text-danger ms-2">Al menos 5 caracteres</small>
+            }
+          }
         </div>
       
         <div class="mb-3">
           <label for="content" class="form-label">Contenido</label>
           <textarea class="form-control" id="content" formControlName="content" rows="5" required></textarea>
+          @if (newsForm.get('content')?.invalid && newsForm.get('content')?.touched) {
+            @if (newsForm.get('content')?.errors?.['required']) {
+              <small class="text-danger ms-2">Requerido</small>
+            }
+            @if (newsForm.get('content')?.errors?.['minlength']) {
+              <small class="text-danger ms-2">Al menos 10 caracteres</small>
+            }
+          }
         </div>
       
         <div class="mb-3">
           <label for="date" class="form-label">Fecha</label>
           <input type="date" class="form-control" id="date" formControlName="date" required>
+          @if (newsForm.get('date')?.invalid && newsForm.get('date')?.touched) {
+            @if (newsForm.get('date')?.errors?.['required']) {
+              <small class="text-danger ms-2">Requerido</small>
+            } @else if (newsForm.get('date')?.errors) {
+              <small class="text-danger ms-2">Fecha inválida</small>
+            }
+          }
         </div>
       
         <div class="mb-3">

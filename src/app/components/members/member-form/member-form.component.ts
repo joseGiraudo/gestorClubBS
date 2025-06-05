@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MembersService } from '../../../services/members.service';
-import { birthdateValidation } from '../../../validators/birthdate-validator';
+import { pastDateValidation } from '../../../validators/birthdate-validator';
 import { emailValidator } from '../../../validators/email-validator';
 import { dniValidator } from '../../../validators/dni-validator';
 
@@ -32,7 +32,7 @@ export class MemberFormComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required]],
       address: ['',[ Validators.required]],
-      birthdate: [null, [Validators.required, birthdateValidation]],
+      birthdate: [null, [Validators.required, pastDateValidation]],
       type: ['', Validators.required],
     })
   }

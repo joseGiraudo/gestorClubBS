@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NewsService } from '../../../services/news.service';
 import { CreateNews, News } from '../../../models/news';
+import { pastDateValidation } from '../../../validators/birthdate-validator';
 
 declare var bootstrap: any;
 
@@ -24,10 +25,10 @@ export class NewsFormComponent implements OnInit {
 
   constructor(private fb: FormBuilder) {
     this.newsForm = this.fb.group({
-      title: ['', Validators.required],
-      summary: ['', Validators.required],
-      content: ['', Validators.required],
-      date: ['', Validators.required]
+      title: ['', [Validators.required, Validators.minLength(5)]],
+      summary: ['', [Validators.required, Validators.minLength(5)]],
+      content: ['', [Validators.required, Validators.minLength(10)]],
+      date: ['', [Validators.required, pastDateValidation]]
     });
   }
 
