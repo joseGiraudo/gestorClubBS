@@ -5,7 +5,7 @@
             <h3 class="m-3 mb-5">Pagar Cuota de Socio</h3>
             <form class="d-flex" [formGroup]="form" (ngSubmit)="searchPayment()">
                 <div class="input-group">
-                    <input class="form-control form-control-lg" formControlName="paymentCode" type="search" placeholder="Ingresa el código de cuota" aria-label="Search">
+                    <input class="form-control form-control-lg" formControlName="memberDni" type="search" placeholder="Ingresa tu n° de DNI" aria-label="Search">
                     <button class="btn btn-primary px-4" type="submit">
                         <i class="bi bi-search"></i>
                     </button>
@@ -32,16 +32,20 @@
             -->
 
             @if(searched) {
-                @if(payments.length > 0) {
-                    <h5>Hola {{member?.name}}</h5>
-                    @for(paym of payments; track paym) {
-                        <li>Cuota N°: {{ paym.id }} ------  ${{paym.fee.amount}}</li>
-                    }
+                @if(loading) {
+                    <p>Buscando cuotas</p>
                 } @else {
-                    <h5>No se encuentran cuotas pendientes a pagar</h5>
-                }
+                    @if(payments.length > 0) {
+                        <h5>Hola {{member?.name}}</h5>
+                        @for(paym of payments; track paym) {
+                            <li>Cuota N°: {{ paym.id }} ------  ${{paym.fee.amount}}</li>
+                        }
+                    } @else {
+                        <h5>No se encuentran cuotas pendientes a pagar</h5>
+                    }
+                    }
             } @else {
-                <h6>Busca tus cuotas pendientes con tu número de socio</h6>
+                <h6>Busca tus cuotas pendientes con tu número de documento</h6>
             }
         </div>
     </div>

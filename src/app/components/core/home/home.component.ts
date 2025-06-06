@@ -34,4 +34,8 @@ export class HomeComponent implements OnInit {
     })
   }
 
+  formatDate(date: Date): string {
+    return new Date(date).toLocaleDateString("es-AR")
+  }
+
 }

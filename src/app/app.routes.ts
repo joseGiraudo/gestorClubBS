@@ -13,6 +13,7 @@ import { UserFormComponent } from './components/users/user-form/user-form.compon
 import { UserListComponent } from './components/users/user-list/user-list.component';
 import { TeamListComponent } from './components/teams/team-list/team-list.component';
 import { TeamFormComponent } from './components/teams/team-form/team-form.component';
+import { TeamsViewComponent } from './components/teams/teams-view/teams-view.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -31,6 +32,7 @@ export const routes: Routes = [
     { path: 'payments', component: PaymentListComponent },
     
     // TEAMS
+    { path: 'teams', component: TeamsViewComponent },
     { path: 'teams/create', component: TeamFormComponent },
     { path: 'teams/:sport', component: TeamListComponent },
 

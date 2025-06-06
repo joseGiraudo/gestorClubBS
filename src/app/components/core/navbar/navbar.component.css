@@ -1,0 +1,5 @@
+/* Dropdown on hover */
+.nav-item.dropdown:hover .dropdown-menu {
+  display: block;
+  margin-top: 0; /* evita que se despegue */
+}

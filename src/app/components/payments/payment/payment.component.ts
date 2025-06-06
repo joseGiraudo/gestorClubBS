@@ -19,6 +19,8 @@ export class PaymentComponent implements OnInit {
   payments: Payment[] = [];
   member: Member | null = null;
   searched: boolean = false;
+  loading: boolean = false;
+
 
   private paymentService = inject(PaymentService)
 
@@ -28,33 +30,28 @@ export class PaymentComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      paymentCode: ['', [Validators.required]],
+      memberDni: ['', [Validators.required]],
     });
   }
 
   searchPayment() {
-    const code = this.form.get('paymentCode')?.value;
-    /* this.paymentService.getPaymentById(code).subscribe({
-      next: (data) => {
-        this.payment = data;
-        console.log(data);
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    }); */
+    const code = this.form.get('memberDni')?.value;
+
+    console.log("code: ", code)
 
     this.searched = true;
+    this.loading = true;
     this.paymentService.getPaymentsByMember(code).subscribe({
       next: (data) => {
         this.payments = data;
         if(this.payments.length > 0) {
           this.member = this.payments[0].member;
         }
-        console.log(data);
+        this.loading = false;
       },
       error: (err) => {
         console.log(err);
+        this.loading = false;
       }
     });
   }

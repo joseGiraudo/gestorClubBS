@@ -28,7 +28,7 @@ export class TeamListComponent implements OnInit {
 
     if(this.sport) {
       this.teamService.getTeamsBySport(this.sport).subscribe((response) => {
-        this.teamsArray = response
+        this.teamsArray = response;
       })
     }   
   }
