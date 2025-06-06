@@ -3,17 +3,20 @@ import { type Member, MemberStatus, translateMemberStatus } from "../../../model
 import { MembersService } from "../../../services/members.service"
 import { CommonModule } from "@angular/common"
 import { FormsModule } from "@angular/forms"
+import { MemberModalComponent } from "../member-modal/member-modal.component"
+import { EditMemberComponent } from "../edit-member/edit-member.component"
 
 declare var bootstrap: any;
 
 @Component({
   selector: "app-member-list",
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MemberModalComponent, EditMemberComponent],
   templateUrl: "./member-list.component.html",
   styleUrl: "./member-list.component.css",
 })
 export class MemberListComponent implements OnInit {
-  members: Member[] = []
+  members: Member[] = [];
+  selectedMember: Member | null = null;
 
   // Parámetros de paginación
   currentPage = 0
@@ -249,6 +252,13 @@ export class MemberListComponent implements OnInit {
     }
   }
 
+  openViewModal(member: Member) {
+    this.selectedMember = member;
+  }
+
+  openEditModal(member: Member) {
+    this.selectedMember = member;
+  }
 
 
   // Método para mostrar toast

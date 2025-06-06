@@ -1,0 +1,227 @@
+<!-- Modal de Edición -->
+<div class="modal fade" id="editMemberModal" tabindex="-1" aria-labelledby="editMemberModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      @if(selectedMember) {
+        <div class="modal-header">
+            <h5 class="modal-title" id="editMemberModalLabel">
+            <i class="bi bi-pencil-square me-2"></i>
+            Editar Socio
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div>
+            <form [formGroup]="memberForm" (ngSubmit)="onSave()">
+                <div class="row">
+                <!-- Columna izquierda -->
+                <div class="col-md-6">
+                    <div class="mb-3">
+                    <label for="name" class="form-label">
+                        <i class="bi bi-person me-1"></i>
+                        Nombre *
+                    </label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="name" 
+                        formControlName="name"
+                        [class.is-invalid]="memberForm.get('name')?.invalid && memberForm.get('name')?.touched">
+                    <div class="invalid-feedback">
+                        El nombre es requerido
+                    </div>
+                    </div>
+
+                    <div class="mb-3">
+                    <label for="lastName" class="form-label">
+                        <i class="bi bi-person me-1"></i>
+                        Apellido *
+                    </label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="lastName" 
+                        formControlName="lastName"
+                        [class.is-invalid]="memberForm.get('lastName')?.invalid && memberForm.get('lastName')?.touched">
+                    <div class="invalid-feedback">
+                        El apellido es requerido
+                    </div>
+                    </div>
+
+                    <div class="mb-3">
+                    <label for="dni" class="form-label">
+                        <i class="bi bi-credit-card me-1"></i>
+                        DNI
+                    </label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="dni" 
+                        formControlName="dni"
+                        readonly
+                        style="background-color: #f8f9fa;">
+                    <small class="text-muted">El DNI no se puede modificar</small>
+                    </div>
+
+                    <div class="mb-3">
+                    <label for="birthdate" class="form-label">
+                        <i class="bi bi-calendar me-1"></i>
+                        Fecha de Nacimiento *
+                    </label>
+                    <input 
+                        type="date" 
+                        class="form-control" 
+                        id="birthdate" 
+                        formControlName="birthdate"
+                        [class.is-invalid]="memberForm.get('birthdate')?.invalid && memberForm.get('birthdate')?.touched">
+                    <div class="invalid-feedback">
+                        La fecha de nacimiento es requerida
+                    </div>
+                    </div>
+                </div>
+
+                <!-- Columna derecha -->
+                <div class="col-md-6">
+                    <div class="mb-3">
+                    <label for="email" class="form-label">
+                        <i class="bi bi-envelope me-1"></i>
+                        Email *
+                    </label>
+                    <input 
+                        type="email" 
+                        class="form-control" 
+                        id="email" 
+                        formControlName="email"
+                        [class.is-invalid]="memberForm.get('email')?.invalid && memberForm.get('email')?.touched">
+                    <div class="invalid-feedback">
+                        @if(memberForm.get('email')?.errors?.['required']) {
+                            <div>El email es requerido</div>
+                        }
+                        @if(memberForm.get('email')?.errors?.['email']) {
+                            <div>El formato del email no es válido</div>
+                        }
+                        
+                    </div>
+                    </div>
+
+                    <div class="mb-3">
+                    <label for="phone" class="form-label">
+                        <i class="bi bi-telephone me-1"></i>
+                        Teléfono *
+                    </label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="phone" 
+                        formControlName="phone"
+                        [class.is-invalid]="memberForm.get('phone')?.invalid && memberForm.get('phone')?.touched">
+                    <div class="invalid-feedback">
+                        El teléfono es requerido
+                    </div>
+                    </div>
+
+                    <div class="mb-3">
+                    <label for="address" class="form-label">
+                        <i class="bi bi-geo-alt me-1"></i>
+                        Dirección *
+                    </label>
+                    <input
+                        type="text" 
+                        class="form-control" 
+                        id="address" 
+                        formControlName="address" 
+                        rows="3"
+                        [class.is-invalid]="memberForm.get('address')?.invalid && memberForm.get('address')?.touched" />
+                    <div class="invalid-feedback">
+                        La dirección es requerida
+                    </div>
+                    </div>
+                </div>
+                </div>
+
+                <!-- Fila para tipo y estado -->
+                <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                    <label for="type" class="form-label">
+                        <i class="bi bi-star me-1"></i>
+                        Tipo de Membresía *
+                    </label>
+                    <select 
+                        class="form-select" 
+                        id="type" 
+                        formControlName="type"
+                        [class.is-invalid]="memberForm.get('type')?.invalid && memberForm.get('type')?.touched">
+                        <option value="">Seleccionar tipo</option>
+                        <option value="BASIC">Básico</option>
+                        <option value="PREMIUM">Premium</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        El tipo de membresía es requerido
+                    </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                    <label for="status" class="form-label">
+                        <i class="bi bi-check-circle me-1"></i>
+                        Estado *
+                    </label>
+                    <select 
+                        class="form-select" 
+                        id="status" 
+                        formControlName="status"
+                        [class.is-invalid]="memberForm.get('status')?.invalid && memberForm.get('status')?.touched">
+                        <option value="">Seleccionar estado</option>
+                        <option value="ACTIVE">Activo</option>
+                        <option value="PENDING">Pendiente</option>
+                        <option value="INACTIVE">Inactivo</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        El estado es requerido
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </form>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" [disabled]="isLoading">
+            <i class="bi bi-x-lg me-1"></i>
+            Cancelar
+            </button>
+            <button 
+            type="button" 
+            class="btn btn-success" 
+            (click)="onSave()" 
+            [disabled]="isLoading || memberForm.invalid">
+            @if(isLoading) {
+                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                <i class="bi bi-check-lg me-1"></i>
+            }
+            {{ isLoading ? 'Guardando...' : 'Guardar Cambios' }}
+            </button>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<!-- Toast Container -->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+  <div id="responseToast" class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body d-flex align-items-center">
+        <span id="toastIcon" class="me-2"></span>
+        <span id="toastBody">Mensaje del toast</span>
+      </div>
+      <button (click)="clearMember()" type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+</div>

@@ -1,7 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { TeamService } from '../../../services/team.service';
 import { Team, translateTeamSport } from '../../../models/team';
-import { response } from 'express';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({

@@ -183,10 +183,10 @@
                 </td>
                 <td>
                   <div class="btn-group btn-group-sm" role="group">
-                    <button class="btn btn-outline-primary" title="Ver detalles" (click)="viewMember(member.id)">
+                    <button class="btn btn-outline-primary" title="Ver detalles" data-bs-toggle="modal" data-bs-target="#memberModal" (click)="openViewModal(member)">
                       <i class="bi bi-eye"></i>
                     </button>
-                    <button class="btn btn-outline-success" title="Editar" (click)="editMember(member.id)">
+                    <button class="btn btn-outline-success" title="Editar" data-bs-toggle="modal" data-bs-target="#editMemberModal" (click)="openEditModal(member)">
                       <i class="bi bi-pencil"></i>
                     </button>
                     @if(member.status != 'ACTIVE') {
@@ -294,3 +294,8 @@
     </div>
   </div>
 </div>
+
+<!-- Modal Component -->
+ <app-member-modal [selectedMember]="selectedMember"></app-member-modal>
+
+ <app-edit-member [selectedMember]="selectedMember"></app-edit-member>
