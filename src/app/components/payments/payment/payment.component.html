@@ -1,52 +1,236 @@
-
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <h3 class="m-3 mb-5">Pagar Cuota de Socio</h3>
-            <form class="d-flex" [formGroup]="form" (ngSubmit)="searchPayment()">
-                <div class="input-group">
-                    <input class="form-control form-control-lg" formControlName="memberDni" type="search" placeholder="Ingresa tu n° de DNI" aria-label="Search">
-                    <button class="btn btn-primary px-4" type="submit">
-                        <i class="bi bi-search"></i>
-                    </button>
-                </div>
-            </form>
-        </div>
+<div class="container py-4">
+  <!-- Header -->
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="text-center mb-5">
+        <h2 class="display-6 fw-bold text-primary">
+          <i class="bi bi-credit-card me-2"></i>
+          Pagar Cuotas de Socio
+        </h2>
+        <p class="text-muted">Busca y selecciona las cuotas que deseas pagar</p>
+      </div>
     </div>
+  </div>
 
-    <div class="row justify-content-center my-5">
-        <div class="col-md-6">
-            <!-- 
-            @if(payment) {
-                @if(payment.status == 'PENDING') {
-                    <h5>Vas a pagar la cuota N° {{payment.id}}</h5>
-                    <h5>Socio Nombre: {{payment.member.name}} {{payment.member.lastName}}</h5>
-                    <h5>Total --- $ {{payment.fee.amount}}</h5>
-                    <button class="btn btn-outline-success">Ir a Pagar</button>
-                } @else if(payment.status == 'APPROVED') {
-                    <h5>La cuota N° {{payment.id}} ya se encuentra pagada</h5>
-                } @else {
-                    <h5>La cuota N° {{payment.id}} fue cancelada. Comunicate con la administración para mas información</h5>
-                }
-            }
-            -->
-
-            @if(searched) {
+  <!-- Search Form -->
+  <div class="row justify-content-center mb-5">
+    <div class="col-lg-6 col-md-8">
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+          <form [formGroup]="form" (ngSubmit)="searchPayments()">
+            <div class="input-group input-group-lg">
+              <span class="input-group-text">
+                <i class="bi bi-person-badge"></i>
+              </span>
+              <input 
+                class="form-control" 
+                formControlName="memberDni" 
+                type="text" 
+                placeholder="Ingresa tu número de DNI"
+                [class.is-invalid]="form.get('memberDni')?.invalid && form.get('memberDni')?.touched">
+              <button 
+                class="btn btn-primary px-4" 
+                type="submit"
+                [disabled]="form.invalid || loading">
                 @if(loading) {
-                    <p>Buscando cuotas</p>
-                } @else {
-                    @if(payments.length > 0) {
-                        <h5>Hola {{member?.name}}</h5>
-                        @for(paym of payments; track paym) {
-                            <li>Cuota N°: {{ paym.id }} ------  ${{paym.fee.amount}}</li>
-                        }
-                    } @else {
-                        <h5>No se encuentran cuotas pendientes a pagar</h5>
-                    }
-                    }
-            } @else {
-                <h6>Busca tus cuotas pendientes con tu número de documento</h6>
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                    <i class="bi bi-search me-2"></i>
+                }
+                {{ loading ? 'Buscando...' : 'Buscar' }}
+              </button>
+            </div>
+            @if(form.get('memberDni')?.invalid && form.get('memberDni')?.touched) {
+                <div class="invalid-feedback d-block">
+                  Ingresa un DNI válido (7-8 dígitos)
+                </div>
             }
+          </form>
         </div>
+      </div>
     </div>
+  </div>
+
+  <!-- Results Section -->
+   @if(searched) {
+       <div class="row justify-content-center">
+         <div class="col-lg-8">
+           
+           <!-- Loading State -->
+            @if(loading) {
+                <div class="text-center py-5">
+                  <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;"></div>
+                  <h5>Buscando cuotas pendientes...</h5>
+                  <p class="text-muted">Por favor espera un momento</p>
+                </div>
+            }
+     
+           <!-- No Results -->
+            @if(!loading && pendingPayments.length === 0) {
+                <div class="text-center py-5">
+                  <div class="card border-success">
+                    <div class="card-body">
+                      <i class="bi bi-check-circle-fill text-success display-1"></i>
+                      <h4 class="text-success mt-3">¡Excelente!</h4>
+                      <p class="text-muted mb-3">No tienes cuotas pendientes de pago</p>
+                      <button class="btn btn-outline-primary" (click)="resetSearch()">
+                        <i class="bi bi-arrow-left me-2"></i>
+                        Nueva búsqueda
+                      </button>
+                    </div>
+                  </div>
+                </div>
+            }
+     
+           <!-- Results with Payments -->
+            @if(!loading && pendingPayments.length > 0) {
+                <div>
+                  
+                  <!-- Member Info -->
+                  <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                      <h5 class="mb-0">
+                        <i class="bi bi-person-circle me-2"></i>
+                        Hola, {{ member?.name }}
+                      </h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <p class="mb-1"><strong>DNI:</strong> {{ member?.dni }}</p>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                          <p class="mb-1"><strong>Cuotas pendientes:</strong> {{ pendingPayments.length }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+          
+                  <!-- Payments List -->
+                  <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                      <h5 class="mb-0">
+                        <i class="bi bi-list-check me-2"></i>
+                        Selecciona las cuotas a pagar
+                      </h5>
+                      <div class="form-check">
+                        <input 
+                          class="form-check-input" 
+                          type="checkbox" 
+                          id="selectAll"
+                          [checked]="isAllSelected"
+                          [indeterminate]="isSomeSelected && !isAllSelected"
+                          (change)="selectAll($event)">
+                        <label class="form-check-label" for="selectAll">
+                          Seleccionar todas
+                        </label>
+                      </div>
+                    </div>
+                    
+                    <div class="list-group list-group-flush">
+                     @for(payment of pendingPayments; track payment) {
+                         <div 
+                           class="list-group-item">
+                           <div class="row align-items-center">
+                             <div class="col-auto">
+                               <div class="form-check">
+                                 <input 
+                                   class="form-check-input" 
+                                   type="checkbox" 
+                                   [id]="'payment-' + payment.id"
+                                   [checked]="payment.selected"
+                                   (change)="onPaymentSelection(payment, $event)">
+                               </div>
+                             </div>
+                             
+                             <div class="col">
+                               <div class="d-flex justify-content-between align-items-start">
+                                 <div>
+                                   <h6 class="mb-1">
+                                     Cuota {{ getMonthYearDescription(payment.fee) }}
+                                   </h6>
+                                   <small class="text-muted">
+                                     <i class="bi bi-hash me-1"></i>
+                                     ID Cuota: {{ payment.fee.id }}
+                                   </small>
+                                 </div>
+                                 <div class="text-end">
+                                   <h5 class="mb-0" [class.text-danger]="isOverdue(payment)" [class.text-primary]="!isOverdue(payment)">
+                                     {{ formatCurrency(payment.fee.amount) }}
+                                   </h5>
+                                 </div>
+                               </div>
+                             </div>
+                           </div>
+                         </div>
+                     }
+                    </div>
+                  </div>
+          
+                  <!-- Payment Summary -->
+                   @if(paymentSummary.selectedCount > 0) {
+                       <div class="card mt-4 border-success">
+                         <div class="card-header bg-light">
+                           <h5 class="mb-0 text-success">
+                             <i class="bi bi-calculator me-2"></i>
+                             Resumen de Pago
+                           </h5>
+                         </div>
+                         <div class="card-body">
+                           <div class="row">
+                             <div class="col-md-8">
+                               <p class="mb-2">
+                                 <strong>Cuotas seleccionadas:</strong> {{ paymentSummary.selectedCount }}
+                               </p>
+                               <p class="mb-2">
+                                 <strong>IDs de cuotas:</strong> 
+                                 <code class="text-primary">{{ paymentSummary.feeIds.join(', ') }}</code>
+                               </p>
+                               <ul class="list-unstyled mb-0">
+                                 @for(payment of selectedPayments; track payment) {
+                                     <li class="small text-muted">
+                                       • {{ getMonthYearDescription(payment.fee) }} - {{ formatCurrency(payment.fee.amount) }}
+                                     </li>
+                                 }
+                               </ul>
+                             </div>
+                             <div class="col-md-4 text-md-end">
+                               <p class="mb-2">Total a pagar:</p>
+                               <h3 class="text-success mb-3">{{ formatCurrency(paymentSummary.totalAmount) }}</h3>
+                               <button 
+                                 class="btn btn-success btn-lg w-100"
+                                 (click)="processPayment()">
+                                 <i class="bi bi-check-circle me-2"></i>
+                                 Procesar Pago
+                               </button>
+                             </div>
+                           </div>
+                         </div>
+                       </div>
+                   }
+          
+                  <!-- Actions -->
+                  <div class="text-center mt-4">
+                    <button class="btn btn-outline-secondary" (click)="resetSearch()">
+                      <i class="bi bi-arrow-left me-2"></i>
+                      Nueva búsqueda
+                    </button>
+                  </div>
+                </div>
+            }
+         </div>
+       </div>
+   }
+
+  <!-- Initial State -->
+   @if(!searched) {
+       <div class="row justify-content-center">
+         <div class="col-lg-6 text-center">
+           <div class="py-5">
+             <i class="bi bi-search display-1 text-muted mb-3"></i>
+             <h5 class="text-muted">Busca tus cuotas pendientes</h5>
+             <p class="text-muted">Ingresa tu número de DNI para ver las cuotas que tienes pendientes de pago</p>
+           </div>
+         </div>
+       </div>
+   }
 </div>

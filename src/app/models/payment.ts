@@ -16,6 +16,7 @@ export interface Payment {
     method?: PaymentMethod,
     mercadoPagoId: string | null,
     recordedBy: number | null
+    selected?: boolean
 }
 
 export interface PaymentDto {
