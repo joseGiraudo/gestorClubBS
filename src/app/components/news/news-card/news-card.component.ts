@@ -1,12 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { News } from '../../../models/news';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NewsService } from '../../../services/news.service';
-import { response } from 'express';
 
 @Component({
   selector: 'app-news-card',
-  imports: [RouterLink],
+  imports: [],
   templateUrl: './news-card.component.html',
   styleUrl: './news-card.component.css'
 })
@@ -15,33 +14,56 @@ export class NewsCardComponent implements OnInit {
   private newsService = inject(NewsService);
 
   id: string | null = null;
+  news: News | null = null;
+  loading = true;
+  notFound = false;
 
-  constructor(private activatedRoute: ActivatedRoute) {}
-
-  news: News = {
-    id: 0,
-    title: 'Titulo',
-    content: 'Contenido',
-    summary: 'Resumen',
-    imageUrl: 'url ejemplo',
-    date: new Date('28/04/2000'),
-    authorId: 1
-  }
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+  ) {}
 
   ngOnInit() {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
 
     if(this.id) {
-      this.newsService.getNewsById(parseInt(this.id)).subscribe({
-        next:(response: News) => {
-          this.news = response;
-        },
-        error: (error) => {
-          console.error("Error al obtener la noticia:", error);
-        }
-      });
+      this.loadNews(parseInt(this.id));
     }
 
+  }
+
+  loadNews(id: number): void {
+    this.newsService.getNewsById(id).subscribe({
+      next: (data) => {
+        if (data) {
+          this.news = data;
+        } else {
+          this.notFound = true;
+        }
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Error loading news:', error);
+        this.notFound = true;
+        this.loading = false;
+      }
+    });
+  }
+
+  goBack(): void {
+    this.router.navigate(['/news']);
+  }
+
+  formatDate(date: Date): string {
+    return new Intl.DateTimeFormat('es-ES', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    }).format(date);
+  }
+
+  formatContent(content: string): string[] {
+    return content.split('\n').filter(paragraph => paragraph.trim().length > 0);
   }
 
 }

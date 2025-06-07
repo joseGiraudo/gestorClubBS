@@ -106,12 +106,14 @@ export class EditMemberComponent implements OnInit, OnChanges {
       this.memberService.updateMember(this.selectedMember.id, updatedMember).subscribe({
         next: (response) => {
           this.isLoading = false;
+          this.showToast('Socio editado con éxito', 'success')
           // Cerrar modal programáticamente
           this.closeModal();
           // Opcional: mostrar toast de éxito
         },
         error: (error) => {
           this.isLoading = false;
+          this.showToast('Error al actualizar socio', 'error')
           console.error('Error al actualizar socio:', error);
           // Opcional: mostrar toast de error
         }
@@ -132,7 +134,7 @@ export class EditMemberComponent implements OnInit, OnChanges {
       }
     }
   }
-  
+
   clearMember() {
     this.selectedMember = null;
   }

@@ -24,11 +24,15 @@ export class NewsFormComponent implements OnInit {
   private newsService = inject(NewsService);
 
   constructor(private fb: FormBuilder) {
+
+    const today = new Date();
+    const formattedDate = today.toISOString().split('T')[0]; // 'YYYY-MM-DD'
+
     this.newsForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(5)]],
       summary: ['', [Validators.required, Validators.minLength(5)]],
       content: ['', [Validators.required, Validators.minLength(10)]],
-      date: ['', [Validators.required, pastDateValidation]]
+      date: [formattedDate, [Validators.required, pastDateValidation]]
     });
   }
 

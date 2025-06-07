@@ -51,6 +51,14 @@ export class NewsService {
   
       return this.http.get<News[]>(this.apiUrl);
     }
+
+      getLastNews(): Observable<News[]> {
+      // Para desarrollo, devolvemos datos de ejemplo
+      // En producción, descomentar la línea que hace la petición HTTP
+      // return of(this.members)
+  
+      return this.http.get<News[]>(this.apiUrl + "/last-news");
+    }
   
     getNewsById(id: number): Observable<News> {
       

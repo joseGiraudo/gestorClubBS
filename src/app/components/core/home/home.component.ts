@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
   
 
   ngOnInit(): void {
-    this.newsService.getNews().subscribe((news) => {
+    this.newsService.getLastNews().subscribe((news) => {
       this.newsArray = news
     })
 

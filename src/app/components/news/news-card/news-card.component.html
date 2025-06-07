@@ -1,14 +1,68 @@
-<div class="col">
-    <div class="card h-100">
-      <img [src]="news.imageUrl" class="card-img-top" alt="{{news.title}}">
-      <div class="card-body">
-        <h5 class="card-title">{{news.title}}</h5>
-        <p class="card-text">{{news.summary}}</p>
-        <p class="card-text">{{news.content}}</p>
-        <p class="text-muted">{{news.date}}</p>
-      </div>
-      <div class="card-footer">
-        <a [routerLink]="['/news', news.id]" class="btn btn-sm btn-outline-primary">Leer más</a>
+<div class="container mt-4">
+  
+  <!-- Loading Spinner -->
+  @if(loading) {
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
       </div>
     </div>
-  </div>
+  }
+
+  <!-- Not Found -->
+  @if(notFound && !loading) {
+    <div class="text-center py-5">
+      <i class="bi bi-exclamation-triangle display-1 text-warning"></i>
+      <h2 class="mt-3">Noticia no encontrada</h2>
+      <p class="text-muted">La noticia que buscas no existe o ha sido eliminada.</p>
+      <button class="btn btn-primary" (click)="goBack()">
+        <i class="bi bi-arrow-left me-2"></i>
+        Volver a Noticias
+      </button>
+    </div>
+  }
+
+  <!-- News Detail -->
+   @if(news && !loading) {
+     <div class="row">
+       <div class="col-12">
+         <!-- Back Button -->
+         <button class="btn btn-outline-secondary mb-4" (click)="goBack()">
+           <i class="bi bi-arrow-left me-2"></i>
+           Volver a Noticias
+         </button>
+   
+         <!-- Article Header -->
+         <div class="mb-4">
+           <h1 class="display-5 fw-bold mb-3">{{ news.title }}</h1>
+           <div class="d-flex align-items-center text-muted mb-3">
+             <i class="bi bi-calendar3 me-2"></i>
+             <span>{{ formatDate(news.date) }}</span>
+           </div>
+           <p class="lead text-muted">{{ news.summary }}</p>
+         </div>
+   
+         <!-- Featured Image -->
+         <div class="mb-4">
+           <img [src]="news.imageUrl" 
+                [alt]="news.title" 
+                class="img-fluid rounded shadow-sm w-100 featured-image">
+         </div>
+   
+         <!-- Article Content -->
+         <div class="row">
+           <div class="col-lg-8 mx-auto">
+             <div class="article-content">
+              @for(paragraph of formatContent(news.content); track paragraph) {
+                <p class="mb-3 lh-lg">
+                  {{ paragraph }}
+                </p>
+              }
+             </div>
+  
+           </div>
+         </div>
+       </div>
+     </div>
+   }
+</div>
