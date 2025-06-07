@@ -4,6 +4,7 @@ import { News } from '../../../models/news';
 import { NewsService } from '../../../services/news.service';
 import { TeamService } from '../../../services/team.service';
 import { Team, TeamSport, translateTeamSport } from '../../../models/team';
+import { LoginService } from '../../../services/login.service';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +18,7 @@ export class HomeComponent implements OnInit {
 
   private newsService = inject(NewsService);
   private teamService = inject(TeamService);
+  protected loginService = inject(LoginService);
 
   newsArray: News[] = []
   teamsArray: Team[] = [];

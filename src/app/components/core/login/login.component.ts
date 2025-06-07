@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
 import { LoginService } from '../../../services/login.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -11,32 +12,45 @@ import { LoginService } from '../../../services/login.service';
 })
 export class LoginComponent implements OnInit {
 
-  loginForm!: FormGroup;
+  loginForm: FormGroup
+  loading = false
+  error = ""
 
   private loginService = inject(LoginService)
 
   constructor(
-    private formBuilder: FormBuilder
-  ) {}
-
-  ngOnInit(): void {
+    private formBuilder: FormBuilder,
+    private router: Router
+  ) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
     });
   }
 
-  onSubmit() {
-    if (this.loginForm.valid) {
-      this.loginService.login(this.loginForm.value).subscribe((response) => {
-        console.log(response);
-        const token = response.token;
-        localStorage.setItem('authToken', token);
-      })
-      
-    } else {
-      console.error(this.loginForm.errors)
+  ngOnInit(): void {
+    
+  }
+
+ onSubmit() {
+    if (this.loginForm.invalid) {
+      return
     }
+
+    this.loading = true
+    this.error = ""
+
+    const credentials = this.loginForm.value;
+
+    this.loginService.login(credentials).subscribe({
+      next: (response) => {
+        this.router.navigate(["/"])
+      },
+      error: (error) => {
+        this.error = error.error?.message || "Error al iniciar sesión"
+        this.loading = false
+      },
+    })
   }
 
 }
