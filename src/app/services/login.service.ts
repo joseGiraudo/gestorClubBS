@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { LoginRequest, LoginResponse } from '../models/login';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { User } from '../models/user';
@@ -17,7 +18,8 @@ export class LoginService {
 
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.loadUserFromToken()
   }
@@ -31,21 +33,35 @@ export class LoginService {
 
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, loginRequest).pipe(
       tap((response) => {
-        localStorage.setItem("token", response.token)
+        this.setToken(response.token)
         this.currentUserSubject.next(response.user)
       }),
     )
   }
 
-
   logout(): void {
-    localStorage.removeItem("token")
+    this.removeToken()
     this.currentUserSubject.next(null)
     this.router.navigate(["/login"])
   }
 
   getToken(): string | null {
-    return localStorage.getItem("token")
+    if (isPlatformBrowser(this.platformId)) {
+      return localStorage.getItem("token")
+    }
+    return null
+  }
+
+  private setToken(token: string): void {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem("token", token)
+    }
+  }
+
+  private removeToken(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem("token")
+    }
   }
 
   getCurrentUser(): User | null {
@@ -74,7 +90,7 @@ export class LoginService {
         const payload = JSON.parse(atob(token.split(".")[1]))
         if (payload.exp * 1000 > Date.now()) {
           // Token válido, cargar usuario
-          this.http.get<User>(`${this.apiUrl}/auth/me`).subscribe({
+          this.http.get<User>(`${this.apiUrl}/me`).subscribe({
             next: (user) => this.currentUserSubject.next(user),
             error: () => this.logout(),
           })
