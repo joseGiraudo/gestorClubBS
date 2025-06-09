@@ -105,11 +105,11 @@
 
         <!-- Filtro Desde - Hasta -->
         <div class="col-md-2">
-          <label class="form-label">Fecha desde:</label>
+          <label class="form-label">Fecha pago desde:</label>
           <input type="date" [(ngModel)]="dateFrom" (change)="onFiltersChange()" class="form-control">
         </div>
         <div class="col-md-2">
-          <label class="form-label">Fecha hasta:</label>
+          <label class="form-label">Fecha pago hasta:</label>
           <input type="date" [(ngModel)]="dateTo" (change)="onFiltersChange()" class="form-control">
         </div>
 
@@ -198,6 +198,22 @@
                 </span>
               }
             </th>
+            <th (click)="onSort('issuedDate')" class="sortable">
+              Emisión
+              @if (sortBy === 'issuedDate') {
+                <span>
+                  <i class="bi" [ngClass]="{ 'bi-arrow-up': sortDir === 'asc', 'bi-arrow-down': sortDir === 'desc' }"></i>
+                </span>
+              }
+            </th>
+            <th (click)="onSort('paymentDate')" class="sortable">
+              Fecha Pago
+              @if (sortBy === 'paymentDate') {
+                <span>
+                  <i class="bi" [ngClass]="{ 'bi-arrow-up': sortDir === 'asc', 'bi-arrow-down': sortDir === 'desc' }"></i>
+                </span>
+              }
+            </th>
             <th (click)="onSort('status')" class="sortable">
               Estado
               @if (sortBy === 'status') {
@@ -237,8 +253,10 @@
                 <td>{{ payment.id }}</td>
                 <td>{{ payment.memberName }}</td>
                 <td>{{ payment.feeMonth }} / {{ payment.feeYear }}</td>
-                <td>{{ translatePaymentStatus(payment.status) }}</td>
-                <td>{{ translatePaymentMethod(payment.method || '') }}</td>
+                <td>{{ formatDate(payment.issuedDate) }}</td>
+                <td>{{ formatDate(payment.paymentDate) || "-" }}</td>
+                <td>{{ translatePaymentStatus(payment.status) || '-'}}</td>
+                <td>{{ translatePaymentMethod(payment.method || '-') }}</td>
                 <td>
                   
                 </td>

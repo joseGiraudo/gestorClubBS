@@ -1,136 +1,138 @@
-<!-- Hero Section Simplificado -->
-<div class="jumbotron p-5 rounded bg-body-tertiary">
-  <h1 class="display-4" style="color: #1e3a8a;"><strong>Club Deportivo Independencia</strong></h1>
-  <p class="lead">Somos una institución dedicada al deporte y la formación de atletas de todas las edades.</p>
-  <hr class="my-4" style="background-color: rgba(255,255,255,0.3);">
-  <p>Únete a nuestra comunidad y disfruta de nuestras actividades.</p>
-  <a class="btn btn-warning btn-lg" style="color: #1e3a8a;" routerLink="/member-form" role="button">
-    <strong>Hacerse Socio</strong>
-  </a>
-</div>
+<div class="mx-2">
+  <!-- Hero Section Simplificado -->
+  <div class="jumbotron p-5 rounded bg-body-tertiary">
+    <h1 class="display-4" style="color: #1e3a8a;"><strong>Club Deportivo Independencia</strong></h1>
+    <p class="lead">Somos una institución dedicada al deporte y la formación de atletas de todas las edades.</p>
+    <hr class="my-4" style="background-color: rgba(255,255,255,0.3);">
+    <p>Únete a nuestra comunidad y disfruta de nuestras actividades.</p>
+    <a class="btn btn-warning btn-lg" style="color: #1e3a8a;" routerLink="/member-form" role="button">
+      <strong>Hacerse Socio</strong>
+    </a>
+  </div>
 
-<!-- Noticias Section -->
- @if(newsArray.length > 0) {
-   <div class="row mt-5">
-     <div class="col-12">
-       <h2 class="mb-4" style="color: #1e3a8a;">Últimas Noticias</h2>
-     </div>
-   </div>
-   <div class="row mb-5">
-     @for(news of newsArray; track news.id) {
-      <div class="col-md-4 mb-3">
-        <div class="card h-100 border-0 shadow-sm">
-          <img src="{{news.imageUrl || 'https://placehold.co/200'}}" 
-              class="card-img-top" 
-              alt="{{news.title}}" 
-              style="height: 200px; object-fit: cover;">
-          <div class="card-body">
-            <h5 class="card-title" style="color: #1e3a8a;">{{news.title}}</h5>
-            <p class="card-text">{{news.summary}}</p>
-          </div>
-          <div class="card-footer">
-              <div class="row justify-content-between">
-                <small class="text-muted col-8 mt-1">{{formatDate(news.date)}}</small>
-                <a [routerLink]="['/news', news.id]" class="col-3 btn btn-sm btn-outline-secondary">Leer más</a>
-              </div>
+  <!-- Noticias Section -->
+  @if(newsArray.length > 0) {
+    <div class="row mt-5">
+      <div class="col-12">
+        <h2 class="mb-4" style="color: #1e3a8a;">Últimas Noticias</h2>
+      </div>
+    </div>
+    <div class="row mb-5">
+      @for(news of newsArray; track news.id) {
+        <div class="col-md-4 mb-3">
+          <div class="card h-100 border-0 shadow-sm">
+            <img src="{{news.imageUrl || 'https://placehold.co/200'}}" 
+                class="card-img-top" 
+                alt="{{news.title}}" 
+                style="height: 200px; object-fit: cover;">
+            <div class="card-body">
+              <h5 class="card-title" style="color: #1e3a8a;">{{news.title}}</h5>
+              <p class="card-text">{{news.summary}}</p>
             </div>
+            <div class="card-footer">
+                <div class="row justify-content-between">
+                  <small class="text-muted col-8 mt-1">{{formatDate(news.date)}}</small>
+                  <a [routerLink]="['/news', news.id]" class="col-3 btn btn-sm btn-outline-secondary">Leer más</a>
+                </div>
+              </div>
+          </div>
+        </div>
+      }
+
+    </div>
+  } @else {
+    <div class="row mt-5 ms-5">
+      <div class="col-12">
+        <p class="mb-4" style="color: #8f8f8f;">Conectando al servidor para cargar noticias</p>
+      </div>
+    </div>
+  }
+
+
+
+  <!-- Información del Club -->
+  <div class="row mt-5">
+    <div class="col-md-8 mb-4">
+      <div class="card h-100 border-0 shadow-sm">
+        <div class="card-body">
+          <h3 class="card-title" style="color: #1e3a8a;">Sobre Nosotros</h3>
+          <p class="card-text">Fundado hace 25 años, nuestro club se ha convertido en un referente deportivo en la región, con más de 500 socios activos y múltiples equipos en diferentes disciplinas.</p>
+          <p class="card-text">Contamos con instalaciones modernas y profesionales dedicados a la formación integral de nuestros deportistas.</p>
         </div>
       </div>
-     }
-
-   </div>
- } @else {
-  <div class="row mt-5 ms-5">
-     <div class="col-12">
-       <p class="mb-4" style="color: #8f8f8f;">Conectando al servidor para cargar noticias</p>
-     </div>
-   </div>
- }
-
-
-
-<!-- Información del Club -->
-<div class="row mt-5">
-  <div class="col-md-8 mb-4">
-    <div class="card h-100 border-0 shadow-sm">
-      <div class="card-body">
-        <h3 class="card-title" style="color: #1e3a8a;">Sobre Nosotros</h3>
-        <p class="card-text">Fundado hace 25 años, nuestro club se ha convertido en un referente deportivo en la región, con más de 500 socios activos y múltiples equipos en diferentes disciplinas.</p>
-        <p class="card-text">Contamos con instalaciones modernas y profesionales dedicados a la formación integral de nuestros deportistas.</p>
-      </div>
     </div>
-  </div>
-  
-  <!-- Próximos Eventos -->
-<!--   <div class="col-md-4 mb-4">
-    <div class="card h-100 border-0 shadow-sm">
-      <div class="card-header" style="background-color: #1e3a8a; color: white;">
-        <h3 class="card-title mb-0">Próximos Eventos</h3>
+    
+    <!-- Próximos Eventos -->
+  <!--   <div class="col-md-4 mb-4">
+      <div class="card h-100 border-0 shadow-sm">
+        <div class="card-header" style="background-color: #1e3a8a; color: white;">
+          <h3 class="card-title mb-0">Próximos Eventos</h3>
+        </div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item border-0">
+              <h5>Torneo de Verano</h5>
+              <p class="mb-1">15 de Enero, 2024</p>
+              <p class="mb-0">Participa en nuestro torneo anual con grandes premios.</p>
+            </li>
+            <li class="list-group-item border-0">
+              <h5>Clínica Deportiva</h5>
+              <p class="mb-1">22 de Enero, 2024</p>
+              <p class="mb-0">Aprende con los mejores profesionales del deporte.</p>
+            </li>
+            <li class="list-group-item border-0">
+              <h5>Asamblea de Socios</h5>
+              <p class="mb-1">5 de Febrero, 2024</p>
+              <p class="mb-0">Reunión anual para todos los socios del club.</p>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div class="card-body">
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item border-0">
-            <h5>Torneo de Verano</h5>
-            <p class="mb-1">15 de Enero, 2024</p>
-            <p class="mb-0">Participa en nuestro torneo anual con grandes premios.</p>
-          </li>
-          <li class="list-group-item border-0">
-            <h5>Clínica Deportiva</h5>
-            <p class="mb-1">22 de Enero, 2024</p>
-            <p class="mb-0">Aprende con los mejores profesionales del deporte.</p>
-          </li>
-          <li class="list-group-item border-0">
-            <h5>Asamblea de Socios</h5>
-            <p class="mb-1">5 de Febrero, 2024</p>
-            <p class="mb-0">Reunión anual para todos los socios del club.</p>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div> -->
-  
-  <!-- Nuestros Equipos -->
-  <div class="col-md-4 mb-4">
-    <div class="card h-100 border-0 shadow-sm">
-      <div class="card-header" style="background-color: #f59e0b; color: white;">
-        <h3 class="card-title mb-0">Nuestros Equipos</h3>
-      </div>
-      <div class="card-body">
-        @if(teamsArray.length > 0) {
-          <div class="list-group list-group-flush">
-            @for(team of teamsArray.slice(0, 3); track team) {
-              <a href="#" class="list-group-item list-group-item-action border-0">
-                <h5 class="mb-1">{{team.name}}</h5>
-                <p class="mb-1">{{team.description}}</p>
-                <small>{{ translateTeamSport(team.sport) }}</small>
-              </a>
+    </div> -->
+    
+    <!-- Nuestros Equipos -->
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 border-0 shadow-sm">
+        <div class="card-header" style="background-color: #f59e0b; color: white;">
+          <h3 class="card-title mb-0">Nuestros Equipos</h3>
+        </div>
+        <div class="card-body">
+          @if(teamsArray.length > 0) {
+            <div class="list-group list-group-flush">
+              @for(team of teamsArray.slice(0, 3); track team) {
+                <a href="#" class="list-group-item list-group-item-action border-0">
+                  <h5 class="mb-1">{{team.name}}</h5>
+                  <p class="mb-1">{{team.description}}</p>
+                  <small>{{ translateTeamSport(team.sport) }}</small>
+                </a>
+              }
+            </div>
+            @if(teamsArray.length > 3) {
+              <div class="text-center mt-3">
+                <a href="#" class="btn btn-sm btn-outline-warning">Ver todos</a>
+              </div>
             }
-          </div>
-          @if(teamsArray.length > 3) {
-            <div class="text-center mt-3">
-              <a href="#" class="btn btn-sm btn-outline-warning">Ver todos</a>
+          } @else {
+            <div class="text-center py-4">
+              <p class="text-muted">No hay equipos para mostrar</p>
             </div>
           }
-        } @else {
-          <div class="text-center py-4">
-            <p class="text-muted">No hay equipos para mostrar</p>
-          </div>
-        }
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Call to Action Simple -->
-<div class="row mt-4 mb-5">
-  <div class="col-12">
-    <div class="card border-0" style="background-color: #fff8e6;">
-      <div class="card-body text-center py-4">
-        <h3 style="color: #1e3a8a;">¿Quieres ser parte de nuestro club?</h3>
-        <p class="mb-4">Únete a nuestra familia deportiva y disfruta de beneficios exclusivos para socios.</p>
-        <a class="btn btn-warning" routerLink="/member-form">
-          Hacerse Socio
-        </a>
+  <!-- Call to Action Simple -->
+  <div class="row mt-4 mb-5">
+    <div class="col-12">
+      <div class="card border-0" style="background-color: #fff8e6;">
+        <div class="card-body text-center py-4">
+          <h3 style="color: #1e3a8a;">¿Quieres ser parte de nuestro club?</h3>
+          <p class="mb-4">Únete a nuestra familia deportiva y disfruta de beneficios exclusivos para socios.</p>
+          <a class="btn btn-warning" routerLink="/member-form">
+            Hacerse Socio
+          </a>
+        </div>
       </div>
     </div>
   </div>
