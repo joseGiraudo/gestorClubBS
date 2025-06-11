@@ -14,6 +14,8 @@ import { UserListComponent } from './components/users/user-list/user-list.compon
 import { TeamListComponent } from './components/teams/team-list/team-list.component';
 import { TeamFormComponent } from './components/teams/team-form/team-form.component';
 import { TeamsViewComponent } from './components/teams/teams-view/teams-view.component';
+import { UnauthorizedComponent } from './components/core/unauthorized/unauthorized.component';
+import { NotFoundComponent } from './components/core/not-found/not-found.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -44,5 +46,7 @@ export const routes: Routes = [
     // AUTH
     { path: 'login', component: LoginComponent },
 
-    { path: 'admin', canActivate: [authGuard, adminGuard], component: MemberFormComponent}
+    // Pages
+    { path: 'unauthorized', component: UnauthorizedComponent },
+    { path: '**', component: NotFoundComponent }
 ];
