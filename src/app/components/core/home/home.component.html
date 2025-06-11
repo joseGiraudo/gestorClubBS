@@ -1,4 +1,4 @@
-<div class="mx-2">
+<div class="">
   <!-- Hero Section Simplificado -->
   <div class="jumbotron p-5 rounded bg-body-tertiary">
     <h1 class="display-4" style="color: #1e3a8a;"><strong>Club Deportivo Independencia</strong></h1>
@@ -12,12 +12,12 @@
 
   <!-- Noticias Section -->
   @if(newsArray.length > 0) {
-    <div class="row mt-5">
+    <div class="row mt-5 ms-2">
       <div class="col-12">
         <h2 class="mb-4" style="color: #1e3a8a;">Últimas Noticias</h2>
       </div>
     </div>
-    <div class="row mb-5">
+    <div class="row mb-5 mx-2">
       @for(news of newsArray; track news.id) {
         <div class="col-md-4 mb-3">
           <div class="card h-100 border-0 shadow-sm">
@@ -51,7 +51,7 @@
 
 
   <!-- Información del Club -->
-  <div class="row mt-5">
+  <div class="row mt-5 ms-2">
     <div class="col-md-8 mb-4">
       <div class="card h-100 border-0 shadow-sm">
         <div class="card-body">
@@ -63,7 +63,7 @@
     </div>
     
     <!-- Próximos Eventos -->
-  <!--   <div class="col-md-4 mb-4">
+    <!-- <div class="col-md-4 mb-4">
       <div class="card h-100 border-0 shadow-sm">
         <div class="card-header" style="background-color: #1e3a8a; color: white;">
           <h3 class="card-title mb-0">Próximos Eventos</h3>
@@ -100,15 +100,17 @@
           @if(teamsArray.length > 0) {
             <div class="list-group list-group-flush">
               @for(team of teamsArray.slice(0, 3); track team) {
-                <a [routerLink]="[`/teams/${team.sport}`]" routerLinkActive="router-link-active" class="list-group-item list-group-item-action border-0">
-                  <h5 class="mb-1">{{team.name}}</h5>
-                  <small>{{ translateTeamSport(team.sport) }}</small>
+                <a [routerLink]="[`/teams/${team.sport}`]" routerLinkActive="router-link-active" class="list-group-item list-group-item-action bg-body-tertiary">
+                  <div class="row">
+                    <h5 class="col-9 mb-1">{{team.name}}</h5>
+                    <small class="col-3 justify-content-start" >{{ translateTeamSport(team.sport) }}</small>
+                  </div>
                 </a>
               }
             </div>
             @if(teamsArray.length > 3) {
               <div class="text-center mt-3">
-                <a [routerLink]="['/teams']" class="btn btn-sm btn-outline-warning">Ver todos</a>
+                <a [routerLink]="['/teams']" class="btn btn-sm btn-outline-warning"><strong>Ver todos</strong></a>
               </div>
             }
           } @else {
