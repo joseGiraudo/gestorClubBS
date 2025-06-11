@@ -1,8 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LoginService } from '../../../services/login.service';
-import { map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
+import { User } from '../../../models/user';
 
 @Component({
   selector: 'app-navbar',
@@ -12,28 +13,27 @@ import { AsyncPipe } from '@angular/common';
 })
 export class NavbarComponent {
 
-  private loginService = inject(LoginService);
+  isLoggedIn$: Observable<boolean>;
+  user$: Observable<User | null>;
 
-  // Observable para el estado de autenticación
-  isLoggedIn$ = this.loginService.currentUser$.pipe(
-    map(user => !!user && !!this.loginService.getToken())
-  );
-
-  // Observable para obtener el usuario actual
-  currentUser$ = this.loginService.currentUser$;
-
-  logout() {
-    this.loginService.logout();
+  constructor(private loginService: LoginService) {
+    this.isLoggedIn$ = this.loginService.currentUser$.pipe(
+      // Mapeamos para saber si hay usuario
+      map(user => !!user)
+    );
+    this.user$ = this.loginService.currentUser$;
   }
 
-  // Método para verificar roles (opcional)
-  hasRole(role: string): boolean {
-    return this.loginService.hasRole(role);
-  }
-
-  // Método para verificar múltiples roles (opcional)
   hasAnyRole(roles: string[]): boolean {
     return this.loginService.hasAnyRole(roles);
   }
 
+  logout() {
+    this.loginService.logout();
+  }
+  
+  // Método para verificar roles (opcional)
+  hasRole(role: string): boolean {
+    return this.loginService.hasRole(role);
+  }
 }

@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './components/core/home/home.component';
 import { MemberFormComponent } from './components/members/member-form/member-form.component';
 import { NewsCardComponent } from './components/news/news-card/news-card.component';
-import { adminGuard, authGuard } from './guards/auth.guard';
+import { authGuard, rolesGuard } from './guards/auth.guard';
 import { NewsListComponent } from './components/news/news-list/news-list.component';
 import { MemberListComponent } from './components/members/member-list/member-list.component';
 import { LoginComponent } from './components/core/login/login.component';
@@ -22,7 +22,9 @@ export const routes: Routes = [
 
     // MEMBERS
     { path: 'member-form', component: MemberFormComponent },
-    { path: 'members', component: MemberListComponent },
+    { path: 'members', component: MemberListComponent, 
+        canActivate: [rolesGuard], data: { roles: ['ADMIN', 'COMMITTEE'] } 
+    },
 
     // NEWS
     { path: 'news/create', component: NewsFormComponent },
@@ -31,7 +33,9 @@ export const routes: Routes = [
 
     // PAYMENTS
     { path: 'payments/pay', component: PaymentComponent },
-    { path: 'payments', component: PaymentListComponent },
+    { path: 'payments', component: PaymentListComponent,
+        canActivate: [rolesGuard], data: { roles: ['ADMIN', 'TREASURER'] }
+     },
     
     // TEAMS
     { path: 'teams', component: TeamsViewComponent },

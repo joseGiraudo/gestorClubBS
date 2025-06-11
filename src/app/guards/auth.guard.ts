@@ -15,7 +15,7 @@ export const authGuard: CanActivateFn = (route, state) => {
     return router.parseUrl('/login');
 };
 
-export const adminGuard: CanActivateFn = (route, state) => {
+export const rolesGuard: CanActivateFn = (route, state) => {
     const loginService = inject(LoginService);
     const router = inject(Router);
     
