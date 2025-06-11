@@ -100,16 +100,15 @@
           @if(teamsArray.length > 0) {
             <div class="list-group list-group-flush">
               @for(team of teamsArray.slice(0, 3); track team) {
-                <a href="#" class="list-group-item list-group-item-action border-0">
+                <a [routerLink]="[`/teams/${team.sport}`]" routerLinkActive="router-link-active" class="list-group-item list-group-item-action border-0">
                   <h5 class="mb-1">{{team.name}}</h5>
-                  <p class="mb-1">{{team.description}}</p>
                   <small>{{ translateTeamSport(team.sport) }}</small>
                 </a>
               }
             </div>
             @if(teamsArray.length > 3) {
               <div class="text-center mt-3">
-                <a href="#" class="btn btn-sm btn-outline-warning">Ver todos</a>
+                <a [routerLink]="['/teams']" class="btn btn-sm btn-outline-warning">Ver todos</a>
               </div>
             }
           } @else {

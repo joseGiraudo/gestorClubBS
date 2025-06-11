@@ -11,6 +11,7 @@ export class PaymentService {
 
   feesUrl: string = 'http://localhost:8080/fees';
   paymentsUrl: string = 'http://localhost:8080/payments';
+  private mpUrl = 'http://localhost:8080/api/v1/mp';
 
   constructor(private http: HttpClient) {}
 
@@ -92,6 +93,11 @@ export class PaymentService {
   getPaymentsByMember(dni: string): Observable<Payment[]> {
 
     return this.http.get<Payment[]>(this.paymentsUrl + `/pending/${dni}`);
+  }
+
+
+  createPreference(paymentIds: number[]) {
+    return this.http.post<{ init_point: string }>(`${this.mpUrl}/preference`, paymentIds);
   }
 
 }

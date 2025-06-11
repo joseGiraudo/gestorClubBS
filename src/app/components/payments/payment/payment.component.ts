@@ -7,7 +7,7 @@ import { Member } from '../../../models/member';
 
 // Interface para el resumen de pago
 export interface PaymentSummary {
-  feeIds: number[];
+  paymentIds: number[];
   totalAmount: number;
   selectedCount: number;
 }
@@ -28,7 +28,7 @@ export class PaymentComponent implements OnInit {
   member: Member | null = null;
   selectedPayments: Payment[] = [];
   paymentSummary: PaymentSummary = {
-    feeIds: [],
+    paymentIds: [],
     totalAmount: 0,
     selectedCount: 0
   };
@@ -96,7 +96,7 @@ export class PaymentComponent implements OnInit {
 
   private calculatePaymentSummary(): void {
     this.paymentSummary = {
-      feeIds: this.selectedPayments.map(payment => payment.fee.id),
+      paymentIds: this.selectedPayments.map(payment => payment.id),
       totalAmount: this.selectedPayments.reduce((total, payment) => total + payment.fee.amount, 0),
       selectedCount: this.selectedPayments.length
     };
@@ -111,8 +111,17 @@ export class PaymentComponent implements OnInit {
 
     // Mostrar resumen en consola (para debugging)
     console.log('Resumen de pago:', this.paymentSummary);
-    console.log('IDs de cuotas seleccionadas:', this.paymentSummary.feeIds);
+    console.log('IDs de cuotas seleccionadas:', this.paymentSummary.paymentIds);
     console.log('Total a pagar:', this.paymentSummary.totalAmount);
+
+    this.paymentService.createPreference(this.paymentSummary.paymentIds).subscribe({
+      next: (res) => {
+        window.location.href = res.init_point; // Redirige a Mercado Pago
+      },
+      error: (err) => {
+        console.error('Error al crear preferencia:', err);
+      }
+    });
 
   }
 
@@ -140,7 +149,7 @@ export class PaymentComponent implements OnInit {
     this.member = null;
     this.selectedPayments = [];
     this.paymentSummary = {
-      feeIds: [],
+      paymentIds: [],
       totalAmount: 0,
       selectedCount: 0
     };

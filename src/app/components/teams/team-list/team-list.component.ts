@@ -15,23 +15,26 @@ export class TeamListComponent implements OnInit {
 
   teamsArray : Team[] = [];
 
-  sport: string | null = null;
+  sport: string = '';
 
   translateTeamSport = translateTeamSport;
 
   constructor(private activatedRoute: ActivatedRoute) {}
 
-  ngOnInit() {
-
-    this.sport = this.activatedRoute.snapshot.paramMap.get('sport');
-
-    if(this.sport) {
-      this.teamService.getTeamsBySport(this.sport).subscribe((response) => {
-        this.teamsArray = response;
-      })
-    }   
+   ngOnInit() {
+    // Escuchar cambios en el parámetro 'sport'
+    this.activatedRoute.params.subscribe(params => {
+      this.sport = params['sport'];
+      this.loadSportsData(this.sport); // Lógica para cargar los datos según el deporte
+    });
   }
-
+  
+  loadSportsData(sport: string) {
+      this.teamService.getTeamsBySport(sport).subscribe((response) => {
+      this.teamsArray = response;
+    })
+  }
+  
   formatDate(date: Date): string {
     if (!date) return '-';
     return new Date(date).toLocaleDateString("es-AR")

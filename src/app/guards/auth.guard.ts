@@ -1,12 +1,13 @@
 import { inject } from "@angular/core";
 import { CanActivateFn, Router } from "@angular/router";
 import { AuthService } from "../services/auth.service";
+import { LoginService } from "../services/login.service";
 
 export const authGuard: CanActivateFn = (route, state) => {
-    const authService = inject(AuthService);
+    const loginService = inject(LoginService);
     const router = inject(Router);
 
-    if (authService.isLoggedIn()) {
+    if (loginService.isAuthenticated()) {
         return true;
     }
 
@@ -15,13 +16,14 @@ export const authGuard: CanActivateFn = (route, state) => {
 };
 
 export const adminGuard: CanActivateFn = (route, state) => {
-    const authService = inject(AuthService);
+    const loginService = inject(LoginService);
     const router = inject(Router);
     
-    if (authService.isAdmin()) {
-      return true;
+    const expectedRoles = route.data['roles'] as string[] | undefined;
+    
+    if (expectedRoles && loginService.hasAnyRole(expectedRoles)) {
+        return true;
     }
     
-    // Redirige a una página de acceso denegado
     return router.parseUrl('/unauthorized');
 };

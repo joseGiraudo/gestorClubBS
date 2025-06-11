@@ -1,1 +1,26 @@
-<p>teams-view works!</p>
+<div class="container mt-5">
+  <div class="text-center mb-4">
+    <h1 class="display-4">Equipos Deportivos</h1>
+  </div>
+
+  <div class="mb-4">
+    <p class="lead">
+      En nuestro club promovemos la participación activa en distintos deportes como una forma de fomentar la salud, el trabajo en equipo y el sentido de pertenencia. 
+      A través del deporte, buscamos fortalecer los lazos entre socios y promover valores fundamentales.
+    </p>
+
+    <p class="lead">
+      Si estás interesado en unirte a alguno de nuestros equipos, te invitamos a ponerte en contacto con la Comisión Directiva del club. ¡Siempre estamos abiertos a nuevos miembros con entusiasmo y ganas de participar!
+    </p>
+  </div>
+
+  <div class="text-center mb-3">
+    <h4>Para ver los equipos disponibles, seleccioná un deporte:</h4>
+  </div>
+
+  <div class="d-flex justify-content-center gap-3">
+    <button class="btn btn-lg" style="background-color: #1e3a8a; color: #f0ce60;" [routerLink]="['/teams/BASKETBALL']" routerLinkActive="router-link-active"><strong>Básquet</strong></button>
+    <button class="btn btn-lg" style="background-color: #1e3a8a; color: #f3ca42;" [routerLink]="['/teams/FOOTBALL']"><strong>Fútbol</strong></button>
+    <button class="btn btn-lg" style="background-color: #1e3a8a; color: #f3ca42;" [routerLink]="['/teams/VOLLEYBALL']"><strong>Vóley</strong></button>
+  </div>
+</div>

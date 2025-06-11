@@ -150,7 +150,7 @@
                                    </h6>
                                    <small class="text-muted">
                                      <i class="bi bi-hash me-1"></i>
-                                     ID Cuota: {{ payment.fee.id }}
+                                     ID Cuota: {{ payment.id }}
                                    </small>
                                  </div>
                                  <div class="text-end">
@@ -183,7 +183,7 @@
                                </p>
                                <p class="mb-2">
                                  <strong>IDs de cuotas:</strong> 
-                                 <code class="text-primary">{{ paymentSummary.feeIds.join(', ') }}</code>
+                                 <code class="text-primary">{{ paymentSummary.paymentIds.join(', ') }}</code>
                                </p>
                                <ul class="list-unstyled mb-0">
                                  @for(payment of selectedPayments; track payment) {
