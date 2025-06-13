@@ -105,8 +105,8 @@ export class PaymentService {
     return this.http.post<{ init_point: string }>(`${this.mpUrl}/preference`, paymentIds);
   }
 
-  approvePayment(payDTO: PaymentPayDTO): Observable<string> {
-    return this.http.post<string>(this.paymentsUrl + '/pay', payDTO);
+  approvePayment(payDTO: PaymentPayDTO): Observable<void> {
+    return this.http.post<void>(this.paymentsUrl + '/pay', payDTO);
   }
 
 }

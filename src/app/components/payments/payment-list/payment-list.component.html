@@ -261,6 +261,14 @@
                   <button class="btn btn-outline-primary" title="Ver detalles" data-bs-toggle="modal" data-bs-target="#paymentModal" (click)="openViewModal(payment)">
                     <i class="bi bi-eye"></i>
                   </button>
+                  @if(payment.status === 'PENDING') {
+                    <button
+                      class="btn btn-sm btn-success me-1"
+                      (click)="openPayModal(payment)"
+                      title="Marcar como pagado">
+                      <i class="bi bi-credit-card"></i> Pagar
+                    </button>
+                  }
                 </td>
               </tr>
             }
@@ -339,3 +347,47 @@
 </div>
 
 <app-payment-detail [selectedPayment]="selectedPayment"></app-payment-detail>
+
+
+
+<!-- Modal Pagar Pago -->
+<div class="modal fade" id="payModal" tabindex="-1" aria-labelledby="payModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" *ngIf="selectedPaymentToPay">
+      <div class="modal-header">
+        <h5 class="modal-title" id="payModalLabel">Pagar Pago #{{selectedPaymentToPay.id}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Socio:</strong> {{selectedPaymentToPay.memberName}}</p>
+        <p><strong>Monto:</strong> ${{selectedPaymentToPay.feeAmount | number:'1.2-2'}}</p>
+
+        <div class="mb-3">
+          <label for="methodSelect" class="form-label">Método de Pago:</label>
+          <select id="methodSelect" class="form-select" [(ngModel)]="paymentMethodToUse">
+            <option *ngFor="let m of methodOptions" [value]="m">{{ translatePaymentMethod(m) }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn btn-success" (click)="confirmPayment()" [disabled]="!paymentMethodToUse">Pagar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Toast Container -->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+  <div id="responseToast" class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body d-flex align-items-center">
+        <span id="toastIcon" class="me-2"></span>
+        <span id="toastBody">Mensaje del toast</span>
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+</div>

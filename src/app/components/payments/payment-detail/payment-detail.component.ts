@@ -1,8 +1,9 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PaymentService } from '../../../services/payment.service';
-import { Payment, PaymentDto } from '../../../models/payment';
+import { Payment, PaymentDto, translatePaymentMethod } from '../../../models/payment';
 import { CommonModule } from '@angular/common';
+import { translateMemberStatus } from '../../../models/member';
 
 @Component({
   selector: 'app-payment-detail',
@@ -13,6 +14,9 @@ import { CommonModule } from '@angular/common';
 export class PaymentDetailComponent {
 
   @Input() selectedPayment: PaymentDto | null = null;
+
+  translatePaymentStatus = translateMemberStatus
+  translatePaymentMethod = translatePaymentMethod
 
 
 }
