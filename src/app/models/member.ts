@@ -13,6 +13,17 @@ export interface Member {
   // teams: Team[]
 }
 
+export interface PutMemberDto {
+  name: string
+  last_name: string
+  email: string
+  phone: string
+  address: string
+  birthdate: Date
+  type: string
+}
+
+
 export enum MemberType {
   ATHLETE = 'Deportista',
   ACTIVE = 'Activo',

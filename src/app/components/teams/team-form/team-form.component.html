@@ -1,32 +1,4 @@
-<!-- 
-<div class="container mt-4">
-    <h2>Cargar un Equipo Nuevo</h2>
-    <form [formGroup]="teamForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
-        <div class="mb-3">
-            <label for="name" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="name" formControlName="name" required>
-        </div>
-        
-        <div class="mb-3">
-            <label for="description" class="form-label">Descripcion</label>
-            <input type="text" class="form-control" id="description" formControlName="description" required>
-        </div>
-        
-        <div class="mb-3">
-      <label for="sport" class="form-label">Deporte</label>
-      <select class="form-select" id="sport" formControlName="sport" required>
-        <option value="" disabled selected>Seleccione un deporte</option>
-        @for(sport of sportsArray; track sport) {
-            <option value={{sport}}>{{translateTeamSport(sport)}}</option>
-        }
-      </select>
-    </div>
-        
-        <button type="submit" class="btn btn-primary" [disabled]="teamForm.invalid">Cargar equipo</button>
-    </form>
-      
-</div>
- -->
+
 <div class="container mt-4">
   <h2>{{ isEditMode ? 'Editar Equipo' : 'Cargar un Equipo Nuevo' }}</h2>
   <form [formGroup]="teamForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data" novalidate>
@@ -124,4 +96,18 @@
         }
       </div>
     </div>
+</div>
+
+
+<!-- Toast Container -->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+  <div id="responseToast" class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body d-flex align-items-center">
+        <span id="toastIcon" class="me-2"></span>
+        <span id="toastBody">Mensaje del toast</span>
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
 </div>

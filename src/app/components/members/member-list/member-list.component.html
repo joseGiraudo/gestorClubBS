@@ -194,12 +194,12 @@
                         <i class="bi bi-check-lg"></i>
                       </button>
                     } @else {
-                      <button class="btn btn-outline-danger" title="Desactivar" (click)="deactivateMember(member.id)">
+                      <button class="btn btn-outline-danger" title="Desactivar" (click)="openDeleteModal(member)">
                         <i class="bi bi-x-lg"></i>
                       </button>
                     }
                     @if(member.status === 'PENDING') {
-                      <button class="btn btn-outline-info" title="Rechazar" (click)="approveMember(member.id)">
+                      <button class="btn btn-outline-danger" title="Rechazar" (click)="approveMember(member.id)">
                         <i class="bi bi-x-lg"></i>
                       </button>
                     }
@@ -299,3 +299,22 @@
  <app-member-modal [selectedMember]="selectedMember"></app-member-modal>
 
  <app-edit-member [selectedMember]="selectedMember"></app-edit-member>
+
+ <!-- Modal de confirmación -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-tertiary">
+        <h5 class="modal-title" id="confirmDeleteModalLabel">{{modalTitle}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        {{modalMessage}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="modalConfirm()">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</div>

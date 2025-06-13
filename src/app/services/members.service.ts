@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Member, MemberStatus, MemberType } from '../models/member';
+import { Member, MemberStatus, MemberType, PutMemberDto } from '../models/member';
 import { map, Observable, of } from 'rxjs';
 import { MemberMapperPipe } from '../pipes/member-mapper.pipe';
 import { PageResponse } from '../models/api-response';
@@ -104,16 +104,23 @@ export class MembersService {
     return this.http.post<Member>(this.apiUrl, member);
   }
 
-  updateMember(memberId: number, memberData: Member): Observable<Member | null> {
+  updateMember(memberId: number, member: Member): Observable<Member | null> {
     /*     
     const headers = new HttpHeaders({
       'x-user-id': this.sessionService.getItem('user').id.toString(),
     });
     */
 
-    const transformPipe = new MemberMapperPipe();
-    const member = transformPipe.invertTrasnform(memberData);
-    return this.http.put<Member>(`${this.apiUrl}/${memberId}`, member);
+    const memberDto : PutMemberDto = {
+      name: member.name,
+      last_name: member.lastName,
+      email: member.email,
+      phone: member.phone,
+      address: member.address,
+      birthdate: member.birthdate,
+      type: member.type
+    }
+    return this.http.put<Member>(`${this.apiUrl}/${memberId}`, memberDto);
   }
 
   deleteMember(id: number) {
