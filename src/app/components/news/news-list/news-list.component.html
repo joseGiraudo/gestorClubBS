@@ -1,57 +1,74 @@
 <div class="container mt-4">
-  <div class="row">
-    <div class="col-12">
-      <h1 class="display-4 text-center mb-5">Noticias del Equipo</h1>
-      
-      <!-- Loading Spinner -->
-      @if(loading) {
-        <div class="text-center">
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Cargando...</span>
-          </div>
-        </div>
-      }
-
-      <!-- News Grid -->
-      @if(!loading) {
-          <div class="row">
-          @for(article of newsArray; track article.id) {
-            <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 shadow-sm">
-              <img [src]="article.imageUrl" 
-                  [alt]="article.title" 
-                  class="card-img-top news-image">
-              
-              <div class="card-body d-flex flex-column">
-                <h5 class="card-title">{{ article.title }}</h5>
-                <p class="card-text text-muted flex-grow-1">{{ article.summary }}</p>
-                
-                <div class="mt-auto">
-                  <small class="text-muted d-block mb-2">
-                    <i class="bi bi-calendar3"></i>
-                    {{ formatDate(article.date) }}
-                  </small>
-                  <button class="btn btn-primary btn-sm" 
-                          (click)="viewNews(article.id)">
-                    Leer más
-                    <i class="bi bi-arrow-right ms-1"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          }
-        </div>
-      }
-
-      <!-- Empty State -->
-      @if(!loading && newsArray.length === 0) {
-        <div class="text-center py-5">
-          <i class="bi bi-newspaper display-1 text-muted"></i>
-          <h3 class="mt-3">No hay noticias disponibles</h3>
-          <p class="text-muted">Vuelve pronto para ver las últimas novedades del equipo.</p>
-        </div>
+  <div class="row align-items-center mb-5">
+    <div class="col-md-8">
+      <h2 class="display-4 mb-0">Noticias del Club</h2>
+    </div>
+    <div class="col-md-3 text-md-end text-start mt-3 mt-md-0">
+      @if(hasAnyRole(['ADMIN', 'COMMITTEE'])) {
+      <button
+        [routerLink]="['/news/create']"
+        routerLinkActive="router-link-active"
+        class="btn btn-primary"
+      >
+        <i class="bi bi-plus-circle me-2"></i> Cargar Noticia
+      </button>
       }
     </div>
   </div>
+
+  <!-- Loading Spinner -->
+  @if(loading) {
+  <div class="text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+  }
+
+  <!-- News Grid -->
+  @if(!loading) {
+  <div class="row mt-3">
+    @for(article of newsArray; track article.id) {
+    <div class="col-lg-4 col-md-6 mb-4">
+      <div class="card h-100 shadow-sm">
+        <img
+          [src]="article.imageUrl"
+          [alt]="article.title"
+          class="card-img-top news-image"
+        />
+
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">{{ article.title }}</h5>
+          <p class="card-text text-muted flex-grow-1">{{ article.summary }}</p>
+
+          <div class="mt-auto">
+            <small class="text-muted d-block mb-2">
+              <i class="bi bi-calendar3"></i>
+              {{ formatDate(article.date) }}
+            </small>
+            <button
+              class="btn btn-primary btn-sm"
+              (click)="viewNews(article.id)"
+            >
+              Leer más
+              <i class="bi bi-arrow-right ms-1"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+  }
+
+  <!-- Empty State -->
+  @if(!loading && newsArray.length === 0) {
+  <div class="text-center py-5">
+    <i class="bi bi-newspaper display-1 text-muted"></i>
+    <h3 class="mt-3">No hay noticias disponibles</h3>
+    <p class="text-muted">
+      Vuelve pronto para ver las últimas novedades del equipo.
+    </p>
+  </div>
+  }
 </div>

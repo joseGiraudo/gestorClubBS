@@ -17,6 +17,8 @@ declare var bootstrap: any;
 export class MemberListComponent implements OnInit {
   members: Member[] = [];
   selectedMember: Member | null = null;
+  modalAction: 'activate' | 'deactivate' | null = null;
+
 
   // Parámetros de paginación
   currentPage = 0
@@ -238,7 +240,7 @@ export class MemberListComponent implements OnInit {
   }
 
   deactivateMember(id: any) {
-    this.membersService.deleteMember(id).subscribe({
+    this.membersService.deactivateMember(id).subscribe({
       next: (response) => {
         console.log(response);
         this.showToast('Socio desactivado', 'success')
@@ -254,23 +256,49 @@ export class MemberListComponent implements OnInit {
   }
 
   activateMember(id: any) {
-    console.log("Activar miembro con id: " + id)
-    // Implementar activación
-    this.loadMembers() // Recargar después de la acción
+    this.membersService.activateMember(id).subscribe({
+      next: (response) => {
+        console.log(response);
+        this.showToast('Socio activado', 'success')
+      },
+      error: (err) => {
+        console.log(err);
+        this.showToast('Error al activar el socio', 'error')        
+      },
+      complete: () => {
+        this.loadMembers();
+      }
+    })
   }
 
   openDeleteModal(member: Member) {
     this.selectedMember = member;
+    this.modalAction = 'deactivate';
     this.modalTitle = 'Confirmación';
     this.modalMessage = `¿Desea marcar a ${member.name} ${member.lastName} como Inactivo?`
     this.modal.show();
   }
 
+  openActivateModal(member: Member) {
+    this.selectedMember = member;
+    this.modalAction = 'activate';
+    this.modalTitle = 'Confirmación';
+    this.modalMessage = `¿Desea marcar a ${member.name} ${member.lastName} como Activo?`
+    this.modal.show();
+  }
+
   modalConfirm(): void {
-    if(this.selectedMember) {
-      this.deactivateMember(this.selectedMember.id)
+    if (this.selectedMember && this.modalAction) {
+      if (this.modalAction === 'deactivate') {
+        this.deactivateMember(this.selectedMember.id);
+      } else if (this.modalAction === 'activate') {
+        this.activateMember(this.selectedMember.id);
+      }
     }
-    // Cerrar el modal
+
+    // Limpiar estado y cerrar el modal
+    this.selectedMember = null;
+    this.modalAction = null;
     this.modal.hide();
   }
 

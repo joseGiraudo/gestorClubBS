@@ -123,13 +123,22 @@ export class MembersService {
     return this.http.put<Member>(`${this.apiUrl}/${memberId}`, memberDto);
   }
 
-  deleteMember(id: number) {
+  deactivateMember(id: number) {
     /*
     const headers = new HttpHeaders({
       'x-user-id': this.sessionService.getItem('user').id.toString(),
     });
     */
-    return this.http.delete<any>(this.apiUrl + `/${id}`);
+    return this.http.put<any>(this.apiUrl + `/deactivate/${id}`, {});
+  }
+
+  activateMember(id: number) {
+    /*
+    const headers = new HttpHeaders({
+      'x-user-id': this.sessionService.getItem('user').id.toString(),
+    });
+    */
+    return this.http.put<any>(this.apiUrl + `/activate/${id}`, {});
   }
 
   getPendingMembers(): Observable<Member[]> {

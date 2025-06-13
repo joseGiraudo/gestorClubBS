@@ -69,7 +69,7 @@
             <input 
               type="text" 
               [(ngModel)]="searchTerm" 
-              (keyup.enter)="searchMembers()"
+              (keyup)="searchMembers()"
               placeholder="Ingrese término de búsqueda..."
               class="form-control">
             <button (click)="searchMembers()" class="btn btn-primary">
