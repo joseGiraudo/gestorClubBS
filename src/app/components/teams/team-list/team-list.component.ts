@@ -1,17 +1,23 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { TeamService } from '../../../services/team.service';
 import { Team, translateTeamSport } from '../../../models/team';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { LoginService } from '../../../services/login.service';
+import { map, Observable } from 'rxjs';
+import { User } from '../../../models/user';
 
 @Component({
   selector: 'app-team-list',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './team-list.component.html',
   styleUrl: './team-list.component.css'
 })
 export class TeamListComponent implements OnInit {
 
   private teamService = inject(TeamService);
+  
+  isLoggedIn$: Observable<boolean>;
+  user$: Observable<User | null>;
 
   teamsArray : Team[] = [];
 
@@ -19,14 +25,24 @@ export class TeamListComponent implements OnInit {
 
   translateTeamSport = translateTeamSport;
 
-  constructor(private activatedRoute: ActivatedRoute) {}
+  constructor(private activatedRoute: ActivatedRoute, private loginService: LoginService) {
+    this.isLoggedIn$ = this.loginService.currentUser$.pipe(
+      // Mapeamos para saber si hay usuario
+      map(user => !!user)
+    );
+    this.user$ = this.loginService.currentUser$;
+  }
 
-   ngOnInit() {
+  ngOnInit() {
     // Escuchar cambios en el parámetro 'sport'
     this.activatedRoute.params.subscribe(params => {
       this.sport = params['sport'];
       this.loadSportsData(this.sport); // Lógica para cargar los datos según el deporte
     });
+  }
+
+  hasAnyRole(roles: string[]): boolean {
+    return this.loginService.hasAnyRole(roles);
   }
   
   loadSportsData(sport: string) {

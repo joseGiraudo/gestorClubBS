@@ -39,8 +39,12 @@ export const routes: Routes = [
     
     // TEAMS
     { path: 'teams', component: TeamsViewComponent },
-    { path: 'teams/create', component: TeamFormComponent },
+    { path: 'teams/create', component: TeamFormComponent,
+        canActivate: [rolesGuard], data: { roles: ['ADMIN'] }
+    },
     { path: 'teams/:sport', component: TeamListComponent },
+    { path: 'teams/:id/edit', component: TeamFormComponent,
+        canActivate: [rolesGuard], data: { roles: ['ADMIN'] } },
 
 
     // USERS

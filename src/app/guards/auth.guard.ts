@@ -2,17 +2,19 @@ import { inject } from "@angular/core";
 import { CanActivateFn, Router } from "@angular/router";
 import { AuthService } from "../services/auth.service";
 import { LoginService } from "../services/login.service";
+import { map, take } from "rxjs";
 
 export const authGuard: CanActivateFn = (route, state) => {
-    const loginService = inject(LoginService);
-    const router = inject(Router);
+  const loginService = inject(LoginService);
+  const router = inject(Router);
 
-    if (loginService.isAuthenticated()) {
-        return true;
-    }
-
-    // Redirige al login si no está autenticado
-    return router.parseUrl('/login');
+  return loginService.currentUser$.pipe(
+    take(1),
+    map(user => {
+      if (user) return true;
+      return router.parseUrl('/login');
+    })
+  );
 };
 
 export const rolesGuard: CanActivateFn = (route, state) => {

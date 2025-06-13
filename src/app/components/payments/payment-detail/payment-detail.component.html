@@ -1,0 +1,14 @@
+<!-- Modal -->
+<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      @if(selectedPayment) {
+        <div class="modal-header">
+            <h5 class="modal-title" id="paymentModalLabel">Información del Pago</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+      }
+      {{selectedPayment?.memberName}}
+    </div>
+  </div>
+</div>

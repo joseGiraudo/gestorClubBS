@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Fee, Payment, PaymentDto } from '../models/payment';
+import { Fee, Payment, PaymentDto, PaymentPayDTO } from '../models/payment';
 import { PageResponse } from '../models/api-response';
 
 @Injectable({
@@ -95,9 +95,18 @@ export class PaymentService {
     return this.http.get<Payment[]>(this.paymentsUrl + `/pending/${dni}`);
   }
 
+  updatePayment(id: number, payment: PaymentDto): Observable<Payment> {
+
+    return this.http.put<Payment>(this.paymentsUrl + id, payment);
+  }
+
 
   createPreference(paymentIds: number[]) {
     return this.http.post<{ init_point: string }>(`${this.mpUrl}/preference`, paymentIds);
+  }
+
+  approvePayment(payDTO: PaymentPayDTO): Observable<string> {
+    return this.http.post<string>(this.paymentsUrl + '/pay', payDTO);
   }
 
 }

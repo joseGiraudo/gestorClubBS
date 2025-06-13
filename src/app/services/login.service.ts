@@ -2,9 +2,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { LoginRequest, LoginResponse } from '../models/login';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { User } from '../models/user';
 import { Router } from '@angular/router';
+import { error } from 'node:console';
 
 @Injectable({
   providedIn: 'root'
@@ -28,8 +29,6 @@ export class LoginService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
-
-    console.log(loginRequest)
 
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, loginRequest).pipe(
       tap((response) => {
@@ -69,7 +68,14 @@ export class LoginService {
   }
 
   isAuthenticated(): boolean {
+    return !!this.getToken();
     return !!this.getToken() && !!this.getCurrentUser()
+  }
+
+  isAuthenticated$(): Observable<boolean> {
+    return this.currentUser$.pipe(
+      map(user => !!user)
+    );
   }
 
   hasRole(role: string): boolean {
@@ -82,24 +88,39 @@ export class LoginService {
     if (!user) return false
     return roles.includes(user.role)
   }
-
-  private loadUserFromToken(): void {
-    const token = this.getToken()
+  
+  loadUserFromToken(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      const token = this.getToken();
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      });
     if (token) {
       try {
-        const payload = JSON.parse(atob(token.split(".")[1]))
+        const payload = JSON.parse(atob(token.split(".")[1]));
         if (payload.exp * 1000 > Date.now()) {
-          // Token válido, cargar usuario
-          this.http.get<User>(`${this.apiUrl}/me`).subscribe({
-            next: (user) => this.currentUserSubject.next(user),
-            error: () => this.logout(),
-          })
+          this.http.get<User>(`${this.apiUrl}/me`, {headers}).subscribe({
+            next: (user) => {
+              this.currentUserSubject.next(user);
+              resolve();
+            },
+            error: () => {
+              this.logout();
+              resolve();
+            }
+          });
         } else {
-          this.logout()
+          this.logout();
+          resolve();
         }
-      } catch (error) {
-        this.logout()
+      } catch {
+        this.logout();
+        resolve();
       }
+    } else {
+      resolve();
     }
-  }
+  });
+}
 }

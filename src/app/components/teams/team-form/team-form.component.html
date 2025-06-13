@@ -1,4 +1,4 @@
-
+<!-- 
 <div class="container mt-4">
     <h2>Cargar un Equipo Nuevo</h2>
     <form [formGroup]="teamForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
@@ -25,4 +25,103 @@
         <button type="submit" class="btn btn-primary" [disabled]="teamForm.invalid">Cargar equipo</button>
     </form>
       
+</div>
+ -->
+<div class="container mt-4">
+  <h2>{{ isEditMode ? 'Editar Equipo' : 'Cargar un Equipo Nuevo' }}</h2>
+  <form [formGroup]="teamForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data" novalidate>
+    <div class="mb-3">
+      <label for="name" class="form-label">Nombre</label>
+      <input type="text" class="form-control" id="name" formControlName="name" required>
+      @if(teamForm.get('name')?.invalid && teamForm.get('name')?.touched) {
+          <div class="text-danger">
+            El nombre es requerido
+          </div>
+      }
+    </div>
+
+    <div class="mb-3">
+      <label for="description" class="form-label">Descripción</label>
+      <input type="text" class="form-control" id="description" formControlName="description" required>
+      @if(teamForm.get('description')?.invalid && teamForm.get('description')?.touched) {
+          <div class="text-danger">
+            La descripción es requerida
+          </div>
+      }
+    </div>
+
+    <div class="mb-3">
+      <label for="sport" class="form-label">Deporte</label>
+      <select class="form-select" id="sport" formControlName="sport" required>
+        <option value="" disabled>Seleccione un deporte</option>
+        @for(sport of sportsArray; track sport) {
+          <option [value]="sport">{{ translateTeamSport(sport) }}</option>
+        }
+      </select>
+      @if(teamForm.get('sport')?.invalid && teamForm.get('sport')?.touched) {
+          <div class="text-danger">
+            Debe seleccionar un deporte
+          </div>
+      }
+    </div>
+    
+
+
+    <button type="submit" class="btn btn-primary" [disabled]="teamForm.invalid">
+      {{ isEditMode ? 'Actualizar Equipo' : 'Cargar equipo' }}
+    </button>
+  </form>
+
+    <!-- SECCIÓN DE BÚSQUEDA Y SELECCIÓN DE SOCIOS -->
+    <div class="row">
+      <!-- Socios asignados (izquierda) -->
+      <div class="col-md-6">
+        <label class="form-label">Socios asignados al equipo</label>
+        <ul class="list-group" style="max-height: 400px; overflow-y: auto;">
+          @for(member of selectedMembers; track member.id) {
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              {{ member.name }} {{ member.lastName }} - DNI: {{ member.dni }}
+              <button type="button" class="btn btn-sm btn-danger" (click)="removeMember(member.id)">Quitar</button>
+            </li>
+          }
+          @if(selectedMembers.length === 0) {
+            <li class="list-group-item text-muted">No hay socios asignados</li>
+          }
+        </ul>
+      </div>
+
+      <!-- Socios disponibles para agregar (derecha) -->
+      <div class="col-md-6">
+        <label for="searchMembers" class="form-label">Buscar socios para agregar</label>
+        <div class="input-group">
+            <input 
+              type="text" 
+              [(ngModel)]="searchTerm" 
+              (keyup.enter)="searchMembers()"
+              placeholder="Ingrese término de búsqueda..."
+              class="form-control">
+            <button (click)="searchMembers()" class="btn btn-primary">
+              <i class="bi bi-search"></i> Buscar
+            </button>
+          </div>
+
+        @if(members.length > 0) {
+          <div class="list-group" style="max-height: 400px; overflow-y: auto;">
+            @for(member of members; track member.id) {
+              <button
+                type="button"
+                class="list-group-item list-group-item-action"
+                (click)="addMemberToTeam(member)"
+                [disabled]="isMemberSelected(member.id)"
+              >
+                {{ member.name }} {{ member.lastName }} - DNI: {{ member.dni }}
+              </button>
+            }
+          </div>
+        }
+        @if(members.length === 0) {
+          <div class="text-muted">No se encontraron socios</div>    
+        }
+      </div>
+    </div>
 </div>

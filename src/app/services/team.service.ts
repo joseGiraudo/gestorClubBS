@@ -22,7 +22,7 @@ export class TeamService {
     return this.http.get<Team>(this.apiUrl + "/" + id);
   }
 
-  createTeam(teamData: CreateTeam): Observable<Team | null> {
+  createTeam(teamData: CreateTeam): Observable<Team> {
     /*     
     const headers = new HttpHeaders({
       'x-user-id': this.sessionService.getItem('user').id.toString(),
@@ -40,7 +40,11 @@ export class TeamService {
       'x-user-id': this.sessionService.getItem('user').id.toString(),
     });
     */
-    return this.http.post<Team>(`${this.apiUrl}/${memberId}`, teamData);
+    return this.http.put<Team>(`${this.apiUrl}/${memberId}`, teamData);
+  }
+
+  updateTeamMembers(id: number, memberIds: number[]): Observable<void> {
+    return this.http.put<void>(this.apiUrl + `/${id}/members`, memberIds);
   }
 
   deleteTeam(id: number) {

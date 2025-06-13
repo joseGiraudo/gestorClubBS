@@ -258,7 +258,9 @@
                 <td>{{ translatePaymentStatus(payment.status) || '-'}}</td>
                 <td>{{ translatePaymentMethod(payment.method || '-') }}</td>
                 <td>
-                  
+                  <button class="btn btn-outline-primary" title="Ver detalles" data-bs-toggle="modal" data-bs-target="#paymentModal" (click)="openViewModal(payment)">
+                    <i class="bi bi-eye"></i>
+                  </button>
                 </td>
               </tr>
             }
@@ -335,3 +337,5 @@
     </div>
   }
 </div>
+
+<app-payment-detail [selectedPayment]="selectedPayment"></app-payment-detail>

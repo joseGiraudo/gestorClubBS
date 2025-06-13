@@ -36,6 +36,11 @@ export interface PaymentDto {
     recordedBy?: number
 }
 
+export interface PaymentPayDTO {
+  paymentId: number,
+  method: PaymentMethod,
+}
+
 export enum PaymentStatus {
   PENDING = 'PENDING',
   PAID = 'APPROVED',
@@ -62,7 +67,7 @@ export function translatePaymentStatus(status: string): string {
     case 'CANCELLED':
         return 'Cancelado';
     default:
-      return '';
+      return '-';
   }
 }
 
@@ -79,6 +84,6 @@ export function translatePaymentMethod(status: string): string {
     case 'CREDIT_CARD':
         return 'Crédito';
     default:
-      return '';
+      return '-';
   }
 }

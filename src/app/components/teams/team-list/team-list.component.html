@@ -8,19 +8,27 @@
                 @for(team of teamsArray; track team) {
                   <div class="card mb-3">
                       <div class="card-header d-flex justify-content-between align-items-center">
-                          <h5 class="card-title mb-0">{{team.name}}</h5>
-                          <span class="badge bg-secondary">{{translateTeamSport(team.sport)}}</span>
+                            <h5 class="card-title mb-0">{{team.name}}</h5>
+                            @if(hasAnyRole(['ADMIN'])) {
+                                <button 
+                                class="badge bg-secondary" 
+                                [routerLink]="['/teams', team.id, 'edit']">
+                                Editar
+                            </button>
+                            } @else {
+                                <span class="badge bg-secondary">{{translateTeamSport(team.sport)}}</span>
+                            }
                       </div>
                       <div class="card-body">
-                          <p class="card-text">{{team.description}}</p>
-                          <h6>Miembros:</h6>
-                          <div class="row g-3">
-                              @for(member of team.members; track member) {
-                                  <div class="col-md-3">
-                                      {{member.name}} ({{formatDate(member.birthdate)}})
-                                  </div>
-                              }
-                          </div>
+                            <p class="card-text">{{team.description}}</p>
+                            <h6>Miembros:</h6>
+                            <div class="row g-3">
+                                @for(member of team.members; track member) {
+                                    <div class="col-md-3">
+                                        {{member.name}} ({{formatDate(member.birthdate)}})
+                                    </div>
+                                }
+                            </div>
                       </div>
                   </div>
                 }
