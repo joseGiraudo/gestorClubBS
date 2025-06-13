@@ -31,7 +31,7 @@ export class TeamFormComponent implements OnInit {
   private teamService = inject(TeamService);
   private memberService = inject(MembersService);
 
-  constructor(private fb: FormBuilder, private activatedRoute: ActivatedRoute,) {
+  constructor(private fb: FormBuilder, private activatedRoute: ActivatedRoute, private router: Router) {
     this.teamForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
@@ -71,7 +71,10 @@ export class TeamFormComponent implements OnInit {
           this.teamService.updateTeamMembers(this.teamId!, memberIds).subscribe({
             next: () => console.log('Socios actualizados correctamente'),
             error: (e) => console.error('Error actualizando socios:', e),
-            complete: () => console.log('Actualización completa')
+            complete: () => {
+              console.log('Actualización completa')
+              this.router.navigate(['/teams/', team.sport])
+            }
           });
         },
         error: (e) => console.error('Error actualizando equipo:', e)
@@ -86,7 +89,10 @@ export class TeamFormComponent implements OnInit {
             this.teamService.updateTeamMembers(createdTeam.id, memberIds).subscribe({
               next: () => console.log('Socios asignados correctamente'),
               error: (e) => console.error('Error asignando socios:', e),
-              complete: () => console.log('Asignación de socios completa')
+              complete: () => {
+                console.log('Asignación de socios completa');                
+                this.router.navigate(['/teams/', team.sport]);
+              }
             });
           }
         },

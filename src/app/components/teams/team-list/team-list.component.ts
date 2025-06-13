@@ -44,6 +44,18 @@ export class TeamListComponent implements OnInit {
   hasAnyRole(roles: string[]): boolean {
     return this.loginService.hasAnyRole(roles);
   }
+
+  deleteTeam(id: number) {
+    this.teamService.deleteTeam(id).subscribe({
+      next: () => {
+        alert('Equipo eliminado');
+        this.loadSportsData(this.sport)
+      },
+      error: (e) => {
+        console.error('Error actualizando socios:', e)
+      }
+    });
+  }
   
   loadSportsData(sport: string) {
       this.teamService.getTeamsBySport(sport).subscribe((response) => {
