@@ -353,27 +353,55 @@
 <!-- Modal Pagar Pago -->
 <div class="modal fade" id="payModal" tabindex="-1" aria-labelledby="payModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <div class="modal-content" *ngIf="selectedPaymentToPay">
-      <div class="modal-header">
-        <h5 class="modal-title" id="payModalLabel">Pagar Pago #{{selectedPaymentToPay.id}}</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-      </div>
-      <div class="modal-body">
-        <p><strong>Socio:</strong> {{selectedPaymentToPay.memberName}}</p>
-        <p><strong>Monto:</strong> ${{selectedPaymentToPay.feeAmount | number:'1.2-2'}}</p>
+    @if(selectedPaymentToPay) {
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="payModalLabel">Pagar Pago N° #{{selectedPaymentToPay.id}}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Datos del Socio -->
+        <h5 class="mb-3 mt-2 border-bottom pb-1"><i class="bi bi-person-circle"></i>  Socio</h5>
+        <div class="row mb-4">
+          <div class="col-sm-6">
+            <strong>Nombre:</strong> {{ selectedPaymentToPay.memberName }}
+          </div>
+          <div class="col-sm-6">
+            <strong>DNI:</strong> {{ selectedPaymentToPay.memberDni }}
+          </div>
+        </div>
 
-        <div class="mb-3">
-          <label for="methodSelect" class="form-label">Método de Pago:</label>
-          <select id="methodSelect" class="form-select" [(ngModel)]="paymentMethodToUse">
-            <option *ngFor="let m of methodOptions" [value]="m">{{ translatePaymentMethod(m) }}</option>
-          </select>
+        <!-- Datos de la Cuota -->
+        <h5 class="mb-3 mt-2 border-bottom pb-1"><i class="bi bi-calendar"></i>  Cuota</h5>
+        <div class="row mb-4">
+          <div class="col-sm-4">
+            <strong>Mes:</strong> {{ selectedPaymentToPay.feeMonth }}
+          </div>
+          <div class="col-sm-4">
+            <strong>Año:</strong> {{ selectedPaymentToPay.feeYear }}
+          </div>
+          <div class="col-sm-4">
+            <strong>Monto:</strong> ${{
+              selectedPaymentToPay.feeAmount | number : "1.2-2"
+            }}
+          </div>
+        </div>
+  
+          <div class="mb-3">
+            <label for="methodSelect" class="form-label">Método de Pago:</label>
+            <select id="methodSelect" class="form-select" [(ngModel)]="paymentMethodToUse">
+              @for(m of methodOptions; track m) {
+                <option [value]="m">{{ translatePaymentMethod(m) }}</option>
+              }
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button class="btn btn-success" (click)="confirmPayment()" [disabled]="!paymentMethodToUse">Pagar</button>
         </div>
       </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button class="btn btn-success" (click)="confirmPayment()" [disabled]="!paymentMethodToUse">Pagar</button>
-      </div>
-    </div>
+    }
   </div>
 </div>
 

@@ -16,6 +16,7 @@ import { TeamFormComponent } from './components/teams/team-form/team-form.compon
 import { TeamsViewComponent } from './components/teams/teams-view/teams-view.component';
 import { UnauthorizedComponent } from './components/core/unauthorized/unauthorized.component';
 import { NotFoundComponent } from './components/core/not-found/not-found.component';
+import { MemberReportComponent } from './components/reports/member-report/member-report.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -50,6 +51,9 @@ export const routes: Routes = [
     // USERS
     { path: 'users/create', component: UserFormComponent },
     { path: 'users', component: UserListComponent },
+
+    //REPORTS
+    { path: 'reports', component: MemberReportComponent },
 
     // AUTH
     { path: 'login', component: LoginComponent },

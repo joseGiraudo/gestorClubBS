@@ -1,44 +1,102 @@
 <!-- Modal -->
-<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="paymentModal"
+  tabindex="-1"
+  aria-labelledby="paymentModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog">
-    <div class="modal-content" *ngIf="selectedPayment">
+    @if(selectedPayment) {
+
+    <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="paymentModalLabel">Información del Pago</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Cerrar"
+        ></button>
       </div>
       <div class="modal-body">
-        <div class="row mb-2">
-          <div class="col-sm-6"><strong>Socio:</strong> {{ selectedPayment.memberName }}</div>
-          <div class="col-sm-6"><strong>DNI:</strong> {{ selectedPayment.memberDni }}</div>
+        <!-- Datos del Socio -->
+        <h5 class="mb-3 mt-2 border-bottom pb-1"><i class="bi bi-person-circle"></i>  Socio</h5>
+        <div class="row mb-4">
+          <div class="col-sm-6">
+            <strong>Nombre:</strong> {{ selectedPayment.memberName }}
+          </div>
+          <div class="col-sm-6">
+            <strong>DNI:</strong> {{ selectedPayment.memberDni }}
+          </div>
         </div>
-        <div class="row mb-2">
-          <div class="col-sm-4"><strong>Mes:</strong> {{ selectedPayment.feeMonth }}</div>
-          <div class="col-sm-4"><strong>Año:</strong> {{ selectedPayment.feeYear }}</div>
-          <div class="col-sm-4"><strong>Monto:</strong> ${{ selectedPayment.feeAmount | number:'1.2-2' }}</div>
+
+        <!-- Datos de la Cuota -->
+        <h5 class="mb-3 mt-2 border-bottom pb-1"><i class="bi bi-calendar"></i>  Cuota</h5>
+        <div class="row mb-4">
+          <div class="col-sm-4">
+            <strong>Mes:</strong> {{ selectedPayment.feeMonth }}
+          </div>
+          <div class="col-sm-4">
+            <strong>Año:</strong> {{ selectedPayment.feeYear }}
+          </div>
+          <div class="col-sm-4">
+            <strong>Monto:</strong> ${{
+              selectedPayment.feeAmount | number : "1.2-2"
+            }}
+          </div>
         </div>
-        <div class="row mb-2">
-          <div class="col-sm-6"><strong>Emitido:</strong> {{ selectedPayment.issuedDate | date:'shortDate' }}</div>
-          <div class="col-sm-6"><strong>Pagado:</strong> {{ selectedPayment.paymentDate ? (selectedPayment.paymentDate | date:'shortDate') : '-' }}
+
+        <!-- Datos del Pago -->
+        <h5 class="mb-3 mt-2 border-bottom pb-1"><i class="bi bi-wallet2"></i>  Pago</h5>
+        <div class="row mb-4">
+          <div class="col-sm-6">
+            <strong>Emitido:</strong>
+            {{ selectedPayment.issuedDate | date : "shortDate" }}
+          </div>
+          <div class="col-sm-6">
+            <strong>Pagado:</strong>
+            {{
+              selectedPayment.paymentDate
+                ? (selectedPayment.paymentDate | date : "shortDate")
+                : "-"
+            }}
+          </div>
         </div>
+
+        <div class="row mb-3 mt-2">
+          <div class="col-sm-6">
+            <strong>Estado:</strong>
+            {{ translatePaymentStatus(selectedPayment.status) }}
+          </div>
+          <div class="col-sm-6">
+            <strong>Método:</strong>
+            {{ translatePaymentMethod(selectedPayment.method || "") }}
+          </div>
         </div>
-        <div class="row mb-2">
-          <div class="col-sm-6"><strong>Estado:</strong> {{ translatePaymentStatus(selectedPayment.status) }}</div>
-          <div class="col-sm-6"><strong>Método:</strong> {{ translatePaymentMethod(selectedPayment.method || '') }}</div>
-        </div>
+
         @if(selectedPayment.mercadoPagoId) {
-          <div class="row mb-2">
-            <div class="col-sm-12"><strong>ID Mercado Pago:</strong> {{ selectedPayment.mercadoPagoId }}</div>
+        <div class="row mb-3">
+          <div class="col-sm-12">
+            <strong>ID Mercado Pago:</strong>
+            {{ selectedPayment.mercadoPagoId }}
           </div>
-        }
+        </div>
+        } 
         @if(selectedPayment.recordedBy) {
-          <div class="row mb-2" >
-            <div class="col-sm-12"><strong>Registrado por:</strong> {{ selectedPayment.recordedBy }}</div>
+        <div class="row mb-3">
+          <div class="col-sm-12">
+            <strong>Registrado por:</strong> {{ selectedPayment.recordedBy }}
           </div>
+        </div>
         }
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cerrar
+        </button>
       </div>
     </div>
+    }
   </div>
 </div>

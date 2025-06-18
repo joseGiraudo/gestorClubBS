@@ -1,0 +1,19 @@
+
+@if(report) {
+    <div> 
+      <h3>Reporte de Socios</h3>
+      <p><strong>Total de socios:</strong> {{ report.totalMembers }}</p>
+      <p><strong>Altas en el último mes:</strong> {{ report.newThisMonth }}</p>
+    
+      <h5>Distribución por rangos etarios:</h5>
+      <ul>
+        @for(range of objectKeys(report.byAgeGroup); track range) {
+            <li>
+              {{ range }}: {{ report.byAgeGroup[range] }}
+            </li>
+        }
+      </ul>
+    </div>
+} @else {
+    <h4>No se puede conectar con el servidor</h4>
+}

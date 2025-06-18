@@ -79,7 +79,7 @@ export class EditMemberComponent implements OnInit, OnChanges {
         email: this.selectedMember.email,
         phone: this.selectedMember.phone,
         address: this.selectedMember.address,
-        birthdate: this.selectedMember.birthdate,
+        birthdate: this.formatDateForInput(new Date(this.selectedMember.birthdate)),
         type: this.selectedMember.type,
         status: this.selectedMember.status
       });
@@ -133,6 +133,13 @@ export class EditMemberComponent implements OnInit, OnChanges {
         modal.hide();
       }
     }
+  }
+
+  formatDateForInput(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // enero es 0
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 
   clearMember() {
