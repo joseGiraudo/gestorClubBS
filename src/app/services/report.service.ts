@@ -16,11 +16,11 @@ export class ReportService {
     return this.http.get<MemberReportDto>(`${this.apiUrl}/summary`)
   }
 
-  getAthletesBySport(): Observable<SportCountDto> {
-    return this.http.get<SportCountDto>(`${this.apiUrl}/athletes-by-sport`)
+  getAthletesBySport(): Observable<SportCountDto[]> {
+    return this.http.get<SportCountDto[]>(`${this.apiUrl}/athletes-by-sport`)
   }
 
-  getNewMembersByMonth(): Observable<MonthlyCountDto> {
-    return this.http.get<MonthlyCountDto>(`${this.apiUrl}/new-members-per-month`)
+  getNewMembersByMonth(): Observable<MonthlyCountDto[]> {
+    return this.http.get<MonthlyCountDto[]>(`${this.apiUrl}/new-members-per-month`)
   }
 }

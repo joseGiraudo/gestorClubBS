@@ -1,0 +1,8 @@
+/* En tu member-report.component.css */
+.scroll-container {
+  overflow-x: auto;
+  padding-bottom: 1rem;
+}
+.bar-chart-wrapper {
+  min-width: 600px; /* o más si tenés muchos meses */
+}

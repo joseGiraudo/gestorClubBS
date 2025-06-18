@@ -5,6 +5,10 @@ import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideHttpClient } from '@angular/common/http';
 import { LoginService } from './services/login.service';
+import {
+provideCharts,
+withDefaultRegisterables,
+} from 'ng2-charts';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,5 +20,7 @@ export const appConfig: ApplicationConfig = {
       const loginService = inject(LoginService);
       return loginService.loadUserFromToken();
     }),
+
+    provideCharts(withDefaultRegisterables()),
   ]
 };
