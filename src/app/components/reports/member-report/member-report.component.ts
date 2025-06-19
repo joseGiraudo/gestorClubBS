@@ -82,6 +82,7 @@ export class MemberReportComponent implements OnInit {
         }]
       };
     });
+
   }
 
   get totalAthletes(): number {
