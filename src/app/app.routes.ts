@@ -18,6 +18,9 @@ import { UnauthorizedComponent } from './components/core/unauthorized/unauthoriz
 import { NotFoundComponent } from './components/core/not-found/not-found.component';
 import { MemberReportComponent } from './components/reports/member-report/member-report.component';
 import { PaymentReportComponent } from './components/reports/payment-report/payment-report.component';
+import { PaymentSuccessComponent } from './components/mp/payment-success/payment-success.component';
+import { PaymentPendingComponent } from './components/mp/payment-pending/payment-pending.component';
+import { PaymentFailureComponent } from './components/mp/payment-failure/payment-failure.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -56,6 +59,11 @@ export const routes: Routes = [
     //REPORTS
     { path: 'reports/members', component: MemberReportComponent },
     { path: 'reports/payments', component: PaymentReportComponent },
+
+    // MP PAYMENTS
+    { path: 'payment/success', component: PaymentSuccessComponent },
+  { path: 'payment/pending', component: PaymentPendingComponent },
+  { path: 'payment/failure', component: PaymentFailureComponent },
 
     // AUTH
     { path: 'login', component: LoginComponent },

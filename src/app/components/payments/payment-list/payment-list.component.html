@@ -258,12 +258,12 @@
                 <td>{{ translatePaymentStatus(payment.status) || '-'}}</td>
                 <td>{{ translatePaymentMethod(payment.method || '-') }}</td>
                 <td>
-                  <button class="btn btn-outline-primary" title="Ver detalles" data-bs-toggle="modal" data-bs-target="#paymentModal" (click)="openViewModal(payment)">
+                  <button class="btn btn-outline-primary me-1" title="Ver detalles" data-bs-toggle="modal" data-bs-target="#paymentModal" (click)="openViewModal(payment)">
                     <i class="bi bi-eye"></i>
                   </button>
                   @if(payment.status === 'PENDING') {
                     <button
-                      class="btn btn-outline-success mx-1"
+                      class="btn btn-outline-success"
                       (click)="openPayModal(payment)"
                       title="Marcar como pagado">
                       <i class="bi bi-credit-card"></i>

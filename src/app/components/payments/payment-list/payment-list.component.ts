@@ -269,6 +269,7 @@ export class PaymentListComponent implements OnInit {
 
   // METODOS PARA EL MODAL
   openViewModal(payment: PaymentDto) {
+    console.log(payment);    
     this.selectedPayment = payment;
   }
 
