@@ -1,6 +1,9 @@
 .featured-image {
-  max-height: 400px;
-  object-fit: cover;
+  max-width: 800px;      /* ✅ límite de ancho para que no se estire demasiado */
+  max-height: 450px;     /* ✅ altura máxima para evitar que ocupe toda la pantalla */
+  object-fit: contain;   /* ✅ evita recorte de imagen y mantiene proporción */
+  width: 100%;           /* ✅ ocupa el contenedor disponible */
+  height: auto;          /* ✅ mantiene proporciones */
 }
 
 .article-content {

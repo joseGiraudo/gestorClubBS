@@ -63,7 +63,7 @@ export class NewsCardComponent implements OnInit {
   }
 
   formatContent(content: string): string[] {
-    return content.split('\n').filter(paragraph => paragraph.trim().length > 0);
+    return content.split('/n').filter(paragraph => paragraph.trim().length > 0);
   }
 
 }
