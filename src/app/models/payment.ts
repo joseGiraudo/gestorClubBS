@@ -7,6 +7,12 @@ export interface Fee {
     amount: number
 }
 
+export interface FeeDto {
+    month: number,
+    year: number,
+    amount: number,
+}
+
 export interface Payment {
     id: number,
     member: Member,

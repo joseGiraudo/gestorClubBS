@@ -65,18 +65,16 @@ export class NewsService {
       return this.http.get<News>(this.apiUrl + "/" + id);
     }
 
-  createNews(newsData: CreateNews, imageFile: File): Observable<string> {
-  const formData = new FormData();
+  createNews(newsData: CreateNews, imageFile: File): Observable<any> {
+    const formData = new FormData();
 
-  formData.append('title', newsData.title);
-  formData.append('summary', newsData.summary);
-  formData.append('content', newsData.content);
-  formData.append('date', newsData.date.toString());
-  formData.append('image', imageFile); // nombre debe coincidir con @RequestParam("image")
+    formData.append('title', newsData.title);
+    formData.append('summary', newsData.summary);
+    formData.append('content', newsData.content);
+    formData.append('date', newsData.date.toString());
+    formData.append('image', imageFile); // nombre debe coincidir con @RequestParam("image")
 
-  return this.http.post(this.apiUrl + '/create', formData, {
-    responseType: 'text' // porque estás devolviendo un ResponseEntity<String>
-  });
+    return this.http.post(this.apiUrl + '/create', formData);
 }
 
   updateNews(id: any, newsData: News): Observable<News | null> {

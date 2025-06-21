@@ -109,26 +109,22 @@ export class MembersService {
     );
   }
 
-  approveMember(memberId: number): Observable<string> {
+  approveMember(memberId: number): Observable<any> {
     /*     
     const headers = new HttpHeaders({
       'x-user-id': this.sessionService.getItem('user').id.toString(),
     });
     */
-    return this.http.put(`${this.apiUrl}/approve/${memberId}`, null, {
-      responseType: 'text'
-    });
+    return this.http.put(`${this.apiUrl}/approve/${memberId}`, null);
   }
 
-  rejectMember(memberId: number): Observable<string> {
+  rejectMember(memberId: number): Observable<any> {
     /*     
     const headers = new HttpHeaders({
       'x-user-id': this.sessionService.getItem('user').id.toString(),
     });
     */
-    return this.http.put(`${this.apiUrl}/reject/${memberId}`, null, {
-      responseType: 'text'
-    });
+    return this.http.put(`${this.apiUrl}/reject/${memberId}`, null);
   }
 
   validateEmail(email: string): Observable<boolean> {

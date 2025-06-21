@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Fee, Payment, PaymentDto, PaymentPayDTO } from '../models/payment';
+import { Fee, FeeDto, Payment, PaymentDto, PaymentPayDTO } from '../models/payment';
 import { PageResponse } from '../models/api-response';
 
 @Injectable({
@@ -19,6 +19,19 @@ export class PaymentService {
 
 
   // FEES (CUOTAS)
+
+  createFee(fee: FeeDto): Observable<Fee> {
+    return this.http.post<Fee>(this.feesUrl, fee);
+  }
+
+  updateFee(id: number, fee: FeeDto): Observable<Fee> {
+    return this.http.put<Fee>(this.feesUrl + `/${id}`, fee);
+  }
+
+  getFees(): Observable<Fee[]> {
+    
+    return this.http.get<Fee[]>(this.feesUrl);
+  }
 
   getFee(id: number): Observable<any> {
     
@@ -100,6 +113,13 @@ export class PaymentService {
   updatePayment(id: number, payment: PaymentDto): Observable<Payment> {
 
     return this.http.put<Payment>(this.paymentsUrl + id, payment);
+  }
+
+  generatePayments(month: number, year: number): Observable<any> {
+    return this.http.post(this.paymentsUrl + '/generate-orders', {
+      month,
+      year
+    })
   }
 
 

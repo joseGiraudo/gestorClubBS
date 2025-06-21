@@ -1,0 +1,83 @@
+<div class="container mt-4">
+  <h2 class="mb-3">Gestión de Cuotas</h2>
+
+  <!-- Formulario -->
+  <form [formGroup]="feeForm" (ngSubmit)="createFee()" class="mb-4">
+    <div class="row g-3 align-items-end">
+      <div class="col-md-3">
+        <label for="month" class="form-label">Mes</label>
+        <input type="number" formControlName="month" class="form-control" min="1" max="12" />
+      </div>
+
+      <div class="col-md-3">
+        <label for="year" class="form-label">Año</label>
+        <input type="number" formControlName="year" class="form-control" />
+      </div>
+
+      <div class="col-md-3">
+        <label for="amount" class="form-label">Monto</label>
+        <input type="number" formControlName="amount" class="form-control" />
+      </div>
+
+      <div class="col-md-3">
+        <button class="btn btn-primary w-100" type="submit" 
+            [disabled]="feeForm.invalid"
+            (click)="editMode ? updateFee() : createFee()"
+        >
+            {{ editMode ? 'Guardar cambios' : 'Crear Cuota' }}
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Error -->
+   @if(errorMessage) {
+       <div class="alert alert-danger">
+         {{ errorMessage }}
+       </div>
+   }
+
+  <!-- Lista de Cuotas -->
+  <table class="table table-bordered table-hover">
+    <thead class="table-light">
+      <tr>
+        <th>Mes</th>
+        <th>Año</th>
+        <th>Monto</th>
+        <th class="text-center">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for(fee of fees; track fee) {
+          <tr>
+          <td>{{ fee.month }}</td>
+          <td>{{ fee.year }}</td>
+          <td>{{ fee.amount | currency:'ARS' }}</td>
+          <td class="text-center">
+            <button class="btn btn-sm btn-warning me-2" (click)="editFee(fee)">
+            <i class="bi bi-pencil"></i> Editar
+            </button>
+            <button class="btn btn-sm btn-success" (click)="emitPayments(fee)">
+            <i class="bi bi-cash-coin"></i> Emitir pagos
+            </button>
+        </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+
+
+<!-- Toast Container -->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+  <div id="responseToast" class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body d-flex align-items-center">
+        <span id="toastIcon" class="me-2"></span>
+        <span id="toastBody">Mensaje del toast</span>
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+</div>

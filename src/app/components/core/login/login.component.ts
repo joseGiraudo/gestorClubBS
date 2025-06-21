@@ -47,8 +47,19 @@ export class LoginComponent implements OnInit {
         this.router.navigate(["/"])
       },
       error: (error) => {
-        this.error = error.error?.message || "Error al iniciar sesión"
-        this.loading = false
+        // Fallback general
+        let errorMsg = "Error al iniciar sesión";
+
+        // error de red (sin conexión al backend)
+        if (error.status === 0) {
+          errorMsg = "No se pudo conectar con el servidor. Intente más tarde.";
+        } else if (error.error?.message) {
+          //mensaje de error del backend
+          errorMsg = error.error.message;
+        }
+
+        this.error = errorMsg;
+        this.loading = false;
       },
     })
   }

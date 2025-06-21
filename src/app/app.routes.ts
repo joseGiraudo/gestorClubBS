@@ -21,6 +21,7 @@ import { PaymentReportComponent } from './components/reports/payment-report/paym
 import { PaymentSuccessComponent } from './components/mp/payment-success/payment-success.component';
 import { PaymentPendingComponent } from './components/mp/payment-pending/payment-pending.component';
 import { PaymentFailureComponent } from './components/mp/payment-failure/payment-failure.component';
+import { FeesViewComponent } from './components/fees/fees-view/fees-view.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -39,6 +40,11 @@ export const routes: Routes = [
     // PAYMENTS
     { path: 'payments/pay', component: PaymentComponent },
     { path: 'payments', component: PaymentListComponent,
+        canActivate: [rolesGuard], data: { roles: ['ADMIN', 'TREASURER'] }
+     },
+
+     // FEES
+    { path: 'fees', component: FeesViewComponent,
         canActivate: [rolesGuard], data: { roles: ['ADMIN', 'TREASURER'] }
      },
     
