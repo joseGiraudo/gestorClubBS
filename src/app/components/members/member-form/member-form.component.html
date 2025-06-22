@@ -1,8 +1,17 @@
 <form [formGroup]="memberForm" (ngSubmit)="onSubmit()" class="container mt-4">
   <div class="card">
-    <div class="card-header">
-      <h5>Quiero ser socio!</h5>
+
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">Quiero ser socio!</h5>
+      <button 
+        type="button" 
+        class="btn btn-outline-info btn-sm" 
+        data-bs-toggle="modal" 
+        data-bs-target="#infoModal">
+        <i class="bi bi-info-circle"></i>
+      </button>
     </div>
+
     <div class="card-body row g-3">
 
       <div class="col-md-6">
@@ -182,6 +191,23 @@
           <button type="button" class="btn btn-secondary" (click)="cancelSend()">No acepto</button>
           <button type="button" class="btn btn-primary" (click)="confirmSend()">Acepto</button>
         </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de informacion -->
+ <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="infoModalLabel">Información sobre la solicitud</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <p>Al enviar el formulario, solicitarás formar parte del club como un socio activo.</p>
+        <p>Completa tus datos correctamente. Esta solicitud será revisada por la Comisión Directiva y, si es aprobada, te contactarán por email.</p>
+        <p>Es importante que el DNI y correo electrónico sean válidos para evitar rechazos.</p>
+      </div>
     </div>
   </div>
 </div>
