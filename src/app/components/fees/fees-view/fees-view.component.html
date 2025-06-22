@@ -49,6 +49,7 @@
    }
 
   <!-- Lista de Cuotas -->
+  <h3 class="my-2">Cuotas generadas</h3>
   <table class="table table-bordered table-hover">
     <thead class="table-light">
       <tr>
@@ -102,7 +103,7 @@
            {{ modalMessage }}
          </div>
          <div class="modal-footer">
-           <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
+           <button type="button" class="btn btn-secondary me-1" (click)="closeModal()">Cancelar</button>
            <button type="button" class="btn btn-primary" (click)="modalConfirm()">
             @if(!modalLoading) {
               <span>Confirmar</span>

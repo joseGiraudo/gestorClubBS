@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { NewsService } from '../../../services/news.service';
 import { CreateNews, News } from '../../../models/news';
 import { pastDateValidation } from '../../../validators/birthdate-validator';
+import { Router } from '@angular/router';
 
 declare var bootstrap: any;
 
@@ -24,6 +25,7 @@ export class NewsFormComponent implements OnInit {
   private toast: any;
 
   private newsService = inject(NewsService);
+  private router = inject(Router);
 
   constructor(private fb: FormBuilder) {
 
@@ -74,12 +76,11 @@ export class NewsFormComponent implements OnInit {
         this.showToast('Cargando noticia', 'loading');
         this.newsService.createNews(news, this.selectedFile).subscribe({
           next: (res) => {
-            console.log('Éxito:', res)
             this.showToast("Noticia cargada con éxito", 'success')
+            this.router.navigate(['/news']);
           },
           error: (err) => {
             console.error('Error:', err);
-            console.log(err.error.message)
             this.showToast("Error al cargar la noticia", 'error')
           }
         });

@@ -37,6 +37,7 @@ export class NewsCardComponent implements OnInit {
       next: (data) => {
         if (data) {
           this.news = data;
+
         } else {
           this.notFound = true;
         }
@@ -63,7 +64,8 @@ export class NewsCardComponent implements OnInit {
   }
 
   formatContent(content: string): string[] {
-    return content.split('\n').filter(paragraph => paragraph.trim().length > 0);
+    const cleanContent = content.replace(/\\n/g, '\n'); // convierte "\n" literal en salto real
+    return cleanContent.split(/\r?\n/).filter(p => p.trim().length > 0);
   }
 
 }

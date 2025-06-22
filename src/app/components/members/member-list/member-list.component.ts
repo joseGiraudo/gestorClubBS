@@ -29,7 +29,7 @@ export class MemberListComponent implements OnInit {
   searchTerm = ""
   selectedStatus = ""
   sortBy = "id"
-  sortDir = "asc"
+  sortDir = "desc"
   
   // Estados
   loading = false;
