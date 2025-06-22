@@ -17,42 +17,42 @@ declare var bootstrap: any;
 export class MemberListComponent implements OnInit {
   members: Member[] = [];
   selectedMember: Member | null = null;
-  modalAction: 'activate' | 'deactivate' | null = null;
-
-
+  
+  
   // Parámetros de paginación
   currentPage = 0
   pageSize = 10
   totalElements = 0
   totalPages = 0
-
+  
   // Filtros y ordenamiento
   searchTerm = ""
   selectedStatus = ""
   sortBy = "id"
   sortDir = "asc"
-
+  
   // Estados
   loading = false;
   filtersExpanded: boolean = false;
-
+  
   // Opciones para filtros
   statusOptions = Object.values(MemberStatus)
-
+  
   // Exponer MemberStatus para el template
   MemberStatus = MemberStatus
-
+  
   // traductor de enum
   translateMemberStatus = translateMemberStatus
-
+  
   // toast  
   private toastElement: any;
   private toast: any;
-
+  
   // modal de confirmacion
   private modal: any;
   modalMessage: string = '¿Seguro quieres realizar la acción?';
   modalTitle: string = 'Confirmar';
+  modalAction: 'activate' | 'deactivate' | null = null;
 
   private membersService = inject(MembersService)
 

@@ -1,8 +1,20 @@
 <div class="container mt-4">
-  <h2 class="mb-3">Gestión de Cuotas</h2>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">Gestión de Cuotas</h2>
+    <button class="btn btn-outline-primary" (click)="openSendEmailsModal()">
+      <i class="bi bi-envelope"></i> Enviar recordatorios de pago
+    </button>
+  </div>
+
+  <div class="alert alert-info d-flex align-items-center">
+    <i class="bi bi-info-square me-2 fs-3"></i>
+    <div>
+      Al crear una nueva cuota, se generan automáticamente las órdenes de pago para todos los socios activos y se envían por correo electrónico.
+    </div>
+  </div>
 
   <!-- Formulario -->
-  <form [formGroup]="feeForm" (ngSubmit)="createFee()" class="mb-4">
+  <form [formGroup]="feeForm" (ngSubmit)="openCreateFeeModal()" class="mb-4">
     <div class="row g-3 align-items-end">
       <div class="col-md-3">
         <label for="month" class="form-label">Mes</label>
@@ -22,9 +34,8 @@
       <div class="col-md-3">
         <button class="btn btn-primary w-100" type="submit" 
             [disabled]="feeForm.invalid"
-            (click)="editMode ? updateFee() : createFee()"
         >
-            {{ editMode ? 'Guardar cambios' : 'Crear Cuota' }}
+            Crear cuota y generar pagos
         </button>
       </div>
     </div>
@@ -44,7 +55,8 @@
         <th>Mes</th>
         <th>Año</th>
         <th>Monto</th>
-        <th class="text-center">Acciones</th>
+        <th>Pagos Emitidos</th>
+        <th>Pagos Cobrados</th>
       </tr>
     </thead>
     <tbody>
@@ -52,15 +64,9 @@
           <tr>
           <td>{{ fee.month }}</td>
           <td>{{ fee.year }}</td>
-          <td>{{ fee.amount | currency:'ARS' }}</td>
-          <td class="text-center">
-            <button class="btn btn-sm btn-warning me-2" (click)="editFee(fee)">
-            <i class="bi bi-pencil"></i> Editar
-            </button>
-            <button class="btn btn-sm btn-success" (click)="emitPayments(fee)">
-            <i class="bi bi-cash-coin"></i> Emitir pagos
-            </button>
-        </td>
+          <td>$ {{ fee.amount | number : "1.2-2" }}</td>
+          <td>{{fee.issuedCount}}</td>
+          <td>{{fee.paidCount}}</td>
         </tr>
       }
     </tbody>
@@ -81,3 +87,34 @@
     </div>
   </div>
 </div>
+
+<!-- Modal de confirmación -->
+<!-- Modal Angular sin Bootstrap JS -->
+ @if(isModalVisible) {
+   <div class="modal-backdrop-custom">
+     <div class="modal-dialog-custom">
+       <div class="modal-content">
+         <div class="modal-header bg-tertiary">
+           <h5 class="modal-title">{{ modalTitle }}</h5>
+           <button type="button" class="btn-close" (click)="closeModal()"></button>
+         </div>
+         <div class="modal-body">
+           {{ modalMessage }}
+         </div>
+         <div class="modal-footer">
+           <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
+           <button type="button" class="btn btn-primary" (click)="modalConfirm()">
+            @if(!modalLoading) {
+              <span>Confirmar</span>
+            } @else if (modalLoading) {
+              <span>
+                <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                Procesando...
+              </span>
+            }
+           </button>
+         </div>
+       </div>
+     </div>
+   </div>
+ }

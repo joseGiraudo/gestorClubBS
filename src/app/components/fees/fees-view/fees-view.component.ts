@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Fee } from '../../../models/payment';
+import { Fee, FeeStatsDto } from '../../../models/payment';
 import { PaymentService } from '../../../services/payment.service';
 import { CommonModule } from '@angular/common';
 declare var bootstrap: any;
@@ -14,7 +14,7 @@ declare var bootstrap: any;
 export class FeesViewComponent implements OnInit {
 
   feeForm!: FormGroup;
-  fees: Fee[] = [];
+  fees: FeeStatsDto[] = [];
   errorMessage = '';
 
   editMode = false;
@@ -23,6 +23,14 @@ export class FeesViewComponent implements OnInit {
   private toastElement: any;
   private toast: any;
 
+  // modal de confirmacion
+  isModalVisible = false;
+  modalLoading = false;
+
+  modalMessage: string = '¿Seguro quieres realizar la acción?';
+  modalTitle: string = 'Confirmar';
+  modalAction: 'create-fee' | 'send-reminder' | null = null;
+  selectedFee: Fee | null = null;
 
   constructor(private fb: FormBuilder, private paymentService: PaymentService) {}
 
@@ -32,14 +40,14 @@ export class FeesViewComponent implements OnInit {
       year: [new Date().getFullYear(), [Validators.required, Validators.min(2000)]],
       amount: [null, [Validators.required, Validators.min(0)]]
     });
+    
 
     this.loadFees();
   }
 
   ngAfterViewInit() {
-    // Inicializar el toast después de que la vista esté completamente cargada
     setTimeout(() => {
-      this.initializeToast()
+      this.initializeToast();
     }, 100)
   }
 
@@ -56,70 +64,102 @@ export class FeesViewComponent implements OnInit {
   }
 
   loadFees(): void {
-    this.paymentService.getFees().subscribe({
+    this.paymentService.getFeesWithStats().subscribe({
       next: (data) => this.fees = data,
       error: () => this.errorMessage = 'Error al cargar cuotas'
     });
   }
 
-  createFee(): void {
+
+  // Modal de confirmacion
+
+  openCreateFeeModal(): void {
     if (this.feeForm.invalid) return;
-
-    this.paymentService.createFee(this.feeForm.value).subscribe({
-      next: () => {
-        this.feeForm.reset();
-        this.showToast('Cuota creada correctamente', 'success')
-        this.loadFees();
-        this.errorMessage = '';
-      },
-      error: (err) => {
-        this.errorMessage = err.error?.message || 'Error al crear cuota';
-        this.showToast('Error al crear la cuota', 'error')
-      }
-    });
+    this.selectedFee = { ...this.feeForm.value };
+    this.openModal('create-fee');
   }
 
-  editFee(fee: Fee): void {
-    this.editingFeeId = fee.id!;
-    this.editMode = true;
-    this.feeForm.patchValue({
-      month: fee.month,
-      year: fee.year,
-      amount: fee.amount
-    });
+  openSendEmailsModal(): void {
+    this.openModal('send-reminder');
   }
 
-  emitPayments(fee: Fee): void {
-    console.log('Entro aca', fee);
+  openModal(action: 'create-fee' | 'send-reminder'): void {
+    this.modalAction = action;
+
+    if (action === 'create-fee' && this.feeForm.valid) {
+      const { month, year, amount } = this.feeForm.value;
+      this.modalTitle = `Confirmar creación de cuota ${month} / ${year} --- $ ${amount}`;
+      this.modalMessage = 'Se generarán las órdenes de pago para todos los socios activos y se enviarán por correo electrónico.';
+    }
+
+    if (action === 'send-reminder') {
+      this.modalTitle = 'Confirmar envío de recordatorios de pago';
+      this.modalMessage = 'Se enviará un correo electrónico a todos los socios con cuotas pendientes.';
+    }
+
+    this.isModalVisible = true;
+  }
+
+  closeModal(): void {
+    this.isModalVisible = false;
+    this.modalAction = null;
+    this.selectedFee = null;
+  }
+
+  modalConfirm(): void {    
+    if (!this.modalAction) {
+      this.closeModal();
+      return;
+    }
+    this.modalLoading = true;
+    this.errorMessage = '';
+
+    console.log("aaaaaaa", this.modalAction)
+    console.log("cuota", this.selectedFee)
     
-    this.showToast('Generando pagos para la cuota' + fee.month + "/" + fee.year, 'loading')
-    // Llamá a tu backend para emitir pagos de esta cuota
-    this.paymentService.generatePayments(fee.month, fee.year).subscribe({
-      next: () => {
-        this.showToast('Pagos generados correctamente', 'success')
-      },
-      error: () => {
-        this.showToast('Error al generar los pagos', 'error')
-      }
-    });
-  }
+    if (this.modalAction === 'create-fee' && this.selectedFee) {
+      
+      this.showToast('Creando cuota y Generando pagos', 'loading');
+      
+      console.log("aaaaaaa", this.modalAction)
+      this.paymentService.createFee(this.selectedFee).subscribe({
+        next: () => {
+          this.showToast('Cuota y órdenes de pago creadas correctamente', 'success');
+          this.feeForm.reset();
+          this.loadFees();
+        },
+        error: (err) => {
+          this.errorMessage = err.error?.message || 'Error al crear la cuota';
+          this.showToast(this.errorMessage, 'error');
+          this.closeModal();
+        },
+        complete: () => {
+          this.modalLoading = false;
+          this.selectedFee = null;
+          this.modalAction = null;
+          this.closeModal();
+        }
+      });
+    }
 
-  updateFee(): void {
-    if (this.feeForm.invalid || this.editingFeeId === null) return;
-
-    this.paymentService.updateFee(this.editingFeeId, this.feeForm.value).subscribe({
-      next: () => {
-        this.editingFeeId = null;
-        this.editMode = false;
-        this.feeForm.reset();
-        this.showToast('Cuota editada correctamente', 'success')
-        this.loadFees();
-      },
-      error: (err) => {
-        this.errorMessage = err.error?.message || 'Error al actualizar cuota'
-        this.showToast('Error al actualizar la cuota', 'error')
-      } 
-    });
+    if (this.modalAction === 'send-reminder') {
+      this.showToast('Enviando emails', 'loading');
+      
+      this.paymentService.sendPaymentReminders().subscribe({
+        next: () => {
+          this.showToast('Emails enviados correctamente', 'success');
+        },
+        error: () => {
+          this.showToast('Error al enviar los emails', 'error');
+        },
+        complete: () => {
+          this.selectedFee = null;
+          this.modalAction = null;
+          this.modalLoading = false;
+          this.closeModal();
+        }
+      });
+    }
   }
 
 

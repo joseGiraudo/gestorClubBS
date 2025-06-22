@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Fee, FeeDto, Payment, PaymentDto, PaymentPayDTO } from '../models/payment';
+import { Fee, FeeDto, FeeStatsDto, Payment, PaymentDto, PaymentPayDTO } from '../models/payment';
 import { PageResponse } from '../models/api-response';
 
 @Injectable({
@@ -28,9 +28,12 @@ export class PaymentService {
     return this.http.put<Fee>(this.feesUrl + `/${id}`, fee);
   }
 
-  getFees(): Observable<Fee[]> {
-    
+  getFees(): Observable<Fee[]> {    
     return this.http.get<Fee[]>(this.feesUrl);
+  }
+
+  getFeesWithStats(): Observable<FeeStatsDto[]> { 
+    return this.http.get<FeeStatsDto[]>(this.feesUrl + '/stats');
   }
 
   getFee(id: number): Observable<any> {
@@ -120,6 +123,10 @@ export class PaymentService {
       month,
       year
     })
+  }
+
+  sendPaymentReminders(): Observable<any> {
+    return this.http.post(this.paymentsUrl + '/pendings', {})
   }
 
 

@@ -7,6 +7,15 @@ export interface Fee {
     amount: number
 }
 
+export interface FeeStatsDto {
+    id: number,
+    month: number,
+    year: number,
+    amount: number,
+    issuedCount: number,
+    paidCount: number,
+}
+
 export interface FeeDto {
     month: number,
     year: number,
