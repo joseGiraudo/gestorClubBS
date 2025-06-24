@@ -12,6 +12,7 @@
             baseChart
             [data]="pieChartData"
             [options]="pieChartOptions"
+            [plugins]="[ChartDataLabels]"
             [type]="pieChartType"
           ></canvas>
         </div>
@@ -25,6 +26,7 @@
               baseChart
               [data]="barChartData"
               [options]="barChartOptions"
+              [plugins]="[ChartDataLabels]"
               [type]="barChartType"
             ></canvas>
           </div>

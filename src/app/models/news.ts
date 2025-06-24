@@ -5,6 +5,7 @@ export interface News {
     summary: string
     imageUrl: string
     date: Date
+    status: string
     authorId: number
 }
 

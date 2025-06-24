@@ -32,6 +32,11 @@ export class FeesViewComponent implements OnInit {
   modalAction: 'create-fee' | 'send-reminder' | null = null;
   selectedFee: Fee | null = null;
 
+  monthNames = [
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  ];
+
   constructor(private fb: FormBuilder, private paymentService: PaymentService) {}
 
   ngOnInit(): void {
@@ -89,7 +94,7 @@ export class FeesViewComponent implements OnInit {
     if (action === 'create-fee' && this.feeForm.valid) {
       const { month, year, amount } = this.feeForm.value;
       this.modalTitle = `Confirmar creación de cuota ${month} / ${year} --- $ ${amount}`;
-      this.modalMessage = 'Se generarán las órdenes de pago para todos los socios activos y se enviarán por correo electrónico.';
+      this.modalMessage = `Se generarán las órdenes de pago de ${this.monthNames[month - 1]} de ${year} para todos los socios activos.`;
     }
 
     if (action === 'send-reminder') {
@@ -121,7 +126,6 @@ export class FeesViewComponent implements OnInit {
       
       this.showToast('Creando cuota y Generando pagos', 'loading');
       
-      console.log("aaaaaaa", this.modalAction)
       this.paymentService.createFee(this.selectedFee).subscribe({
         next: () => {
           this.showToast('Cuota y órdenes de pago creadas correctamente', 'success');
@@ -132,6 +136,7 @@ export class FeesViewComponent implements OnInit {
           this.errorMessage = err.error?.message || 'Error al crear la cuota';
           this.showToast(this.errorMessage, 'error');
           this.closeModal();
+          this.modalLoading = false;
         },
         complete: () => {
           this.modalLoading = false;
@@ -164,7 +169,7 @@ export class FeesViewComponent implements OnInit {
 
 
     // Método para mostrar toast
-  private showToast(message: string, type: 'success' | 'error' | 'loading'): void {
+  private showToast(message: string, type: 'success' | 'error' | 'loading' | 'info'): void {
     const toastBody = document.getElementById('toastBody');
     const toastIcon = document.getElementById('toastIcon');
     const toastContainer = document.getElementById('responseToast');
@@ -202,6 +207,15 @@ export class FeesViewComponent implements OnInit {
           `;
           break;
 
+        case 'info':
+          toastContainer.className = 'toast align-items-center text-bg-info border-0';
+          toastIcon.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16">
+              <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-11.412-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.018-.252 1.232-.598l.088-.416c-.287.176-.656.246-.866.246-.275 0-.375-.176-.312-.469l.738-3.468c.194-.897-.105-1.319-.808-1.319zm-.93 6.412a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+            </svg>
+          `;
+          break;
+
         default:
           toastContainer.className = 'toast align-items-center text-bg-info border-0';
           toastIcon.innerHTML = '';
@@ -209,7 +223,9 @@ export class FeesViewComponent implements OnInit {
       }
       
       // Mostrar el toast
-      this.toast.show();
+      //this.toast.show();
+      const toast = new bootstrap.Toast(toastContainer);
+      toast.show();
     }
   }
 }

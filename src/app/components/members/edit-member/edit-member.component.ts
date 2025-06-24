@@ -42,7 +42,8 @@ export class EditMemberComponent implements OnInit, OnChanges {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   ngAfterViewInit() {
     // Inicializar el toast después de que la vista esté completamente cargada

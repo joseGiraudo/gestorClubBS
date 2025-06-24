@@ -8,17 +8,25 @@
 
   <div class="alert alert-info d-flex align-items-center">
     <i class="bi bi-info-square me-2 fs-3"></i>
-    <div>
-      Al crear una nueva cuota, se generan automáticamente las órdenes de pago para todos los socios activos y se envían por correo electrónico.
-    </div>
+    <p class="mx-2">
+      Al crear una nueva cuota, se generan automáticamente las órdenes de pago para todos los socios activos.
+      Recuerda enviar luego los recordatorios por correo electrónico.
+    </p>
   </div>
 
   <!-- Formulario -->
   <form [formGroup]="feeForm" (ngSubmit)="openCreateFeeModal()" class="mb-4">
     <div class="row g-3 align-items-end">
       <div class="col-md-3">
-        <label for="month" class="form-label">Mes</label>
-        <input type="number" formControlName="month" class="form-control" min="1" max="12" />
+        <label for="amount" class="form-label">Monto</label>
+        <select formControlName="month" class="form-select">
+          <option [ngValue]="null">Seleccionar mes</option>
+          @for(monthName of monthNames; track $index) {
+            <option [ngValue]="$index + 1">
+              {{ monthName }}
+            </option>
+          }
+        </select>
       </div>
 
       <div class="col-md-3">
@@ -63,7 +71,7 @@
     <tbody>
       @for(fee of fees; track fee) {
           <tr>
-          <td>{{ fee.month }}</td>
+          <td>{{ monthNames[fee.month - 1] }}</td>
           <td>{{ fee.year }}</td>
           <td>$ {{ fee.amount | number : "1.2-2" }}</td>
           <td>{{fee.issuedCount}}</td>

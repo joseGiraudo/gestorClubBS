@@ -1,26 +1,28 @@
-<div class="container mt-4">
-  <h3>Reporte de Recaudación por Cuota</h3>
+<div class="row">
+  <div class="col-md-4 m-4">
+    <h3>Reporte de Recaudación por Cuota</h3>
 
-  <div class="mb-3">
-    <label for="feeSelect" class="form-label">Seleccionar cuota</label>
-    <select class="form-select" [(ngModel)]="selectedFeeId" (change)="fetchReport()">
-      <option [ngValue]="null">-- Seleccionar --</option>
-      @for(fee of fees; track fee) {
-        <option [value]="fee.id">
-          {{ monthNames[fee.month - 1] }} {{ fee.year }}
-        </option>
-      }
-    </select>
-  </div>
-
-  @if(report) {
-    <div class="card shadow p-3">
-      <h5 class="mb-3">Cuota {{ report.feeLabel }}</h5>
-      <p><strong>Pagos emitidos:</strong> {{ report.issuedCount }}</p>
-      <p><strong>Pagos realizados:</strong> {{ report.paidCount }}</p>
-      <p><strong>Total recaudado:</strong> ${{ report.totalCollected | number: '1.2-2' }}</p>
-      <p><strong>Total esperado:</strong> ${{ report.expectedTotal | number: '1.2-2' }}</p>
-      <p><strong>Porcentaje de cobro:</strong> {{ report.collectionRate }}%</p>
+    <div class="mb-3">
+      <label for="feeSelect" class="form-label">Seleccionar cuota</label>
+      <select class="form-select" [(ngModel)]="selectedFeeId" (change)="fetchReport()">
+        <option [ngValue]="null">-- Seleccionar --</option>
+        @for(fee of fees; track fee) {
+          <option [value]="fee.id">
+            {{ monthNames[fee.month - 1] }} {{ fee.year }}
+          </option>
+        }
+      </select>
     </div>
-  }
+
+    @if(report) {
+      <div class="card shadow p-3">
+        <h5 class="mb-3">Cuota {{ report.feeLabel }}</h5>
+        <p><strong>Pagos emitidos:</strong> {{ report.issuedCount }}</p>
+        <p><strong>Pagos realizados:</strong> {{ report.paidCount }}</p>
+        <p><strong>Total recaudado:</strong> ${{ report.totalCollected | number: '1.2-2' }}</p>
+        <p><strong>Total esperado:</strong> ${{ report.expectedTotal | number: '1.2-2' }}</p>
+        <p><strong>Porcentaje de cobro:</strong> {{ report.collectionRate }}%</p>
+      </div>
+    }
+  </div>
 </div>

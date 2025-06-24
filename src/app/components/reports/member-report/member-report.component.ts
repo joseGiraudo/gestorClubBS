@@ -1,11 +1,15 @@
 import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { BaseChartDirective } from 'ng2-charts';
-import { ChartData, ChartOptions, ChartType } from 'chart.js';
 
 import { MemberReportDto, MonthlyCountDto, SportCountDto } from '../../../models/report';
 import { ReportService } from '../../../services/report.service';
 import { translateTeamSport } from '../../../models/team';
+
+import { BaseChartDirective } from 'ng2-charts';
+import { Chart, ChartData, ChartOptions, registerables } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+
+Chart.register(...registerables, ChartDataLabels);
 
 @Component({
   selector: 'app-member-report',
@@ -15,6 +19,8 @@ import { translateTeamSport } from '../../../models/team';
   styleUrl: './member-report.component.css'
 })
 export class MemberReportComponent implements OnInit {
+
+  ChartDataLabels = ChartDataLabels;
   
   isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private reportService = inject(ReportService);
@@ -36,6 +42,11 @@ export class MemberReportComponent implements OnInit {
   pieChartOptions: ChartOptions<'pie'> = {
     responsive: true,
     plugins: {
+      datalabels: {
+        color: '#000',
+        font: { weight: 'bold' },
+        formatter: value => value,
+      },
       legend: { position: 'right' },
       title: { display: true, text: 'Socios por rango etario' }
     }
@@ -50,8 +61,16 @@ export class MemberReportComponent implements OnInit {
   barChartOptions: ChartOptions<'bar'> = {
     responsive: true,
     plugins: {
-      legend: { display: true },
-      title: { display: true, text: 'Nuevos socios por mes' }
+      datalabels: {
+        anchor: 'end',
+        align: 'end',
+        offset: -2,
+        color: '#444',
+        font: { weight: 'bold' },
+        formatter: value => value
+      },
+      legend: { display: false },
+      title: { display: true, text: '' }
     }
   };
 

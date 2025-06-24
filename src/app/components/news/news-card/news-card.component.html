@@ -10,7 +10,7 @@
   }
 
   <!-- Not Found -->
-  @if(notFound && !loading) {
+  @if(notFound && !loading || news?.status === 'ELIMINATED') {
     <div class="text-center py-5">
       <i class="bi bi-exclamation-triangle display-1 text-warning"></i>
       <h2 class="mt-3">Noticia no encontrada</h2>
@@ -23,14 +23,27 @@
   }
 
   <!-- News Detail -->
-   @if(news && !loading) {
+   @if(news && news.status !== 'ELIMINATED' && !loading) {
      <div class="row">
        <div class="col-12">
-         <!-- Back Button -->
-         <button class="btn btn-outline-secondary mb-4" (click)="goBack()">
-           <i class="bi bi-arrow-left me-2"></i>
-           Volver a Noticias
-         </button>
+         <!-- Encabezado con botones -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <!-- Botón Volver -->
+          <button class="btn btn-outline-secondary" (click)="goBack()">
+            <i class="bi bi-arrow-left me-2"></i>
+            Volver a Noticias
+          </button>
+
+          <!-- Botones Editar y Eliminar -->
+          <div>
+            <button class="btn btn-outline-primary btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editNewsModal" >
+              <i class="bi bi-pencil me-1"></i> Editar
+            </button>
+            <button class="btn btn-outline-danger btn-sm" (click)="openDeleteModal()">
+              <i class="bi bi-trash me-1"></i> Eliminar
+            </button>
+          </div>
+        </div>
    
          <!-- Article Header -->
          <div class="mb-4 ms-4">
@@ -39,6 +52,10 @@
              <i class="bi bi-calendar3 me-2"></i>
              <span>{{ formatDate(news.date) }}</span>
            </div>
+
+
+
+
            <p class="lead text-muted">{{ news.summary }}</p>
          </div>
    
@@ -65,4 +82,28 @@
        </div>
      </div>
    }
+</div>
+
+@if(news) {
+  <app-news-edit [selectedNews]="news" (newsUpdated)="onNewsUpdated()"></app-news-edit>
+}
+
+
+ <!-- Modal de confirmación -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-tertiary">
+        <h5 class="modal-title" id="confirmDeleteModalLabel">{{modalTitle}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        {{modalMessage}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="modalConfirm()">Confirmar</button>
+      </div>
+    </div>
+  </div>
 </div>

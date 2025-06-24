@@ -1,0 +1,106 @@
+<!-- Modal de Edición de Noticia -->
+<div
+  class="modal fade"
+  id="editNewsModal"
+  tabindex="-1"
+  aria-labelledby="editNewsModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      @if(selectedNews) {
+        <div class="modal-header">
+          <h5 class="modal-title" id="editNewsModalLabel">
+            <i class="bi bi-pencil-square me-2"></i>
+            Editar Noticia
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+
+        <div class="modal-body">
+          <form [formGroup]="newsForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label for="title" class="form-label">Título *</label>
+              <input type="text" id="title" class="form-control" formControlName="title" />
+            </div>
+
+            <div class="mb-3">
+              <label for="summary" class="form-label">Resumen *</label>
+              <textarea id="summary" class="form-control" rows="2" formControlName="summary"></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label for="content" class="form-label">Contenido *</label>
+              <textarea id="content" class="form-control" rows="6" formControlName="content"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="imageFile" class="form-label">Nueva Imagen</label>
+                <input type="file" class="form-control" (change)="onFileChange($event)" accept="image/*" />
+                <div class="form-text">Dejar vacío para mantener la imagen actual.</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="date" class="form-label">Fecha *</label>
+              <input type="date" id="date" class="form-control" formControlName="date" />
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+            [disabled]="isLoading"
+          >
+            <i class="bi bi-x-lg me-1"></i>
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            class="btn btn-success"
+            (click)="onSubmit()"
+            [disabled]="newsForm.invalid || isLoading"
+          >
+            @if(isLoading) {
+              <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+              <i class="bi bi-check-lg me-1"></i>
+            }
+            {{ isLoading ? 'Guardando...' : 'Guardar Cambios' }}
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+
+<!-- Toast Container -->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+  <div
+    id="responseToast"
+    class="toast align-items-center border-0"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true"
+  >
+    <div class="d-flex">
+      <div class="toast-body d-flex align-items-center">
+        <span id="toastIcon" class="me-2"></span>
+        <span id="toastBody">Mensaje del toast</span>
+      </div>
+      <button
+        type="button"
+        class="btn-close btn-close-white me-2 m-auto"
+        data-bs-dismiss="toast"
+        aria-label="Close"
+      ></button>
+    </div>
+  </div>
+</div>
