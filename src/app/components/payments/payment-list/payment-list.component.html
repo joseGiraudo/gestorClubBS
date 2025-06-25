@@ -190,6 +190,9 @@
                 </span>
               }
             </th>
+            <th>
+              DNI
+            </th>
             <th (click)="onSort('fee')" class="sortable">
               Cuota
               @if (sortBy === 'fee') {
@@ -252,6 +255,7 @@
               <tr>
                 <td>{{ payment.id }}</td>
                 <td>{{ payment.memberName }}</td>
+                <td>{{ payment.memberDni }}</td>
                 <td>{{ payment.feeMonth }} / {{ payment.feeYear }}</td>
                 <td>{{ formatDate(payment.issuedDate) }}</td>
                 <td>{{ formatDate(payment.paymentDate) || "-" }}</td>

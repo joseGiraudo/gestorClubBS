@@ -42,7 +42,10 @@
             <div class="mb-3">
                 <label for="imageFile" class="form-label">Nueva Imagen</label>
                 <input type="file" class="form-control" (change)="onFileChange($event)" accept="image/*" />
-                <div class="form-text">Dejar vacío para mantener la imagen actual.</div>
+                <div class="alert alert-info mt-2 py-2 d-flex align-items-center gap-2" role="alert" style="font-size: 0.9rem;">
+                  <i class="bi bi-info-circle-fill"></i>
+                  <div>Dejar vacío para mantener la imagen actual.</div>
+                </div>
             </div>
 
             <div class="mb-3">

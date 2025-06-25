@@ -5,12 +5,13 @@ import { CommonModule } from "@angular/common"
 import { FormsModule } from "@angular/forms"
 import { MemberModalComponent } from "../member-modal/member-modal.component"
 import { EditMemberComponent } from "../edit-member/edit-member.component"
+import { RouterLink } from "@angular/router"
 
 declare var bootstrap: any;
 
 @Component({
   selector: "app-member-list",
-  imports: [CommonModule, FormsModule, MemberModalComponent, EditMemberComponent],
+  imports: [CommonModule, FormsModule, MemberModalComponent, EditMemberComponent, RouterLink],
   templateUrl: "./member-list.component.html",
   styleUrl: "./member-list.component.css",
 })

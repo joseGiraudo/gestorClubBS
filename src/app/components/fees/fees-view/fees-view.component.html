@@ -58,28 +58,31 @@
 
   <!-- Lista de Cuotas -->
   <h3 class="my-2">Cuotas generadas</h3>
-  <table class="table table-bordered table-hover">
-    <thead class="table-light">
-      <tr>
-        <th>Mes</th>
-        <th>Año</th>
-        <th>Monto</th>
-        <th>Pagos Emitidos</th>
-        <th>Pagos Cobrados</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for(fee of fees; track fee) {
-          <tr>
-          <td>{{ monthNames[fee.month - 1] }}</td>
-          <td>{{ fee.year }}</td>
-          <td>$ {{ fee.amount | number : "1.2-2" }}</td>
-          <td>{{fee.issuedCount}}</td>
-          <td>{{fee.paidCount}}</td>
+
+  <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+    <table class="table table-bordered table-hover">
+      <thead class="table-light sticky-top bg-light">
+        <tr>
+          <th>Mes</th>
+          <th>Año</th>
+          <th>Monto</th>
+          <th>Pagos Emitidos</th>
+          <th>Pagos Cobrados</th>
         </tr>
-      }
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        @for(fee of fees; track fee) {
+          <tr>
+            <td>{{ monthNames[fee.month - 1] }}</td>
+            <td>{{ fee.year }}</td>
+            <td>$ {{ fee.amount | number : "1.2-2" }}</td>
+            <td>{{fee.issuedCount}}</td>
+            <td>{{fee.paidCount}}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
 </div>
 
 

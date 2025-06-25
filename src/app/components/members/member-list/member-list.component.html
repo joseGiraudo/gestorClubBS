@@ -1,5 +1,14 @@
 <div class="members-container m-1">
-  <h2 class="bg-light mt-1 ps-2">Listado de Socios</h2>
+  <div class="d-flex align-items-center justify-content-between bg-light mt-1 ps-2 pe-3 py-2">
+    <h2 class="mb-0">Listado de Socios</h2>
+    <button 
+      class="btn btn-primary btn-sm" 
+      [routerLink]="['/member-form']" 
+      title="Agregar nuevo socio">
+      <i class="bi bi-plus-circle me-1"></i>
+      Agregar Socio
+    </button>
+  </div>
 
   <!-- Header de controles con botón para expandir/colapsar -->
   <div class="controls-header d-flex mx-auto align-items-center ms-2 mt-2 mb-2">
@@ -293,7 +302,7 @@
 <!-- Modal Component -->
  <app-member-modal [selectedMember]="selectedMember"></app-member-modal>
 
- <app-edit-member [selectedMember]="selectedMember"></app-edit-member>
+ <app-edit-member [selectedMember]="selectedMember" (memberEdited)="loadMembers()"></app-edit-member>
 
  <!-- Modal de confirmación -->
 <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">

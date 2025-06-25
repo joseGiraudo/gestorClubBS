@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { Member } from '../../../models/member';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MembersService } from '../../../services/members.service';
@@ -15,6 +15,7 @@ declare var bootstrap: any;
 export class EditMemberComponent implements OnInit, OnChanges {
 
   @Input() selectedMember: Member | null = null;
+  @Output() memberEdited = new EventEmitter<void>();
   
   memberForm: FormGroup;
   isLoading = false;
@@ -108,9 +109,8 @@ export class EditMemberComponent implements OnInit, OnChanges {
         next: (response) => {
           this.isLoading = false;
           this.showToast('Socio editado con éxito', 'success')
-          // Cerrar modal programáticamente
+          this.memberEdited.emit();
           this.closeModal();
-          // Opcional: mostrar toast de éxito
         },
         error: (error) => {
           this.isLoading = false;

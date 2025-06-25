@@ -39,6 +39,12 @@
             </li>
           }
 
+          @if(hasAnyRole(['ADMIN'])) {
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/users">Usuarios</a>
+            </li>
+          }
+
           <!-- BOTÓN SOLO PARA ADMIN o TREASURER -->
           @if(hasAnyRole(['ADMIN', 'TREASURER'])) {
             <li class="nav-item">

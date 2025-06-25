@@ -33,7 +33,9 @@ export const routes: Routes = [
     },
 
     // NEWS
-    { path: 'news/create', component: NewsFormComponent },
+    { path: 'news/create', component: NewsFormComponent,
+        canActivate: [rolesGuard], data: { roles: ['ADMIN', 'COMMITTEE'] } 
+     },
     { path: 'news/:id', component: NewsCardComponent },
     { path: 'news', component: NewsListComponent },
 
@@ -59,17 +61,26 @@ export const routes: Routes = [
 
 
     // USERS
-    { path: 'users/create', component: UserFormComponent },
-    { path: 'users', component: UserListComponent },
+    { path: 'users/create', component: UserFormComponent,
+        canActivate: [rolesGuard], data: { roles: ['ADMIN'] } 
+     },
+    { path: 'users', component: UserListComponent, 
+        canActivate: [rolesGuard], data: { roles: ['ADMIN'] } 
+    },
 
     //REPORTS
-    { path: 'reports/members', component: MemberReportComponent },
-    { path: 'reports/payments', component: PaymentReportComponent },
+    { path: 'reports/members', component: MemberReportComponent,
+        canActivate: [rolesGuard], data: { roles: ['ADMIN', 'TREASURER', 'COMMITTEE'] } 
+
+    },
+    { path: 'reports/payments', component: PaymentReportComponent,
+        canActivate: [rolesGuard], data: { roles: ['ADMIN', 'TREASURER'] } 
+    },
 
     // MP PAYMENTS
     { path: 'payment/success', component: PaymentSuccessComponent },
-  { path: 'payment/pending', component: PaymentPendingComponent },
-  { path: 'payment/failure', component: PaymentFailureComponent },
+    { path: 'payment/pending', component: PaymentPendingComponent },
+    { path: 'payment/failure', component: PaymentFailureComponent },
 
     // AUTH
     { path: 'login', component: LoginComponent },

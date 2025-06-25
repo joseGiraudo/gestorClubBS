@@ -35,14 +35,16 @@
           </button>
 
           <!-- Botones Editar y Eliminar -->
-          <div>
-            <button class="btn btn-outline-primary btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editNewsModal" >
-              <i class="bi bi-pencil me-1"></i> Editar
-            </button>
-            <button class="btn btn-outline-danger btn-sm" (click)="openDeleteModal()">
-              <i class="bi bi-trash me-1"></i> Eliminar
-            </button>
-          </div>
+          @if(hasAnyRole(['ADMIN', 'COMMITTEE'])) {
+            <div>
+              <button class="btn btn-outline-primary btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editNewsModal" >
+                <i class="bi bi-pencil me-1"></i> Editar
+              </button>
+              <button class="btn btn-outline-danger btn-sm" (click)="openDeleteModal()">
+                <i class="bi bi-trash me-1"></i> Eliminar
+              </button>
+            </div>
+          }
         </div>
    
          <!-- Article Header -->

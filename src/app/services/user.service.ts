@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { User } from '../models/user';
+import { CreateUser, User } from '../models/user';
 import { UserMapperPipe } from '../pipes/user-mapper.pipe';
 
 @Injectable({
@@ -26,13 +26,30 @@ export class UserService {
         );;
   }
 
-  createUser(userDate: User):Observable<User>  {
+  createUser(userData: CreateUser):Observable<User>  {
 
-    const transformPipe = new UserMapperPipe();
-        const member = transformPipe.invertTrasnform(userDate);
-    
-        console.log("User: ", member);
-        return this.http.post<User>(this.apiUrl, member);
+    const user = {
+      name: userData.name,
+      last_name: userData.lastName,
+      email: userData.email,
+      password: userData.password,
+      role: userData.role
+    }
+
+    return this.http.post<User>(this.apiUrl, user);
+  }
+
+  updateUser(id: any, userData: CreateUser):Observable<User>  {
+
+    const user = {
+      name: userData.name,
+      last_name: userData.lastName,
+      email: userData.email,
+      password: userData.password,
+      role: userData.role
+    }
+
+    return this.http.put<User>(`${this.apiUrl}/${id}`, user);
   }
 
 }
