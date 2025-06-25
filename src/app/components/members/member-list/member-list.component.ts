@@ -53,12 +53,11 @@ export class MemberListComponent implements OnInit {
   private modal: any;
   modalMessage: string = '¿Seguro quieres realizar la acción?';
   modalTitle: string = 'Confirmar';
-  modalAction: 'activate' | 'deactivate' | null = null;
+  modalAction: 'activate' | 'deactivate' | 'approve' | 'reject' | null = null;
 
   private membersService = inject(MembersService)
 
   ngOnInit() {
-    this.modal = new bootstrap.Modal(document.getElementById('confirmModal'));
     this.loadMembers();
   }
 
@@ -234,6 +233,19 @@ export class MemberListComponent implements OnInit {
       },
     })
   }
+  
+  rejectMember(id: any) {
+    this.membersService.rejectMember(id).subscribe({
+      next: (response) => {
+        this.showToast('¡Socio rechazado correctamente!', 'success');
+        this.loadMembers() // Recargar la lista
+      },
+      error: (error) => {
+        console.error("Error al rechazar miembro:", error);
+        this.showToast('Hubo un error al rechazar el socio', 'error');
+      },
+    })
+  }
 
   editMember(id: any) {
     console.log("Editar miembro con id: " + id)
@@ -277,7 +289,14 @@ export class MemberListComponent implements OnInit {
     this.modalAction = 'deactivate';
     this.modalTitle = 'Confirmación';
     this.modalMessage = `¿Desea marcar a ${member.name} ${member.lastName} como Inactivo?`
-    this.modal.show();
+    
+    setTimeout(() => {
+      const modalEl = document.getElementById('confirmModal');
+      if (modalEl) {
+        this.modal = new bootstrap.Modal(modalEl);
+        this.modal.show();
+      }
+    });
   }
 
   openActivateModal(member: Member) {
@@ -285,18 +304,63 @@ export class MemberListComponent implements OnInit {
     this.modalAction = 'activate';
     this.modalTitle = 'Confirmación';
     this.modalMessage = `¿Desea marcar a ${member.name} ${member.lastName} como Activo?`
-    this.modal.show();
+    
+    setTimeout(() => {
+      const modalEl = document.getElementById('confirmModal');
+      if (modalEl) {
+        this.modal = new bootstrap.Modal(modalEl);
+        this.modal.show();
+      }
+    });
+  }
+
+  openRejectModal(member: Member) {
+    this.selectedMember = member;
+    this.modalAction = 'reject';
+    this.modalTitle = 'Confirmación';
+    this.modalMessage = `¿Desea rechazar a ${member.name} ${member.lastName}?`
+    
+    setTimeout(() => {
+      const modalEl = document.getElementById('confirmModal');
+      if (modalEl) {
+        this.modal = new bootstrap.Modal(modalEl);
+        this.modal.show();
+      }
+    });
+  }
+
+  openApproveModal(member: Member) {
+    this.selectedMember = member;
+    this.modalAction = 'approve';
+    this.modalTitle = 'Confirmación';
+    this.modalMessage = `¿Desea aprobar a ${member.name} ${member.lastName}?`
+    // Esperar a que Angular actualice el DOM
+    setTimeout(() => {
+      const modalEl = document.getElementById('confirmModal');
+      if (modalEl) {
+        this.modal = new bootstrap.Modal(modalEl);
+        this.modal.show();
+      }
+    });
   }
 
   modalConfirm(): void {
     if (this.selectedMember && this.modalAction) {
-      if (this.modalAction === 'deactivate') {
-        this.deactivateMember(this.selectedMember.id);
-      } else if (this.modalAction === 'activate') {
-        this.activateMember(this.selectedMember.id);
-      }
+      switch(this.modalAction) {
+        case "activate":
+          this.activateMember(this.selectedMember.id);
+          break;
+        case "deactivate":
+          this.deactivateMember(this.selectedMember.id);
+          break;
+        case "approve":
+          this.approveMember(this.selectedMember.id);
+          break;
+        case "reject":
+          this.rejectMember(this.selectedMember.id);
+          break;
+      }      
     }
-
     // Limpiar estado y cerrar el modal
     this.selectedMember = null;
     this.modalAction = null;
@@ -358,7 +422,12 @@ export class MemberListComponent implements OnInit {
       }
       
       // Mostrar el toast
-      this.toast.show();
+      //this.toast.show();
+      const toast = new bootstrap.Toast(toastContainer, {
+        delay: 4000,
+        autohide: true,
+      });
+      toast.show();
     }
   }
 

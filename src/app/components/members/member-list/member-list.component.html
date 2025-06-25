@@ -198,13 +198,32 @@
                     <button class="btn btn-outline-secondary mx-1" title="Editar" data-bs-toggle="modal" data-bs-target="#editMemberModal" (click)="openEditModal(member)">
                       <i class="bi bi-pencil"></i>
                     </button>
-                    @if(member.status != 'ACTIVE') {
-                      <button class="btn btn-outline-success" title="Activar" (click)="openActivateModal(member)">
-                        <i class="bi bi-check-lg"></i>
+                    @if(member.status === 'PENDING') {
+                      <div class="dropdown">
+                        <button class="btn btn-outline-warning btn-sm dropdown-toggle" type="button" id="pendingActions"
+                                data-bs-toggle="dropdown" aria-expanded="false" title="Acciones pendientes">
+                          <i class="bi bi-hourglass-split"></i>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="pendingActions">
+                          <li>
+                            <button class="dropdown-item text-success" (click)="openApproveModal(member)">
+                              <i class="bi bi-check-circle me-1"></i> Aprobar socio
+                            </button>
+                          </li>
+                          <li>
+                            <button class="dropdown-item text-danger" (click)="openRejectModal(member)">
+                              <i class="bi bi-x-circle me-1"></i> Rechazar socio
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+                    } @else if(member.status === 'ACTIVE') {
+                      <button class="btn btn-outline-danger" title="Marcar como Inactivo" (click)="openDeleteModal(member)">
+                        <i class="bi bi-x-lg"></i>
                       </button>
                     } @else {
-                      <button class="btn btn-outline-danger" title="Desactivar" (click)="openDeleteModal(member)">
-                        <i class="bi bi-x-lg"></i>
+                      <button class="btn btn-outline-success" title="Marcar como Activo" (click)="openActivateModal(member)">
+                        <i class="bi bi-check-lg"></i>
                       </button>
                     }
                   </div>
@@ -305,20 +324,22 @@
  <app-edit-member [selectedMember]="selectedMember" (memberEdited)="loadMembers()"></app-edit-member>
 
  <!-- Modal de confirmación -->
-<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
-   <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header bg-tertiary">
-        <h5 class="modal-title" id="confirmDeleteModalLabel">{{modalTitle}}</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-      </div>
-      <div class="modal-body">
-        {{modalMessage}}
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary" (click)="modalConfirm()">Confirmar</button>
+@if(selectedMember && modalAction) {
+  <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-tertiary">
+          <h5 class="modal-title" id="confirmDeleteModalLabel">{{modalTitle}}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          {{modalMessage}}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" (click)="modalConfirm()">Confirmar</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
+}
