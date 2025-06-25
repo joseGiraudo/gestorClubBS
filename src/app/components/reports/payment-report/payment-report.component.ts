@@ -1,13 +1,15 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { ReportService } from '../../../services/report.service';
-import { Fee } from '../../../models/payment';
-import { FeeCollectionReport } from '../../../models/report';
+import { Fee, translatePaymentMethod, translatePaymentStatus } from '../../../models/payment';
+import { FeeCollectionReport, FullPaymentReportDto } from '../../../models/report';
 import { FormsModule } from '@angular/forms';
+import { ChartData, ChartOptions } from 'chart.js';
+import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
   selector: 'app-payment-report',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, BaseChartDirective],
   templateUrl: './payment-report.component.html',
   styleUrl: './payment-report.component.css'
 })
@@ -15,17 +17,104 @@ export class PaymentReportComponent implements OnInit {
 
   fees: Fee[] = [];
   selectedFeeId: number | null = null;
-  report: FeeCollectionReport | null = null;
+  feeReport: FeeCollectionReport | null = null;
+  fullReport!: FullPaymentReportDto;
 
   isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private reportService = inject(ReportService);
 
+  translatePaymentMethod = translatePaymentMethod;
+  translatePaymentStatus = translatePaymentStatus;
+
+
+  // GRAFICOS
+
+  // Gráfico de líneas - Recaudación mensual
+  lineChartType: 'line' = 'line';
+  lineChartData: ChartData<'line', number[], string> = {
+    labels: [],
+    datasets: [{
+      label: 'Recaudación mensual',
+      data: [],
+      borderColor: '#3e95cd',
+      fill: false,
+      tension: 0.3
+    }]
+  };
+  lineChartOptions: ChartOptions<'line'> = {
+    responsive: true,
+    plugins: {
+      title: {
+        display: true,
+        text: 'Recaudación mensual'
+      },
+      datalabels: { display: false }
+    }
+  };
+
+  // Gráfico de torta - Estados de pagos
+  statusChartType: 'pie' = 'pie';
+  statusChartData: ChartData<'pie', number[], string> = {
+    labels: [],
+    datasets: [{ data: [] }]
+  };
+  statusChartOptions: ChartOptions<'pie'> = {
+    responsive: true,
+    plugins: {
+      title: { display: true, text: 'Estado de los pagos' },
+      legend: { position: 'bottom' },
+      datalabels: { color: '#000', font: { weight: 'bold' } }
+    }
+  };
+
+  // Gráfico de torta - Métodos de pago
+  methodChartType: 'pie' = 'pie';
+  methodChartData: ChartData<'pie', number[], string> = {
+    labels: [],
+    datasets: [{ data: [] }]
+  };
+  methodChartOptions: ChartOptions<'pie'> = {
+    responsive: true,
+    plugins: {
+      title: { display: true, text: 'Método de pago' },
+      legend: { position: 'bottom' },
+      datalabels: { color: '#000', font: { weight: 'bold' } }
+    }
+  };
+    // Porcentaje de cobro
+  collectionPercentage = 0;
+  totalIssued = 0;
+  totalPaid = 0;
+
+
+
   ngOnInit(): void {
     
-    this.reportService.getFullPaymentsReport().subscribe(data => console.log("payment report", data));
+    this.reportService.getFullPaymentsReport().subscribe(data => {
+      this.fullReport = data;
+      console.log(this.fullReport);
+
+      this.lineChartData = {
+        labels: data.monthlyTotals.map(d => `${d.month}/${d.year}`),
+        datasets: [{
+          label: 'Recaudación mensual',
+          data: data.monthlyTotals.map(d => d.total),
+          borderColor: '#3e95cd',
+          fill: false,
+          tension: 0.3
+        }]
+      };
+      
+      // Tasa de cobranza
+      this.totalIssued = data.collectionRate.totalIssued;
+      this.totalPaid = data.collectionRate.totalPaid;
+      this.collectionPercentage = data.collectionRate.percentage;
+    });
 
     this.reportService.getFees().subscribe(data => {
       this.fees = data;
+
+      
 
       // Selecciona por defecto la primera (la más reciente)
       if (this.fees.length > 0) {
@@ -40,7 +129,35 @@ export class PaymentReportComponent implements OnInit {
     console.log(this.selectedFeeId);
     
     if (this.selectedFeeId) {
-      this.reportService.getFeeReport(this.selectedFeeId).subscribe(data => this.report = data);
+      this.reportService.getFeeReport(this.selectedFeeId).subscribe(data => {
+        this.feeReport = data;
+        console.log(data);
+
+        // cargo los graficos
+        this.statusChartData = {
+          labels: data.statusSummary.map(s => translatePaymentStatus(s.status)),
+          datasets: [{ 
+            data: data.statusSummary.map(s => s.count),
+            backgroundColor: [
+              '#FF6384', // rojo
+              '#36A2EB', // azul
+              '#FFCE56'  // amarillo
+            ]
+          }]
+        };
+
+        this.methodChartData = {
+          labels: data.methodSummary.map(m => translatePaymentMethod(m.method)),
+          datasets: [{ 
+            data: data.methodSummary.map(m => m.count),
+            backgroundColor: [
+              '#4BC0C0', // verde agua
+              '#9966FF', // morado
+              '#FF9F40'  // naranja
+            ]
+          }]
+        };
+      });
     }
   }
 

@@ -19,7 +19,7 @@ export interface SportCountDto {
 
 // PAYMENTS REPORT
 
-export interface FullPaymentRportDto {
+export interface FullPaymentReportDto {
     monthlyTotals: MonthlyPaymentDto[];
     statusSummary: PaymentStatusSummaryDto[];
     methodSummary: PaymentMethodSummaryDto[];
@@ -57,4 +57,6 @@ export interface FeeCollectionReport {
   totalCollected: number;
   expectedTotal: number;
   collectionRate: number; // porcentaje
+  statusSummary: PaymentStatusSummaryDto[];
+  methodSummary: PaymentMethodSummaryDto[];
 }

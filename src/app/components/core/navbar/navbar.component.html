@@ -1,69 +1,115 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
-    <div class="container-fluid">
-      <img src="logo_simple-removebg-preview.png" alt="Club Logo"  style="width: 80px; height: auto;">
-      <a class="navbar-brand" routerLink="/">Club Independencia</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav me-auto">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" routerLink="/">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/news']" routerLinkActive="router-link-active" >Noticias</a>
-          </li>
+  <div class="container-fluid">
+    <img
+      src="logo_simple-removebg-preview.png"
+      alt="Club Logo"
+      style="width: 80px; height: auto"
+    />
+    <a class="navbar-brand" routerLink="/">Club Independencia</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNavDropdown"
+      aria-controls="navbarNavDropdown"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" routerLink="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            [routerLink]="['/news']"
+            routerLinkActive="router-link-active"
+            >Noticias</a
+          >
+        </li>
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            [routerLink]="['/teams']"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Deportes
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" [routerLink]="['/teams/BASKETBALL']"
+                >Basquet</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" [routerLink]="['/teams/FOOTBALL']"
+                >Fútbol</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" [routerLink]="['/teams/VOLLEYBALL']"
+                >Vóley</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/member-form">Asociate</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/payments/pay">Pagar Cuota</a>
+        </li>
+
+        <!-- BOTÓN SOLO PARA ADMIN o COMMITTEE -->
+        @if(hasAnyRole(['ADMIN', 'COMMITTEE'])) {
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" [routerLink]="['/teams']" role="button"
-              data-bs-toggle="dropdown" aria-expanded="false">
-              Deportes
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Socios
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" [routerLink]="['/teams/BASKETBALL']">Basquet</a></li>
-              <li><a class="dropdown-item" [routerLink]="['/teams/FOOTBALL']">Fútbol</a></li>
-              <li><a class="dropdown-item" [routerLink]="['/teams/VOLLEYBALL']">Vóley</a></li>
+              <li><a class="dropdown-item" routerLink="/members">Gestión de Socios</a></li>
+              <li><a class="dropdown-item" routerLink="/members/report">Reporte de Socios</a></li>
             </ul>
           </li>
+        } 
+        @if(hasAnyRole(['ADMIN'])) {
           <li class="nav-item">
-            <a class="nav-link" routerLink="/member-form">Asociate</a>
+            <a class="nav-link" routerLink="/users">Usuarios</a>
           </li>
+        }
+
+        <!-- BOTÓN SOLO PARA ADMIN o TREASURER -->
+        @if(hasAnyRole(['ADMIN', 'TREASURER'])) {
           <li class="nav-item">
-            <a class="nav-link" routerLink="/payments/pay">Pagar Cuota</a>
+            <a class="nav-link" routerLink="/fees">Cuotas</a>
           </li>
-
-          
-          <!-- BOTÓN SOLO PARA ADMIN o COMMITTEE -->
-          @if(hasAnyRole(['ADMIN', 'COMMITTEE'])) {
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/members">Socios</a>
-            </li>
-          }
-
-          @if(hasAnyRole(['ADMIN'])) {
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/users">Usuarios</a>
-            </li>
-          }
-
-          <!-- BOTÓN SOLO PARA ADMIN o TREASURER -->
-          @if(hasAnyRole(['ADMIN', 'TREASURER'])) {
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/fees">Cuotas</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/payments">Pagos</a>
-            </li>
-          }
-        </ul>
-        <ul class="navbar-nav">          
-          <li class="nav-item me-4">
-            @if(isLoggedIn$ | async) {
-              <button class="nav-link" (click)="logout()">Cerrar Sesión</button>
-            } @else {
-              <a class="nav-link" href="/login">Iniciar Sesión</a>
-            }
+        }
+        @if(hasAnyRole(['ADMIN', 'COMMITTEE'])) {
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Pagos
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" routerLink="/payments">Gestión de Pagos</a></li>
+              <li><a class="dropdown-item" routerLink="/payments/report">Reporte de Pagos</a></li>
+            </ul>
           </li>
-        </ul>
-      </div>
+        }
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item me-4">
+          @if(isLoggedIn$ | async) {
+          <button class="nav-link" (click)="logout()">Cerrar Sesión</button>
+          } @else {
+          <a class="nav-link" href="/login">Iniciar Sesión</a>
+          }
+        </li>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>

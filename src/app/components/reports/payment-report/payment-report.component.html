@@ -1,28 +1,143 @@
-<div class="row">
-  <div class="col-md-4 m-4">
-    <h3>Reporte de Recaudación por Cuota</h3>
+<div class="container">
+  <div class="row">
+    <!-- Formulario y card -->
+    <h3 class="mt-4">Reporte de Recaudación por Cuota</h3>
+    <div class="col-md-4 mt-4">
 
-    <div class="mb-3">
-      <label for="feeSelect" class="form-label">Seleccionar cuota</label>
-      <select class="form-select" [(ngModel)]="selectedFeeId" (change)="fetchReport()">
-        <option [ngValue]="null">-- Seleccionar --</option>
-        @for(fee of fees; track fee) {
-          <option [value]="fee.id">
-            {{ monthNames[fee.month - 1] }} {{ fee.year }}
-          </option>
-        }
-      </select>
+      <div class="mb-3">
+        <label for="feeSelect" class="form-label">Seleccionar cuota</label>
+        <select class="form-select" [(ngModel)]="selectedFeeId" (change)="fetchReport()">
+          <option [ngValue]="null">-- Seleccionar --</option>
+          @for(fee of fees; track fee) {
+            <option [value]="fee.id">
+              {{ monthNames[fee.month - 1] }} {{ fee.year }}
+            </option>
+          }
+        </select>
+      </div>
+
+      @if(feeReport) {
+        <div class="card shadow mt-4 p-3 ">
+          <h5 class="mb-3">Cuota {{ feeReport.feeLabel }}</h5>
+          <p><strong>Pagos emitidos:</strong> {{ feeReport.issuedCount }}</p>
+          <p><strong>Pagos realizados:</strong> {{ feeReport.paidCount }}</p>
+          <p><strong>Total recaudado:</strong> ${{ feeReport.totalCollected | number: '1.2-2' }}</p>
+          <p><strong>Total esperado:</strong> ${{ feeReport.expectedTotal | number: '1.2-2' }}</p>
+          <p><strong>Porcentaje de cobro:</strong> {{ feeReport.collectionRate }}%</p>
+        </div>
+      }
     </div>
 
-    @if(report) {
-      <div class="card shadow p-3">
-        <h5 class="mb-3">Cuota {{ report.feeLabel }}</h5>
-        <p><strong>Pagos emitidos:</strong> {{ report.issuedCount }}</p>
-        <p><strong>Pagos realizados:</strong> {{ report.paidCount }}</p>
-        <p><strong>Total recaudado:</strong> ${{ report.totalCollected | number: '1.2-2' }}</p>
-        <p><strong>Total esperado:</strong> ${{ report.expectedTotal | number: '1.2-2' }}</p>
-        <p><strong>Porcentaje de cobro:</strong> {{ report.collectionRate }}%</p>
+    <!-- Gráficos de torta -->
+    <div class="col-md-8 mt-2">
+      <div class="row mt-5">
+        <div class="col-md-6 mb-4">
+          <div class="card p-3">
+            <canvas baseChart
+              [data]="statusChartData"
+              [options]="statusChartOptions"
+              [type]="statusChartType">
+            </canvas>
+          </div>
+        </div>
+        <div class="col-md-6 mb-4">
+          <div class="card p-3">
+            <canvas baseChart
+              [data]="methodChartData"
+              [options]="methodChartOptions"
+              [type]="methodChartType">
+            </canvas>
+          </div>
+        </div>
       </div>
-    }
+    </div>
   </div>
+
+  <!-- Reportes históricos -->
+
+  <h3 class="mt-5 mb-3">Reportes Históricos</h3>
+
+  <div class="row">
+    
+    <div class="col-md-8">
+      <!-- Card de barra de cobranza -->
+      <div class="card shadow mx-4">
+        <div class="card-body">
+          <div class="row align-items-center mx-5">
+            <div class="col">
+              <h5 class="card-title mb-0">Tasa de Cobranza Total</h5>
+            </div>
+
+            <div class="col-auto me-5">
+              <p class="mb-1">Total órdenes emitidas: <strong>{{ totalIssued }}</strong></p>
+              <p class="mb-0">Total órdenes cobradas: <strong>{{ totalPaid }}</strong></p>
+            </div>
+          </div>
+
+          <div class="progress mt-3">
+            <div class="progress-bar bg-success" role="progressbar"
+              [style.width.%]="collectionPercentage"
+              aria-valuemin="0" aria-valuemax="100">
+              {{ collectionPercentage | number: '1.0-2' }}%
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Gráfico de líneas -->
+      <div class="overflow-auto mb-4" style="max-width: 100%;">
+        <canvas 
+          baseChart
+          [data]="lineChartData"
+          [options]="lineChartOptions"
+          [type]="lineChartType"
+          style="min-width: 800px;">
+        </canvas>
+      </div>
+
+    </div>
+
+    <!-- Cards por estado y método (col-4) -->
+    <div class="col-md-4">
+      <!-- Por estado -->
+      <div class="card shadow mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Pagos por Estado</h5>
+          <ul class="list-group list-group-flush">
+            @for(se of fullReport.statusSummary; track se) {
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                {{ translatePaymentStatus(se.status) }}
+                <span>
+                  {{ se.count }} pagos
+                  <span class="badge bg-secondary ms-2">{{ se.count | number: '1.0-2' }}%</span>
+                </span>
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+
+      <!-- Por método -->
+      <div class="card shadow">
+        <div class="card-body">
+          <h5 class="card-title">Pagos por Método</h5>
+          <ul class="list-group list-group-flush">
+            @for(me of fullReport.methodSummary; track me) {
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                {{ translatePaymentMethod(me.method) }}
+                <span>
+                  {{ me.count }} pagos
+                  <span class="badge bg-secondary ms-2">{{ me.count | number: '1.0-2' }}%</span>
+                </span>
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
 </div>

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FeeCollectionReport, FullPaymentRportDto, MemberReportDto, MonthlyCountDto, SportCountDto } from '../models/report';
+import { FeeCollectionReport, FullPaymentReportDto, MemberReportDto, MonthlyCountDto, SportCountDto } from '../models/report';
 import { Observable } from 'rxjs';
 import { Fee } from '../models/payment';
 
@@ -27,8 +27,8 @@ export class ReportService {
     return this.http.get<MonthlyCountDto[]>(`${this.membersUrl}/new-members-per-month`)
   }
 
-  getFullPaymentsReport(): Observable<FullPaymentRportDto> {
-    return this.http.get<FullPaymentRportDto>(`${this.paymentsUrl}/full-report`)
+  getFullPaymentsReport(): Observable<FullPaymentReportDto> {
+    return this.http.get<FullPaymentReportDto>(`${this.paymentsUrl}/full-report`)
   }
   
   getFees(): Observable<Fee[]> {

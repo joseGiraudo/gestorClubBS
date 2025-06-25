@@ -69,11 +69,11 @@ export const routes: Routes = [
     },
 
     //REPORTS
-    { path: 'reports/members', component: MemberReportComponent,
+    { path: 'members/report', component: MemberReportComponent,
         canActivate: [rolesGuard], data: { roles: ['ADMIN', 'TREASURER', 'COMMITTEE'] } 
 
     },
-    { path: 'reports/payments', component: PaymentReportComponent,
+    { path: 'payments/report', component: PaymentReportComponent,
         canActivate: [rolesGuard], data: { roles: ['ADMIN', 'TREASURER'] } 
     },
 
