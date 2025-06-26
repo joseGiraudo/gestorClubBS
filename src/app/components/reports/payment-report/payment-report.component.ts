@@ -33,22 +33,54 @@ export class PaymentReportComponent implements OnInit {
   lineChartType: 'line' = 'line';
   lineChartData: ChartData<'line', number[], string> = {
     labels: [],
-    datasets: [{
-      label: 'Recaudación mensual',
+    datasets: [
+    {
+      label: 'Emisión mensual',
       data: [],
       borderColor: '#3e95cd',
       fill: false,
       tension: 0.3
-    }]
+    },
+    {
+      label: 'Recaudación mensual',
+      data: [],
+      borderColor: '#8e5ea2',
+      fill: false,
+      tension: 0.3
+    }
+  ]
   };
   lineChartOptions: ChartOptions<'line'> = {
     responsive: true,
+    interaction: {
+      mode: 'index',
+      intersect: false,
+    },
     plugins: {
       title: {
         display: true,
         text: 'Recaudación mensual'
       },
+      legend: {
+        display: true,
+        position: 'top'
+      },
       datalabels: { display: false }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: 'Monto ($)'
+        }
+      },
+      x: {
+        title: {
+          display: true,
+          text: 'Mes/Año'
+        }
+      }
     }
   };
 
@@ -96,13 +128,22 @@ export class PaymentReportComponent implements OnInit {
 
       this.lineChartData = {
         labels: data.monthlyTotals.map(d => `${d.month}/${d.year}`),
-        datasets: [{
-          label: 'Recaudación mensual',
-          data: data.monthlyTotals.map(d => d.total),
-          borderColor: '#3e95cd',
-          fill: false,
-          tension: 0.3
-        }]
+        datasets: [
+          {
+            label: 'Total emitido',
+            data: data.monthlyTotals.map(d => d.totalIssued),
+            borderColor: '#3e95cd',
+            fill: false,
+            tension: 0.3
+          },
+          {
+            label: 'Total recaudado',
+            data: data.monthlyTotals.map(d => d.totalPaid),
+            borderColor: '#8e5ea2',
+            fill: false,
+            tension: 0.3
+          }
+        ]
       };
       
       // Tasa de cobranza

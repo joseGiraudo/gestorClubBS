@@ -29,28 +29,38 @@
     </div>
 
     <!-- Gráficos de torta -->
-    <div class="col-md-8 mt-2">
-      <div class="row mt-5">
-        <div class="col-md-6 mb-4">
-          <div class="card p-3">
-            <canvas baseChart
-              [data]="statusChartData"
-              [options]="statusChartOptions"
-              [type]="statusChartType">
-            </canvas>
-          </div>
-        </div>
-        <div class="col-md-6 mb-4">
-          <div class="card p-3">
-            <canvas baseChart
-              [data]="methodChartData"
-              [options]="methodChartOptions"
-              [type]="methodChartType">
-            </canvas>
-          </div>
-        </div>
-      </div>
-    </div>
+     @if(feeReport) {
+       <div class="col-md-8 mt-2">
+         <div class="row mt-5">
+           <div class="col-md-6 mb-4">
+             <div class="card p-3">
+               @if(0 != feeReport.issuedCount) {
+                 <canvas baseChart
+                   [data]="statusChartData"
+                   [options]="statusChartOptions"
+                   [type]="statusChartType">
+                 </canvas>
+               } @else {
+                 <p class="text-muted">No hubo pagos emitidos</p>
+                }
+              </div>
+           </div>
+           <div class="col-md-6 mb-4">
+             <div class="card p-3">
+               @if(0 != feeReport.paidCount) {
+                 <canvas baseChart
+                 [data]="methodChartData"
+                 [options]="methodChartOptions"
+                 [type]="methodChartType">
+                </canvas>
+              } @else {
+                <p class="text-muted">No hubo pagos cobrados</p>
+              }
+             </div>
+           </div>
+         </div>
+       </div>
+     }
   </div>
 
   <!-- Reportes históricos -->

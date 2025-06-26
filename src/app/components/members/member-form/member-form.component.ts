@@ -1,30 +1,39 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Inject, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MembersService } from '../../../services/members.service';
 import { pastDateValidation } from '../../../validators/birthdate-validator';
 import { emailValidator } from '../../../validators/email-validator';
 import { dniValidator } from '../../../validators/dni-validator';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 
-declare var bootstrap: any; // Para usar Bootstrap modal
+// import * as bootstrap from 'bootstrap';
+declare var bootstrap: any;
+
 
 @Component({
   selector: 'app-member-form',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './member-form.component.html',
   styleUrl: './member-form.component.css'
 })
 
-export class MemberFormComponent implements OnInit {
+export class MemberFormComponent implements OnInit, AfterViewInit {
 
   memberForm: FormGroup
 
   private modal: any;
   private toastElement: any;
   private toast: any;
+  private isBrowser: boolean;
 
   private memberService = inject(MembersService);
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+    
     this.memberForm = this.fb.group({
       name: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
@@ -38,18 +47,57 @@ export class MemberFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.modal = new bootstrap.Modal(document.getElementById('confirmModal'));
     this.memberForm.controls['email'].setAsyncValidators(emailValidator(this.memberService));
     this.memberForm.controls['dni'].setAsyncValidators(dniValidator(this.memberService));
+    
+  }
 
-    // Inicializar el toast
-    this.toastElement = document.getElementById('responseToast');
-    if (this.toastElement) {
-      this.toast = new bootstrap.Toast(this.toastElement, {
-        autohide: true,
-        delay: 4000 // 4 segundos
-      });
+  ngAfterViewInit(): void {
+    // Solo ejecutar en el navegador, no en el servidor
+    if (!this.isBrowser) {
+      return;
     }
+
+    // Usar setTimeout para asegurar que el DOM esté completamente renderizado
+    setTimeout(() => {
+      // Verificar que bootstrap esté disponible
+      if (typeof bootstrap === 'undefined') {
+        console.error('Bootstrap is not loaded');
+        return;
+      }
+
+      // Inicializar modal
+      const modalElement = document.getElementById('confirmModal');
+      if (modalElement) {
+        try {
+          this.modal = new bootstrap.Modal(modalElement, {
+            backdrop: 'static',
+            keyboard: false
+          });
+          console.log('Modal initialized successfully');
+        } catch (error) {
+          console.error('Error initializing modal:', error);
+        }
+      } else {
+        console.error('Modal element #confirmModal not found');
+      }
+      
+      // Inicializar toast
+      this.toastElement = document.getElementById('responseToast');
+      if (this.toastElement) {
+        try {
+          this.toast = new bootstrap.Toast(this.toastElement, {
+            autohide: true,
+            delay: 4000
+          });
+          console.log('Toast initialized successfully');
+        } catch (error) {
+          console.error('Error initializing toast:', error);
+        }
+      } else {
+        console.error('Toast element #responseToast not found');
+      }
+    }, 0);
   }
 
   onSubmit(): void {

@@ -146,11 +146,10 @@ export class PaymentComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al crear preferencia:', err);
+        this.showToast('Error al cargar cuotas. Intente mas tarde', 'error');
       }
     });
-
   }
-
 
   getMonthYearDescription(fee: Fee): string {
     const monthName = this.monthNames[fee.month - 1] || 'Mes inválido';

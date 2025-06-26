@@ -30,7 +30,8 @@ export interface FullPaymentReportDto {
 export interface MonthlyPaymentDto {
     month: string;
     year: number;
-    total: number;
+    totalIssued: number;
+    totalPaid: number;
 }
 
 export interface PaymentStatusSummaryDto {
