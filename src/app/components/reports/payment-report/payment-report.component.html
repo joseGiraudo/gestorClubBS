@@ -120,7 +120,7 @@
                 {{ translatePaymentStatus(se.status) }}
                 <span>
                   {{ se.count }} pagos
-                  <span class="badge bg-secondary ms-2">{{ se.count | number: '1.0-2' }}%</span>
+                  <span class="badge bg-secondary ms-2">{{ (se.count / totalIssued) * 100 | number: '1.0-2' }}%</span>
                 </span>
               </li>
             }
@@ -138,7 +138,7 @@
                 {{ translatePaymentMethod(me.method) }}
                 <span>
                   {{ me.count }} pagos
-                  <span class="badge bg-secondary ms-2">{{ me.count | number: '1.0-2' }}%</span>
+                  <span class="badge bg-secondary ms-2">{{ (me.count / totalPaid) * 100 | number: '1.0-2' }}%</span>
                 </span>
               </li>
             }
