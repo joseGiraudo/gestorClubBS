@@ -19,4 +19,17 @@ export class PaymentSuccessComponent implements OnInit {
     this.status = this.route.snapshot.queryParamMap.get('status');
     this.externalReference = this.route.snapshot.queryParamMap.get('external_reference');
   }
+
+  translateStatus(status: string | null) {
+    switch(status) {
+      case 'approved':
+        return 'Aprobado';
+      case 'failure':
+        return 'Fallado';
+      case 'pending':
+        return 'Pendiente'
+      default:
+        return status;
+    }
+  }
 }

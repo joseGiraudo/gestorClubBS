@@ -15,4 +15,17 @@ export class PaymentPendingComponent implements OnInit {
   ngOnInit(): void {
     this.status = this.route.snapshot.queryParamMap.get('status');
   }
+
+  translateStatus(status: string | null) {
+    switch(status) {
+      case 'approved':
+        return 'Aprobado';
+      case 'failure':
+        return 'Fallado';
+      case 'pending':
+        return 'Pendiente'
+      default:
+        return status;
+    }
+  }
 }

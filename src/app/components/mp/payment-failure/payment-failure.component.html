@@ -1,3 +1,11 @@
-<h2>Pago fallido</h2>
-<p>Estado: {{ status }}</p>
-<p>Hubo un problema con tu pago. Intentá nuevamente o comunicate con soporte.</p>
+<div class="container d-flex justify-content-center">
+  <div class="card border-danger shadow-sm mt-3" style="max-width: 500px; width: 100%;">
+    <div class="card-body text-center bg-danger bg-opacity-10">
+      <h2 class="text-danger mb-3">
+        <i class="bi bi-x-circle-fill me-2"></i>Pago fallido
+      </h2>
+      <p class="mb-1"><strong>Estado:</strong> {{ translateStatus(status) }}</p>
+      <p class="mb-3">Hubo un problema con tu pago. Intentá nuevamente o comunicate con soporte.</p>
+    </div>
+  </div>
+</div>
