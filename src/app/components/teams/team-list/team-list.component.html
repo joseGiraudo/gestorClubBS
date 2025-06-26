@@ -30,11 +30,17 @@
                             <p class="card-text">{{team.description}}</p>
                             <h6>Miembros:</h6>
                             <div class="row g-3">
+                              @if(team.members.length > 0) {
                                 @for(member of team.members; track member.id) {
                                     <div class="col-md-3">
                                         {{member.name}} ({{formatDate(member.birthdate)}})
                                     </div>
                                 }
+                              } @else {
+                                <div>
+                                  <p class="text-muted">No hay miembros cargados en el equipo</p>
+                                </div>
+                              }
                             </div>
                       </div>
                   </div>
