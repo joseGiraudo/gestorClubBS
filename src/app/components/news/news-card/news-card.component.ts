@@ -138,7 +138,7 @@ export class NewsCardComponent implements OnInit, AfterViewInit {
   // modal de confirmacion
   openDeleteModal() {
     this.modalTitle = 'Confirmación';
-    this.modalMessage = `¿Seuro desea eliminar la noticia?`
+    this.modalMessage = `¿Seuro desea eliminar la noticia? No podrá recuperarla luego.`
     this.modal.show();
   }
 

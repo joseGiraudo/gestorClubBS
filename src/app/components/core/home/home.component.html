@@ -12,10 +12,14 @@
 
   <!-- Noticias Section -->
   @if(newsArray.length > 0) {
-    <div class="row mt-5 ms-2">
-      <div class="col-12">
-        <h2 class="mb-4" style="color: #1e3a8a;">Últimas Noticias</h2>
+    <div class="row mt-2 ms-2">
+      <div class="col-12 d-flex align-items-center mb-4">
+        <h2 class="mx-2" style="color: #1e3a8a;">Últimas Noticias</h2>
+        <button class="btn btn-outline-primary btn-sm ms-4" routerLink="/news">
+          Ver más
+        </button>
       </div>
+
     </div>
     <div class="row mb-5 mx-2">
       @for(news of newsArray; track news.id) {
