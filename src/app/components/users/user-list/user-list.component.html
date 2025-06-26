@@ -38,7 +38,7 @@
           }
 
           <!-- Lista de usuarios -->
-          @for(user of users; track user) {
+          @for(user of users; track user.id) {
 
             <tr>
               <td>{{ user.id }}</td>

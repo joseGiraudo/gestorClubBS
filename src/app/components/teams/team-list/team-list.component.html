@@ -5,7 +5,7 @@
         <div class="row mt-3">
           <div class="col-12">
               @if(teamsArray.length > 0) {
-                @for(team of teamsArray; track team) {
+                @for(team of teamsArray; track team.id) {
                   <div class="card mb-3">
                       <div class="card-header d-flex justify-content-between align-items-center">
                             <h5 class="card-title mb-0">{{team.name}}</h5>
@@ -30,7 +30,7 @@
                             <p class="card-text">{{team.description}}</p>
                             <h6>Miembros:</h6>
                             <div class="row g-3">
-                                @for(member of team.members; track member) {
+                                @for(member of team.members; track member.id) {
                                     <div class="col-md-3">
                                         {{member.name}} ({{formatDate(member.birthdate)}})
                                     </div>

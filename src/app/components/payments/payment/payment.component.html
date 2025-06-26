@@ -144,7 +144,7 @@
                     </div>
                     
                     <div class="list-group list-group-flush">
-                     @for(payment of pendingPayments; track payment) {
+                     @for(payment of pendingPayments; track payment.id) {
                          <div 
                            class="list-group-item">
                            <div class="row align-items-center">
@@ -203,7 +203,7 @@
                                  <code class="text-primary">{{ paymentSummary.paymentIds.join(', ') }}</code>
                                </p>
                                <ul class="list-unstyled mb-0">
-                                 @for(payment of selectedPayments; track payment) {
+                                 @for(payment of selectedPayments; track payment.id) {
                                      <li class="small text-muted">
                                        • {{ getMonthYearDescription(payment.fee) }} - {{ formatCurrency(payment.fee.amount) }}
                                      </li>

@@ -8,7 +8,7 @@
         <label for="feeSelect" class="form-label">Seleccionar cuota</label>
         <select class="form-select" [(ngModel)]="selectedFeeId" (change)="fetchReport()">
           <option [ngValue]="null">-- Seleccionar --</option>
-          @for(fee of fees; track fee) {
+          @for(fee of fees; track fee.id) {
             <option [value]="fee.id">
               {{ monthNames[fee.month - 1] }} {{ fee.year }}
             </option>
