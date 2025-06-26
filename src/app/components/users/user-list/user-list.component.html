@@ -20,6 +20,7 @@
             <th>Apellido</th>
             <th>Rol</th>
             <th>Email</th>
+            <th>Estado</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -45,17 +46,18 @@
               <td>{{ user.lastName }}</td>
               <td>{{ translateUserRole(user.role) }}</td>
               <td>{{ user.email }}</td>
+              <td>{{ user.isActive ? 'Activo' : 'Inactivo' }}</td>
               <td>
                 <div class="btn-group btn-group-sm" role="group">
                   <button class="btn btn-outline-info me-1" title="Editar" (click)="openEditUserModal(user)">
                     <i class="bi bi-pencil"></i>
                   </button>
                   @if(user.isActive) {
-                    <button class="btn btn-outline-danger" title="Eliminar" (click)="deleteUser(user.id)">
+                    <button class="btn btn-outline-danger" title="Eliminar" (click)="openDeleteModal(user)">
                       <i class="bi bi-x-lg"></i>
                     </button>
                   } @else {
-                    <button class="btn btn-outline-success" title="Activar" (click)="activateUser(user.id)">
+                    <button class="btn btn-outline-success" title="Activar" (click)="openActivateModal(user)">
                       <i class="bi bi-check-lg"></i>
                     </button>
                   }
@@ -85,3 +87,25 @@
     (userSaved)="loadUsers()"
   ></app-user-form>
 </div>
+
+
+ <!-- Modal de confirmación -->
+@if(selectedUser && modalAction) {
+  <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-tertiary">
+          <h5 class="modal-title" id="confirmDeleteModalLabel">{{modalTitle}}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          {{modalMessage}}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" (click)="modalConfirm()">Confirmar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+}

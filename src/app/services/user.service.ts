@@ -52,4 +52,22 @@ export class UserService {
     return this.http.put<User>(`${this.apiUrl}/${id}`, user);
   }
 
+  deleteUser(id: number) {
+    /*
+    const headers = new HttpHeaders({
+      'x-user-id': this.sessionService.getItem('user').id.toString(),
+    });
+    */
+    return this.http.delete<any>(this.apiUrl + `/${id}`, {});
+  }
+
+  activateUser(id: number) {
+    /*
+    const headers = new HttpHeaders({
+      'x-user-id': this.sessionService.getItem('user').id.toString(),
+    });
+    */
+    return this.http.put<any>(this.apiUrl + `/activate/${id}`, {});
+  }
+
 }
