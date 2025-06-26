@@ -1,7 +1,7 @@
-import { Component, inject, type OnInit } from "@angular/core"
+import { AfterViewInit, Component, Inject, inject, PLATFORM_ID, type OnInit } from "@angular/core"
 import { type Member, MemberStatus, translateMemberStatus } from "../../../models/member"
 import { MembersService } from "../../../services/members.service"
-import { CommonModule } from "@angular/common"
+import { CommonModule, isPlatformBrowser } from "@angular/common"
 import { FormsModule } from "@angular/forms"
 import { MemberModalComponent } from "../member-modal/member-modal.component"
 import { EditMemberComponent } from "../edit-member/edit-member.component"
@@ -15,7 +15,7 @@ declare var bootstrap: any;
   templateUrl: "./member-list.component.html",
   styleUrl: "./member-list.component.css",
 })
-export class MemberListComponent implements OnInit {
+export class MemberListComponent implements OnInit, AfterViewInit {
   members: Member[] = [];
   selectedMember: Member | null = null;
   
@@ -57,26 +57,39 @@ export class MemberListComponent implements OnInit {
 
   private membersService = inject(MembersService)
 
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
+
   ngOnInit() {
     this.loadMembers();
   }
 
   ngAfterViewInit() {
-    // Inicializar el toast después de que la vista esté completamente cargada
-    setTimeout(() => {
-      this.initializeToast()
-    }, 100)
+    if (isPlatformBrowser(this.platformId)) {
+      const modalElement = document.getElementById('confirmModal');
+      if (modalElement) {
+        this.modal = new bootstrap.Modal(modalElement);
+      }
+
+      // Toast con delay por si todavía no se montó
+      setTimeout(() => {
+        this.initializeToast();
+      }, 100);
+    }
   }
 
   private initializeToast() {
-    this.toastElement = document.getElementById("responseToast")
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    this.toastElement = document.getElementById("responseToast");
     if (this.toastElement) {
       this.toast = new bootstrap.Toast(this.toastElement, {
         autohide: true,
-        delay: 4000, // 4 segundos
-      })
+        delay: 4000,
+      });
     } else {
-      console.error("Toast element not found")
+      console.error("Toast element not found");
     }
   }
 
@@ -354,9 +367,11 @@ export class MemberListComponent implements OnInit {
           this.deactivateMember(this.selectedMember.id);
           break;
         case "approve":
+          this.showToast('Aprobando socio', 'loading');
           this.approveMember(this.selectedMember.id);
           break;
-        case "reject":
+          case "reject":
+          this.showToast('Rechazando socio', 'loading');
           this.rejectMember(this.selectedMember.id);
           break;
       }      
@@ -378,6 +393,9 @@ export class MemberListComponent implements OnInit {
 
   // Método para mostrar toast
   private showToast(message: string, type: 'success' | 'error' | 'loading'): void {
+    
+    if (!isPlatformBrowser(this.platformId)) return;
+
     const toastBody = document.getElementById('toastBody');
     const toastIcon = document.getElementById('toastIcon');
     const toastContainer = document.getElementById('responseToast');

@@ -1,7 +1,8 @@
-import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Inject, inject, Input, OnChanges, OnInit, Output, PLATFORM_ID } from '@angular/core';
 import { Member } from '../../../models/member';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MembersService } from '../../../services/members.service';
+import { isPlatformBrowser } from '@angular/common';
 
 declare var bootstrap: any;
 
@@ -12,7 +13,7 @@ declare var bootstrap: any;
   templateUrl: './edit-member.component.html',
   styleUrl: './edit-member.component.css'
 })
-export class EditMemberComponent implements OnInit, OnChanges {
+export class EditMemberComponent implements OnInit, OnChanges, AfterViewInit {
 
   @Input() selectedMember: Member | null = null;
   @Output() memberEdited = new EventEmitter<void>();
@@ -28,7 +29,8 @@ export class EditMemberComponent implements OnInit, OnChanges {
   memberService = inject(MembersService);
 
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.memberForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2)]],
@@ -47,21 +49,24 @@ export class EditMemberComponent implements OnInit, OnChanges {
   }
 
   ngAfterViewInit() {
-    // Inicializar el toast después de que la vista esté completamente cargada
-    setTimeout(() => {
-      this.initializeToast()
-    }, 100)
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        this.initializeToast();
+      }, 100);
+    }
   }
 
   private initializeToast() {
-    this.toastElement = document.getElementById("responseToast")
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    this.toastElement = document.getElementById("responseToast");
     if (this.toastElement) {
       this.toast = new bootstrap.Toast(this.toastElement, {
         autohide: true,
-        delay: 4000, // 4 segundos
-      })
+        delay: 4000,
+      });
     } else {
-      console.error("Toast element not found")
+      console.error("Toast element not found");
     }
   }
 

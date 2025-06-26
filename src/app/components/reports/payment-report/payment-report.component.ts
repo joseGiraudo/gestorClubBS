@@ -39,14 +39,14 @@ export class PaymentReportComponent implements OnInit {
       data: [],
       borderColor: '#3e95cd',
       fill: false,
-      tension: 0.3
+      tension: 0
     },
     {
       label: 'Recaudación mensual',
       data: [],
       borderColor: '#8e5ea2',
       fill: false,
-      tension: 0.3
+      tension: 0
     }
   ]
   };

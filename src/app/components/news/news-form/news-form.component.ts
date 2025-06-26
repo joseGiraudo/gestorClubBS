@@ -1,9 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Inject, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NewsService } from '../../../services/news.service';
 import { CreateNews, News } from '../../../models/news';
 import { pastDateValidation } from '../../../validators/birthdate-validator';
 import { Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
 
 declare var bootstrap: any;
 
@@ -13,7 +14,7 @@ declare var bootstrap: any;
   templateUrl: './news-form.component.html',
   styleUrl: './news-form.component.css'
 })
-export class NewsFormComponent implements OnInit {
+export class NewsFormComponent implements OnInit, AfterViewInit {
 
   newsForm: FormGroup;
   selectedFile: File | null = null;
@@ -27,8 +28,10 @@ export class NewsFormComponent implements OnInit {
   private newsService = inject(NewsService);
   private router = inject(Router);
 
-  constructor(private fb: FormBuilder) {
-
+  constructor(
+    private fb: FormBuilder,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
     const today = new Date();
     const formattedDate = today.toISOString().split('T')[0]; // 'YYYY-MM-DD'
 
@@ -41,13 +44,27 @@ export class NewsFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Inicializar el toast
-    this.toastElement = document.getElementById('responseToast');
+  }
+
+  ngAfterViewInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        this.initializeToast();
+      }, 100);
+    }
+  }
+
+  private initializeToast() {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    this.toastElement = document.getElementById("responseToast");
     if (this.toastElement) {
       this.toast = new bootstrap.Toast(this.toastElement, {
         autohide: true,
-        delay: 4000 // 4 segundos
+        delay: 4000,
       });
+    } else {
+      console.error("Toast element not found");
     }
   }
 
@@ -94,6 +111,9 @@ export class NewsFormComponent implements OnInit {
 
   // Método para mostrar toast
   private showToast(message: string, type: 'success' | 'error' | 'loading'): void {
+    
+    if (!isPlatformBrowser(this.platformId)) return;
+
     const toastBody = document.getElementById('toastBody');
     const toastIcon = document.getElementById('toastIcon');
     const toastContainer = document.getElementById('responseToast');

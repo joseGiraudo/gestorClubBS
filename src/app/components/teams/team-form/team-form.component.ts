@@ -1,10 +1,11 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Inject, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TeamService } from '../../../services/team.service';
 import { CreateTeam, TeamSport, translateTeamSport } from '../../../models/team';
 import { Member } from '../../../models/member';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MembersService } from '../../../services/members.service';
+import { isPlatformBrowser } from '@angular/common';
 
 declare var bootstrap: any; // Para usar Bootstrap modal
 
@@ -15,7 +16,7 @@ declare var bootstrap: any; // Para usar Bootstrap modal
   templateUrl: './team-form.component.html',
   styleUrl: './team-form.component.css'
 })
-export class TeamFormComponent implements OnInit {
+export class TeamFormComponent implements OnInit, AfterViewInit {
 
   teamForm: FormGroup;
   isEditMode = false;
@@ -35,39 +36,46 @@ export class TeamFormComponent implements OnInit {
   private teamService = inject(TeamService);
   private memberService = inject(MembersService);
 
-  constructor(private fb: FormBuilder, private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(
+    private fb: FormBuilder, 
+    private activatedRoute: ActivatedRoute, 
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
     this.teamForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
       sport: ['', Validators.required]
     });
   }
-
+  
   ngOnInit(): void {
-
-    // Inicializar el toast
-    this.toastElement = document.getElementById('responseToast');
-    if (this.toastElement) {
-      this.toast = new bootstrap.Toast(this.toastElement, {
-        autohide: true,
-        delay: 4000 // 4 segundos
-      });
-    }
-
-
     if (this.activatedRoute.snapshot.params['id']) {
       this.isEditMode = true;
       this.teamId = +this.activatedRoute.snapshot.params['id'];
-
+      
       this.teamService.getTeamById(this.teamId).subscribe(team => {
         this.teamForm.patchValue(team);
         this.selectedMembers = team.members; // Asegurate que el backend devuelva los miembros
       });
     }
-
+    
     this.searchMembers();
   }
+  
+  ngAfterViewInit(): void {
 
+    if(isPlatformBrowser(this.platformId)) {
+      this.toastElement = document.getElementById('responseToast');
+      if (this.toastElement) {
+        this.toast = new bootstrap.Toast(this.toastElement, {
+          autohide: true,
+          delay: 4000
+        });
+      }
+    }
+  }
+  
   onSubmit() {
     if (this.teamForm.invalid) return;
 
@@ -153,6 +161,9 @@ export class TeamFormComponent implements OnInit {
 
     // Método para mostrar toast
   private showToast(message: string, type: 'success' | 'error' | 'loading'): void {
+
+    if (!isPlatformBrowser(this.platformId)) return;
+
     const toastBody = document.getElementById('toastBody');
     const toastIcon = document.getElementById('toastIcon');
     const toastContainer = document.getElementById('responseToast');

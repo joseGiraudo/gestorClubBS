@@ -1,7 +1,8 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, Inject, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { translateUserRole, User } from '../../../models/user';
 import { UserService } from '../../../services/user.service';
 import { UserFormComponent } from "../user-form/user-form.component";
+import { isPlatformBrowser } from '@angular/common';
 
 declare var bootstrap: any;
 
@@ -22,6 +23,9 @@ export class UserListComponent implements OnInit {
 
   translateUserRole = translateUserRole;
 
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+
+
   ngOnInit() {
     this.loadUsers();
   }
@@ -36,18 +40,28 @@ export class UserListComponent implements OnInit {
 
   openCreateUserModal() {
     this.selectedUser = null;
-    setTimeout(() => {
-      const modal = new bootstrap.Modal(document.getElementById('userModal'));
-      modal.show();
-    });
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        const modalElement = document.getElementById('userModal');
+        if (modalElement) {
+          const modal = new bootstrap.Modal(modalElement);
+          modal.show();
+        }
+      });
+    }
   }
 
   openEditUserModal(user: User) {
     this.selectedUser = user;
-    setTimeout(() => {
-      const modal = new bootstrap.Modal(document.getElementById('userModal'));
-      modal.show();
-    });
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        const modalElement = document.getElementById('userModal');
+        if (modalElement) {
+          const modal = new bootstrap.Modal(modalElement);
+          modal.show();
+        }
+      });
+    }
   }
 
   deleteUser(id: any) {

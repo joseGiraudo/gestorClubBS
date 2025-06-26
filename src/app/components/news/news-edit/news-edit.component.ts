@@ -1,8 +1,9 @@
-import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Inject, inject, Input, OnChanges, OnInit, Output, PLATFORM_ID, SimpleChanges } from '@angular/core';
 import { CreateNews, News } from '../../../models/news';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NewsService } from '../../../services/news.service';
 import { pastDateValidation } from '../../../validators/birthdate-validator';
+import { isPlatformBrowser } from '@angular/common';
 
 declare var bootstrap: any;
 
@@ -12,7 +13,7 @@ declare var bootstrap: any;
   templateUrl: './news-edit.component.html',
   styleUrl: './news-edit.component.css'
 })
-export class NewsEditComponent implements OnInit, OnChanges {
+export class NewsEditComponent implements OnInit, OnChanges, AfterViewInit {
 
   @Input() selectedNews: News | null = null;
   @Output() newsUpdated = new EventEmitter<void>();
@@ -29,7 +30,8 @@ export class NewsEditComponent implements OnInit, OnChanges {
   newsService = inject(NewsService);
 
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.newsForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(5)]],
@@ -41,6 +43,28 @@ export class NewsEditComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.populateForm();
     
+  }
+
+  ngAfterViewInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        this.initializeToast();
+      }, 100);
+    }
+  }
+
+  private initializeToast() {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    this.toastElement = document.getElementById("responseToast");
+    if (this.toastElement) {
+      this.toast = new bootstrap.Toast(this.toastElement, {
+        autohide: true,
+        delay: 4000,
+      });
+    } else {
+      console.error("Toast element not found");
+    }
   }
   
   ngOnChanges(): void {
@@ -119,6 +143,9 @@ export class NewsEditComponent implements OnInit, OnChanges {
 
   // Método para mostrar toast
   private showToast(message: string, type: 'success' | 'error' | 'loading'): void {
+    
+    if (!isPlatformBrowser(this.platformId)) return;
+
     const toastBody = document.getElementById('toastBody');
     const toastIcon = document.getElementById('toastIcon');
     const toastContainer = document.getElementById('responseToast');
@@ -163,9 +190,7 @@ export class NewsEditComponent implements OnInit, OnChanges {
       }
       
       // Mostrar el toast
-      // this.toast.show(); // falta inicializarlo
-      const toast = new bootstrap.Toast(toastContainer);
-      toast.show();
+      this.toast.show();
     }
   }
 

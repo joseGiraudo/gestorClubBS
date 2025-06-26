@@ -1,10 +1,11 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Inject, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { TeamService } from '../../../services/team.service';
 import { Team, translateTeamSport } from '../../../models/team';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { LoginService } from '../../../services/login.service';
 import { map, Observable } from 'rxjs';
 import { User } from '../../../models/user';
+import { isPlatformBrowser } from '@angular/common';
 
 declare var bootstrap: any;
 
@@ -14,7 +15,7 @@ declare var bootstrap: any;
   templateUrl: './team-list.component.html',
   styleUrl: './team-list.component.css'
 })
-export class TeamListComponent implements OnInit {
+export class TeamListComponent implements OnInit, AfterViewInit {
 
     // toast  
   private toastElement: any;
@@ -37,7 +38,11 @@ export class TeamListComponent implements OnInit {
 
   translateTeamSport = translateTeamSport;
 
-  constructor(private activatedRoute: ActivatedRoute, private loginService: LoginService) {
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private loginService: LoginService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
     this.isLoggedIn$ = this.loginService.currentUser$.pipe(
       // Mapeamos para saber si hay usuario
       map(user => !!user)
@@ -52,25 +57,33 @@ export class TeamListComponent implements OnInit {
       this.loadSportsData(this.sport); // Lógica para cargar los datos según el deporte
     });
 
-    this.modal = new bootstrap.Modal(document.getElementById('confirmModal'));
   }
-
+  
   ngAfterViewInit() {
-    // Inicializar el toast después de que la vista esté completamente cargada
-    setTimeout(() => {
-      this.initializeToast()
-    }, 100)
+    if (isPlatformBrowser(this.platformId)) {
+      const modalElement = document.getElementById('confirmModal');
+      if (modalElement) {
+        this.modal = new bootstrap.Modal(modalElement);
+      }
+
+      // Toast con delay por si todavía no se montó
+      setTimeout(() => {
+        this.initializeToast();
+      }, 100);
+    }
   }
 
   private initializeToast() {
-    this.toastElement = document.getElementById("responseToast")
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    this.toastElement = document.getElementById("responseToast");
     if (this.toastElement) {
       this.toast = new bootstrap.Toast(this.toastElement, {
         autohide: true,
-        delay: 4000, // 4 segundos
-      })
+        delay: 4000,
+      });
     } else {
-      console.error("Toast element not found")
+      console.error("Toast element not found");
     }
   }
 
@@ -121,6 +134,9 @@ export class TeamListComponent implements OnInit {
 
       // Método para mostrar toast
   private showToast(message: string, type: 'success' | 'error'): void {
+
+    if (!isPlatformBrowser(this.platformId)) return;
+
     const toastBody = document.getElementById('toastBody');
     const toastIcon = document.getElementById('toastIcon');
     const toastContainer = document.getElementById('responseToast');

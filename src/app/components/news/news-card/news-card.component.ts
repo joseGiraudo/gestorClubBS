@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Inject, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { News } from '../../../models/news';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NewsService } from '../../../services/news.service';
@@ -6,6 +6,7 @@ import { LoginService } from '../../../services/login.service';
 import { map, Observable } from 'rxjs';
 import { User } from '../../../models/user';
 import { NewsEditComponent } from '../news-edit/news-edit.component';
+import { isPlatformBrowser } from '@angular/common';
 
 declare var bootstrap: any;
 
@@ -15,7 +16,7 @@ declare var bootstrap: any;
   templateUrl: './news-card.component.html',
   styleUrl: './news-card.component.css',
 })
-export class NewsCardComponent implements OnInit {
+export class NewsCardComponent implements OnInit, AfterViewInit {
   private newsService = inject(NewsService);
 
   id: string | null = null;
@@ -28,13 +29,18 @@ export class NewsCardComponent implements OnInit {
   modalMessage: string = '¿Seguro quieres realizar la acción?';
   modalTitle: string = 'Confirmar';
 
+  // toast  
+  private toastElement: any;
+  private toast: any;
+
   isLoggedIn$: Observable<boolean>;
   user$: Observable<User | null>;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private loginService: LoginService
+    private loginService: LoginService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.isLoggedIn$ = this.loginService.currentUser$.pipe(
       // Mapeamos para saber si hay usuario
@@ -57,11 +63,37 @@ export class NewsCardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.modal = new bootstrap.Modal(document.getElementById('confirmModal'));
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
-
     if (this.id) {
       this.loadNews(parseInt(this.id));
+    }
+  }
+
+  ngAfterViewInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      const modalElement = document.getElementById('confirmModal');
+      if (modalElement) {
+        this.modal = new bootstrap.Modal(modalElement);
+      }
+
+      // Toast con delay por si todavía no se montó
+      setTimeout(() => {
+        this.initializeToast();
+      }, 100);
+    }
+  }
+
+  private initializeToast() {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    this.toastElement = document.getElementById("responseToast");
+    if (this.toastElement) {
+      this.toast = new bootstrap.Toast(this.toastElement, {
+        autohide: true,
+        delay: 4000,
+      });
+    } else {
+      console.error("Toast element not found");
     }
   }
 
@@ -187,9 +219,7 @@ export class NewsCardComponent implements OnInit {
       }
       
       // Mostrar el toast
-      // this.toast.show(); // falta inicializarlo
-      const toast = new bootstrap.Toast(toastContainer);
-      toast.show();
+      this.toast.show();
     }
   }
 

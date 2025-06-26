@@ -1,7 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Inject, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { Payment, PaymentDto, PaymentMethod, PaymentPayDTO, PaymentStatus, translatePaymentMethod, translatePaymentStatus } from '../../../models/payment';
 import { PaymentService } from '../../../services/payment.service';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, DatePipe, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Member } from '../../../models/member';
 import { Router } from '@angular/router';
@@ -15,7 +15,7 @@ declare var bootstrap: any;
   templateUrl: './payment-list.component.html',
   styleUrl: './payment-list.component.css'
 })
-export class PaymentListComponent implements OnInit {
+export class PaymentListComponent implements OnInit, AfterViewInit {
 
   paymentsArray: PaymentDto[] = [];
   selectedPayment: PaymentDto | null = null;
@@ -62,16 +62,33 @@ export class PaymentListComponent implements OnInit {
   private paymentService = inject(PaymentService);
   private router = inject(Router);
 
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
+
   ngOnInit() {
     this.loadPayments();
+  }
 
-    // Inicializar el toast
-    this.toastElement = document.getElementById('responseToast');
+  ngAfterViewInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        this.initializeToast();
+      }, 100);
+    }
+  }
+
+  private initializeToast() {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    this.toastElement = document.getElementById("responseToast");
     if (this.toastElement) {
       this.toast = new bootstrap.Toast(this.toastElement, {
         autohide: true,
-        delay: 4000 // 4 segundos
+        delay: 4000,
       });
+    } else {
+      console.error("Toast element not found");
     }
   }
 
@@ -276,6 +293,9 @@ export class PaymentListComponent implements OnInit {
 
     // Método para mostrar toast
   private showToast(message: string, type: 'success' | 'error' | 'loading'): void {
+    
+    if (!isPlatformBrowser(this.platformId)) return;
+
     const toastBody = document.getElementById('toastBody');
     const toastIcon = document.getElementById('toastIcon');
     const toastContainer = document.getElementById('responseToast');

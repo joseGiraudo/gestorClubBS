@@ -1,8 +1,8 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Fee, FeeStatsDto } from '../../../models/payment';
 import { PaymentService } from '../../../services/payment.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 declare var bootstrap: any;
 
 @Component({
@@ -11,7 +11,7 @@ declare var bootstrap: any;
   templateUrl: './fees-view.component.html',
   styleUrl: './fees-view.component.css'
 })
-export class FeesViewComponent implements OnInit {
+export class FeesViewComponent implements OnInit, AfterViewInit {
 
   feeForm!: FormGroup;
   fees: FeeStatsDto[] = [];
@@ -37,7 +37,10 @@ export class FeesViewComponent implements OnInit {
     'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
   ];
 
-  constructor(private fb: FormBuilder, private paymentService: PaymentService) {}
+  constructor(private fb: FormBuilder,
+    private paymentService: PaymentService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   ngOnInit(): void {
     this.feeForm = this.fb.group({
@@ -51,20 +54,24 @@ export class FeesViewComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      this.initializeToast();
-    }, 100)
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        this.initializeToast();
+      }, 100);
+    }
   }
 
   private initializeToast() {
-    this.toastElement = document.getElementById("responseToast")
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    this.toastElement = document.getElementById("responseToast");
     if (this.toastElement) {
       this.toast = new bootstrap.Toast(this.toastElement, {
         autohide: true,
-        delay: 4000, // 4 segundos
-      })
+        delay: 4000,
+      });
     } else {
-      console.error("Toast element not found")
+      console.error("Toast element not found");
     }
   }
 
@@ -118,9 +125,6 @@ export class FeesViewComponent implements OnInit {
     }
     this.modalLoading = true;
     this.errorMessage = '';
-
-    console.log("aaaaaaa", this.modalAction)
-    console.log("cuota", this.selectedFee)
     
     if (this.modalAction === 'create-fee' && this.selectedFee) {
       
@@ -170,6 +174,9 @@ export class FeesViewComponent implements OnInit {
 
     // Método para mostrar toast
   private showToast(message: string, type: 'success' | 'error' | 'loading' | 'info'): void {
+    
+    if (!isPlatformBrowser(this.platformId)) return;
+
     const toastBody = document.getElementById('toastBody');
     const toastIcon = document.getElementById('toastIcon');
     const toastContainer = document.getElementById('responseToast');
@@ -223,9 +230,7 @@ export class FeesViewComponent implements OnInit {
       }
       
       // Mostrar el toast
-      //this.toast.show();
-      const toast = new bootstrap.Toast(toastContainer);
-      toast.show();
+      this.toast.show();
     }
   }
 }

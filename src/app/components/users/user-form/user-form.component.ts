@@ -1,7 +1,8 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Inject, inject, Input, OnInit, Output, PLATFORM_ID, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../../services/user.service';
 import { CreateUser, translateUserRole, User, UserRole } from '../../../models/user';
+import { isPlatformBrowser } from '@angular/common';
 
 declare var bootstrap: any;
 
@@ -27,7 +28,10 @@ export class UserFormComponent implements OnInit {
   roles = Object.values(UserRole);
   translateUserRole = translateUserRole; 
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
     this.userForm = this.fb.group({
       name: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -39,7 +43,13 @@ export class UserFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.modalInstance = new bootstrap.Modal(document.getElementById('userModal'));
+    
+    if (isPlatformBrowser(this.platformId)) {
+      const modalElement = document.getElementById('userModal');
+      if (modalElement) {
+        this.modalInstance = new bootstrap.Modal(modalElement);
+      }
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -128,7 +138,8 @@ export class UserFormComponent implements OnInit {
   }
 
   private closeModal() {
-    // Cerrar modal usando Bootstrap
+    if (!isPlatformBrowser(this.platformId)) return;
+    
     const modalElement = document.getElementById('userModal');
     if (modalElement) {
       const modal = (window as any).bootstrap.Modal.getInstance(modalElement);
@@ -140,6 +151,9 @@ export class UserFormComponent implements OnInit {
 
       // Método para mostrar toast
   private showToast(message: string, type: 'success' | 'error' | 'loading' | 'info'): void {
+
+    if (!isPlatformBrowser(this.platformId)) return;
+
     const toastBody = document.getElementById('toastBody');
     const toastIcon = document.getElementById('toastIcon');
     const toastContainer = document.getElementById('responseToast');

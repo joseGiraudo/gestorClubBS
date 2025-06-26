@@ -1,8 +1,9 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Inject, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PaymentService } from '../../../services/payment.service';
 import { Fee, Payment, PaymentStatus } from '../../../models/payment';
 import { Member } from '../../../models/member';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 
 declare var bootstrap: any;
 
@@ -16,11 +17,11 @@ export interface PaymentSummary {
 
 @Component({
   selector: 'app-payment',
-  imports: [ ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.css'
 })
-export class PaymentComponent implements OnInit {
+export class PaymentComponent implements OnInit, AfterViewInit {
 
   form: FormGroup;
   searched = false;
@@ -46,7 +47,10 @@ export class PaymentComponent implements OnInit {
     'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
   ];
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
     this.form = this.fb.group({
       memberDni: ['', [Validators.required, Validators.pattern(/^\d{7,8}$/)]]
     });
@@ -55,10 +59,11 @@ export class PaymentComponent implements OnInit {
   ngOnInit(): void {}
 
   ngAfterViewInit() {
-    // Inicializar el toast después de que la vista esté completamente cargada
-    setTimeout(() => {
-      this.initializeToast()
-    }, 100)
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        this.initializeToast();
+      }, 100);
+    }
   }
 
   private initializeToast() {
@@ -209,6 +214,9 @@ export class PaymentComponent implements OnInit {
 
     // Método para mostrar toast
   private showToast(message: string, type: 'success' | 'error' | 'loading'): void {
+    
+    if (!isPlatformBrowser(this.platformId)) return;
+
     const toastBody = document.getElementById('toastBody');
     const toastIcon = document.getElementById('toastIcon');
     const toastContainer = document.getElementById('responseToast');

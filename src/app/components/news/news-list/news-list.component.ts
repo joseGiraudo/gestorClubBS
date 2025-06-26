@@ -5,10 +5,11 @@ import { Router, RouterLink } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { User } from '../../../models/user';
 import { LoginService } from '../../../services/login.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-news-list',
-  imports: [RouterLink],
+  imports: [CommonModule, RouterLink],
   templateUrl: './news-list.component.html',
   styleUrl: './news-list.component.css'
 })
