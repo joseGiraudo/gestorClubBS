@@ -114,8 +114,8 @@
            {{ modalMessage }}
          </div>
          <div class="modal-footer">
-           <button type="button" class="btn btn-secondary me-1" (click)="closeModal()">Cancelar</button>
-           <button type="button" class="btn btn-primary" (click)="modalConfirm()">
+           <button type="button" class="btn btn-secondary me-1" (click)="closeModal()" [disabled]="modalLoading">Cancelar</button>
+           <button type="button" class="btn btn-primary" (click)="modalConfirm()" [disabled]="modalLoading">
             @if(!modalLoading) {
               <span>Confirmar</span>
             } @else if (modalLoading) {

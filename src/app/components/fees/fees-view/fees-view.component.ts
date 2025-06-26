@@ -106,7 +106,7 @@ export class FeesViewComponent implements OnInit, AfterViewInit {
 
     if (action === 'send-reminder') {
       this.modalTitle = 'Confirmar envío de recordatorios de pago';
-      this.modalMessage = 'Se enviará un correo electrónico a todos los socios con cuotas pendientes.';
+      this.modalMessage = 'Se enviará un correo electrónico a todos los socios con cuotas pendientes. Esto toma tiempo.';
     }
 
     this.isModalVisible = true;
@@ -152,7 +152,7 @@ export class FeesViewComponent implements OnInit, AfterViewInit {
     }
 
     if (this.modalAction === 'send-reminder') {
-      this.showToast('Enviando emails', 'loading');
+      this.showToast('Enviando emails. Esto puede tomar tiempo', 'loading');
       
       this.paymentService.sendPaymentReminders().subscribe({
         next: () => {
