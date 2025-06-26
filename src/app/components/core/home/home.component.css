@@ -99,3 +99,15 @@
 .badge.bg-warm-light {
   background-color: var(--warm-light) !important;
 }
+
+#clubCarousel {
+  height: 375px; /* o el alto que quieras fijo */
+  overflow: hidden;
+}
+
+#clubCarousel .carousel-item img {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  margin: 0 auto; /* centrar horizontalmente */
+}
