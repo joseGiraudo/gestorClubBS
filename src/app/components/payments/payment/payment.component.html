@@ -65,7 +65,24 @@
             }
      
            <!-- No Results -->
-            @if(!loading && pendingPayments.length === 0 && member) {
+           @if(!loading && notFound) {
+               <div class="text-center py-5">
+                 <div class="card border-danger">
+                   <div class="card-body">
+                     <i class="bi bi-person-fill-x text-danger display-1"></i>
+                     <h4 class="text-danger mt-3">Socio no encontrado!</h4>
+                     <p class="text-muted mb-3">No se encontró un socio con ese número de DNI</p>
+                     <p class="text-muted mb-3"><small>En caso de un error, comunicate con la comisión directiva del club.</small></p>
+                     <button class="btn btn-outline-primary" (click)="resetSearch()">
+                       <i class="bi bi-arrow-left me-2"></i>
+                       Nueva búsqueda
+                     </button>
+                   </div>
+                 </div>
+               </div>
+           }
+
+            @if(!loading && pendingPayments.length === 0 && !notFound) {
                 <div class="text-center py-5">
                   <div class="card border-success">
                     <div class="card-body">
@@ -81,22 +98,6 @@
                 </div>
             }
 
-            @if(!loading && !member) {
-                <div class="text-center py-5">
-                  <div class="card border-danger">
-                    <div class="card-body">
-                      <i class="bi bi-person-fill-x text-danger display-1"></i>
-                      <h4 class="text-danger mt-3">Socio no encontrado!</h4>
-                      <p class="text-muted mb-3">No se encontró un socio con ese número de DNI</p>
-                      <p class="text-muted mb-3"><small>En caso de un error, comunicate con la comisión directiva del club.</small></p>
-                      <button class="btn btn-outline-primary" (click)="resetSearch()">
-                        <i class="bi bi-arrow-left me-2"></i>
-                        Nueva búsqueda
-                      </button>
-                    </div>
-                  </div>
-                </div>
-            }
      
            <!-- Results with Payments -->
             @if(!loading && member && pendingPayments.length > 0) {

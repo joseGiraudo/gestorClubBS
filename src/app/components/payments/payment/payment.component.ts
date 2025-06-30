@@ -26,6 +26,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
   form: FormGroup;
   searched = false;
   loading = false;
+  notFound = false;
   pendingPayments: Payment[] = [];
   member: Member | null = null;
   selectedPayments: Payment[] = [];
@@ -93,12 +94,14 @@ export class PaymentComponent implements OnInit, AfterViewInit {
             this.member = this.pendingPayments[0].member;
           }
           this.loading = false;
+          this.notFound = false;
         },
         error: (err) => {
-          console.log(err);
+          console.error(err);
           this.pendingPayments = [];
           this.member = null;
           this.loading = false;
+          this.notFound = true;
         }
       });
     }
