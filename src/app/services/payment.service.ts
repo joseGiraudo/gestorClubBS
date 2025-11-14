@@ -13,7 +13,7 @@ export class PaymentService {
   paymentsUrl: string = 'http://localhost:8080/payments';
   // paymentsUrl: string = 'https://acff-181-164-143-143.ngrok-free.app/payments';
   // private mpUrl = 'http://localhost:8080/api/v1/mp';
-  private mpUrl = 'https://ce2d-200-10-191-20.ngrok-free.app/api/v1/mp';
+  private mpUrl = 'https://unscabrously-isogeothermic-danyelle.ngrok-free.dev/api/v1/mp';
 
   constructor(private http: HttpClient) {}
 
