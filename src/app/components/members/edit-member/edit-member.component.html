@@ -141,7 +141,21 @@
                       memberForm.get('phone')?.touched
                     "
                   />
-                  <div class="invalid-feedback">El teléfono es requerido</div>
+                  @if (memberForm.get('phone')?.invalid && memberForm.get('phone')?.touched) {
+
+                    @if (memberForm.get('phone')?.errors?.['required']) {
+                      <small class="invalid-feedback">El teléfono es requerido</small>
+                    }
+
+                    @if (memberForm.get('phone')?.errors?.['minlength']) {
+                      <small class="invalid-feedback">Debe tener al menos 8 dígitos</small>
+                    }
+
+                    @if (memberForm.get('phone')?.errors?.['pattern']) {
+                      <small class="invalid-feedback">Solo se permiten números</small>
+                    }
+
+                  }
                 </div>
 
                 <div class="mb-3">

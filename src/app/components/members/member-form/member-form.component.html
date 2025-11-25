@@ -59,7 +59,7 @@
               <small class="text-danger ms-2">Requerido</small>
             }
             @if (memberForm.get('dni')?.errors?.['pattern']) {
-              <small class="text-danger ms-2">Solo números</small>
+              <small class="text-danger ms-2">Solo se permiten números</small>
             }
             @if (memberForm.get('dni')?.getError('dniExists')) {
               <small class="text-danger ms-2">DNI ya registrado</small>
@@ -101,7 +101,7 @@
               <small class="text-danger ms-2">Requerido</small>
             }
             @if (memberForm.get('phone')?.errors?.['pattern']) {
-              <small class="text-danger ms-2">Solo números</small>
+              <small class="text-danger ms-2">Solo se permiten números</small>
             }
           }
         </div>

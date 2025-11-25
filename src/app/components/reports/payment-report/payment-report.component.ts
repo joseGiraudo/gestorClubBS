@@ -59,7 +59,7 @@ export class PaymentReportComponent implements OnInit {
     plugins: {
       title: {
         display: true,
-        text: 'Recaudación mensual'
+        text: 'Recaudación mensual en pesos'
       },
       legend: {
         display: true,
