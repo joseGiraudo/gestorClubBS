@@ -37,7 +37,7 @@ export class EditMemberComponent implements OnInit, OnChanges, AfterViewInit {
       lastName: ['', [Validators.required, Validators.minLength(2)]],
       dni: [{value: '', disabled: true}], // Campo deshabilitado
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required, Validators.minLength(8)]],
+      phone: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^[0-9]+$/)]],
       address: ['', [Validators.required, Validators.minLength(10)]],
       birthdate: ['', Validators.required],
       type: ['', Validators.required],

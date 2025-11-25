@@ -37,12 +37,12 @@ export class MemberFormComponent implements OnInit, AfterViewInit {
     this.memberForm = this.fb.group({
       name: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
-      dni: ['', [Validators.required]],
+      dni: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required]],
+      phone: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
       address: ['',[ Validators.required]],
       birthdate: [null, [Validators.required, pastDateValidation]],
-      type: ['', Validators.required],
+      type: [{ value: 'ACTIVE', disabled: true }, Validators.required],
     })
   }
 

@@ -58,6 +58,9 @@
             @if (memberForm.get('dni')?.errors?.['required']) {
               <small class="text-danger ms-2">Requerido</small>
             }
+            @if (memberForm.get('dni')?.errors?.['pattern']) {
+              <small class="text-danger ms-2">Solo números</small>
+            }
             @if (memberForm.get('dni')?.getError('dniExists')) {
               <small class="text-danger ms-2">DNI ya registrado</small>
             }
@@ -97,6 +100,9 @@
             @if (memberForm.get('phone')?.errors?.['required']) {
               <small class="text-danger ms-2">Requerido</small>
             }
+            @if (memberForm.get('phone')?.errors?.['pattern']) {
+              <small class="text-danger ms-2">Solo números</small>
+            }
           }
         </div>
       </div>
@@ -129,7 +135,7 @@
 
       <div class="col-md-6">
         <label class="form-label">Tipo</label>
-        <select class="form-select" formControlName="type" required>
+        <select class="form-select" formControlName="type">
           <option value="ACTIVE">Activo</option>
         </select>
       </div>
