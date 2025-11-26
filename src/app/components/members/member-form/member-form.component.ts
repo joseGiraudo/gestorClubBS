@@ -42,7 +42,7 @@ export class MemberFormComponent implements OnInit, AfterViewInit {
       phone: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
       address: ['',[ Validators.required]],
       birthdate: [null, [Validators.required, pastDateValidation]],
-      type: [{ value: 'ACTIVE', disabled: true }, Validators.required],
+      type: ['ACTIVE', Validators.required],
     })
   }
 
