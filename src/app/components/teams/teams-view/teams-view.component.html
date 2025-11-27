@@ -24,7 +24,7 @@
     <button class="btn btn-lg" style="background-color: #1e3a8a; color: #f3ca42;" [routerLink]="['/teams/VOLLEYBALL']">Vóley</button>
     <button class="btn btn-lg" style="background-color: #1e3a8a; color: #f3ca42;" [routerLink]="['/teams/HOCKEY']">Hockey</button>
   </div>
-  @if(hasAnyRole(['ADMIN'])) {
+  @if(hasAnyRole(['ADMIN', 'COMMITTEE'])) {
     <div class="d-flex justify-content-center gap-3 mt-5">
       <button class="btn btn-lg" style="background-color: #1e3a8a; color: #f0ce60;" [routerLink]="['/teams/create']" routerLinkActive="router-link-active">Agregar Equipo</button>
     </div>

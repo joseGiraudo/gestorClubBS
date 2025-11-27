@@ -9,7 +9,7 @@
                   <div class="card mb-3">
                       <div class="card-header d-flex justify-content-between align-items-center">
                             <h5 class="card-title mb-0">{{team.name}}</h5>
-                            @if(hasAnyRole(['ADMIN'])) {
+                            @if(hasAnyRole(['ADMIN', 'COMMITTEE'])) {
                                 <div>
                                     <button 
                                         class="badge bg-secondary mx-1" 

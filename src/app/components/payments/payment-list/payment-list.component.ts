@@ -136,6 +136,8 @@ export class PaymentListComponent implements OnInit, AfterViewInit {
     if (!this.selectedPaymentToPay || !this.paymentMethodToUse) return;
     this.approvePayment(this.selectedPaymentToPay.id, this.paymentMethodToUse);
     this.payModalInstance.hide();
+    
+    this.showToast("Aprobando pago", 'loading')
   }
 
 
