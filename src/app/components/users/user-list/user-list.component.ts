@@ -3,6 +3,7 @@ import { translateUserRole, User } from '../../../models/user';
 import { UserService } from '../../../services/user.service';
 import { UserFormComponent } from "../user-form/user-form.component";
 import { isPlatformBrowser } from '@angular/common';
+import { LoginService } from '../../../services/login.service';
 
 declare var bootstrap: any;
 
@@ -16,6 +17,7 @@ export class UserListComponent implements OnInit, AfterViewInit {
 
   users: User[] = [];
   selectedUser: User | null = null;
+  currentUser: User | null = null;
 
   loading = true;
 
@@ -33,10 +35,14 @@ export class UserListComponent implements OnInit, AfterViewInit {
   modalTitle: string = 'Confirmar';
   modalAction: 'activate' | 'deactivate' | null = null;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private loginService: LoginService
+  ) {}
 
 
   ngOnInit() {
+    this.currentUser = this.loginService.getCurrentUser();
     this.loadUsers();
   }
 
