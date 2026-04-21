@@ -2,13 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CreateTeam, Team, TeamSport } from '../models/team';
 import { Observable } from 'rxjs';
+import { APP_CONFIG } from '../config/app.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TeamService {
 
-  apiUrl: string = 'http://localhost:8080/teams'
+  private apiUrl: string = `${APP_CONFIG.apiUrl}/teams`;
+  
 
   constructor(private http: HttpClient) {}
 

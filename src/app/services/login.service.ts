@@ -5,7 +5,7 @@ import { LoginRequest, LoginResponse } from '../models/login';
 import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { User } from '../models/user';
 import { Router } from '@angular/router';
-import { error } from 'node:console';
+import { APP_CONFIG } from '../config/app.config';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class LoginService {
   private currentUserSubject = new BehaviorSubject<User | null>(null)
   public currentUser$ = this.currentUserSubject.asObservable()
 
-  private apiUrl: string = 'http://localhost:8080/auth'
+  private apiUrl: string = `${APP_CONFIG.apiUrl}/auth`;
 
   constructor(
     private http: HttpClient,

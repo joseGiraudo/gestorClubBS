@@ -3,15 +3,16 @@ import { Injectable } from '@angular/core';
 import { FeeCollectionReport, FullPaymentReportDto, MemberReportDto, MonthlyCountDto, SportCountDto } from '../models/report';
 import { Observable } from 'rxjs';
 import { Fee } from '../models/payment';
+import { APP_CONFIG } from '../config/app.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReportService {
 
-  apiUrl: string = 'http://localhost:8080';
-  membersUrl: string = 'http://localhost:8080/reports/members';
-  paymentsUrl: string = 'http://localhost:8080/reports/payments';
+  private apiUrl: string = `${APP_CONFIG.apiUrl}`;
+  private membersUrl: string = `${APP_CONFIG.apiUrl}/reports/members`;
+  private paymentsUrl: string = `${APP_CONFIG.apiUrl}/reports/payments`;
 
   constructor(private http: HttpClient) {}
 

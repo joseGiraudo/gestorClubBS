@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { CreateUser, User } from '../models/user';
 import { UserMapperPipe } from '../pipes/user-mapper.pipe';
+import { APP_CONFIG } from '../config/app.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  apiUrl = 'http://localhost:8080/users';
+  private apiUrl: string = `${APP_CONFIG.apiUrl}/users`;
 
   constructor(private http: HttpClient) { }
 

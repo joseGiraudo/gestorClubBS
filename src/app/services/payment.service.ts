@@ -3,16 +3,16 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Fee, FeeDto, FeeStatsDto, Payment, PaymentDto, PaymentPayDTO } from '../models/payment';
 import { PageResponse } from '../models/api-response';
+import { APP_CONFIG } from '../config/app.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PaymentService {
 
-  feesUrl: string = 'http://localhost:8080/fees';
-  paymentsUrl: string = 'http://localhost:8080/payments';
-  // paymentsUrl: string = 'https://acff-181-164-143-143.ngrok-free.app/payments';
-  // private mpUrl = 'http://localhost:8080/api/v1/mp';
+  private feesUrl: string = `${APP_CONFIG.apiUrl}/fees`;
+  private paymentsUrl: string = `${APP_CONFIG.apiUrl}/payments`;
+  
   private mpUrl = 'https://karson-unstentoriously-unmeditatively.ngrok-free.dev/api/v1/mp';
 
   constructor(private http: HttpClient) {}

@@ -4,13 +4,14 @@ import { Member, MemberStatus, MemberType, PutMemberDto } from '../models/member
 import { map, Observable, of } from 'rxjs';
 import { MemberMapperPipe } from '../pipes/member-mapper.pipe';
 import { PageResponse } from '../models/api-response';
+import { APP_CONFIG } from '../config/app.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MembersService {
 
-  apiUrl: string = 'http://localhost:8080/members'
+  private apiUrl: string = `${APP_CONFIG.apiUrl}/members`;
 
   constructor(private http: HttpClient) {}
 
