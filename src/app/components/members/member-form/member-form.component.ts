@@ -74,7 +74,6 @@ export class MemberFormComponent implements OnInit, AfterViewInit {
             backdrop: 'static',
             keyboard: false
           });
-          console.log('Modal initialized successfully');
         } catch (error) {
           console.error('Error initializing modal:', error);
         }

@@ -32,7 +32,6 @@ export class HomeComponent implements OnInit {
 
     this.teamService.getTeams().subscribe((teams) => {
       this.teamsArray = teams;
-      console.log(teams);
     })
   }
 

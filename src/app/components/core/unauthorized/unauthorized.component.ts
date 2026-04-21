@@ -12,9 +12,7 @@ export class UnauthorizedComponent {
 
   constructor(private router: Router) {}
 
-  goHome(): void {
-    console.log("home");
-    
+  goHome(): void {    
     this.router.navigate(['/']);
   }
 
