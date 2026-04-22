@@ -10,9 +10,9 @@ RUN npm run build
 
 # Runtime stage - serve static files
 FROM nginx:alpine
-WORKDIR /app
 
-COPY --from=builder /app/dist/gestor-club-bs /usr/share/nginx/html
+# Copy built Angular app (CSR version is in /browser folder)
+COPY --from=builder /app/dist/gestor-club-bs/browser /usr/share/nginx/html
 
 # Copy nginx config for SPA routing
 RUN echo 'server { listen 80; location / { root /usr/share/nginx/html; try_files $uri $uri/ /index.html; } }' > /etc/nginx/conf.d/default.conf
