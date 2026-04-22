@@ -2,7 +2,6 @@ import { ApplicationConfig, provideZoneChangeDetection, provideAppInitializer, i
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { LoginService } from './services/login.service';
 import {
@@ -13,7 +12,7 @@ withDefaultRegisterables,
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes), provideClientHydration(withEventReplay()),
+    provideRouter(routes),
     provideHttpClient(
       withFetch()
     ),

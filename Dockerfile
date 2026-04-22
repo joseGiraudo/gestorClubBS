@@ -8,15 +8,15 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-# Runtime stage
-FROM node:20-alpine
+# Runtime stage - serve static files
+FROM nginx:alpine
 WORKDIR /app
 
-COPY --from=builder /app/dist/gestor-club-bs ./dist/gestor-club-bs
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/dist/gestor-club-bs /usr/share/nginx/html
 
-ENV PORT=4000
-EXPOSE 4000
+# Copy nginx config for SPA routing
+RUN echo 'server { listen 80; location / { root /usr/share/nginx/html; try_files $uri $uri/ /index.html; } }' > /etc/nginx/conf.d/default.conf
 
-CMD ["node", "dist/gestor-club-bs/server/server.mjs"]
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
