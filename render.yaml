@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: gestorclub-frontend
+    env: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist/gestor-club-bs/browser
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
