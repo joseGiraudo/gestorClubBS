@@ -13,7 +13,7 @@ export class PaymentService {
   private feesUrl: string = `${APP_CONFIG.apiUrl}/fees`;
   private paymentsUrl: string = `${APP_CONFIG.apiUrl}/payments`;
   
-  private mpUrl: string = `${APP_CONFIG.mpUrl}/mp`;
+  private mpUrl: string = `${APP_CONFIG.mpUrl}`;
 
   constructor(private http: HttpClient) {}
 
