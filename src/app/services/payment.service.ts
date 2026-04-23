@@ -13,7 +13,7 @@ export class PaymentService {
   private feesUrl: string = `${APP_CONFIG.apiUrl}/fees`;
   private paymentsUrl: string = `${APP_CONFIG.apiUrl}/payments`;
   
-  private mpUrl = 'https://karson-unstentoriously-unmeditatively.ngrok-free.dev/api/v1/mp';
+  private mpUrl: string = `${APP_CONFIG.mpUrl}/mp`;
 
   constructor(private http: HttpClient) {}
 
